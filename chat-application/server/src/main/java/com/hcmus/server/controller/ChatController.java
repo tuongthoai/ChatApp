@@ -1,6 +1,8 @@
-package com.hcmus.chatapplication.controller;
+package com.hcmus.server.controller;
 
-import com.hcmus.chatapplication.entities.ChatMessage;
+import com.hcmus.server.entities.ChatMessage;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
     @MessageMapping("chat.sendMessage")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage message) {
+    public ChatMessage sendMessage(@Payload ChatMessage message, @Headers MessageHeaders headers) {
         return message;
     }
 

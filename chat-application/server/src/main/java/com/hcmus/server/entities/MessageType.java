@@ -1,4 +1,4 @@
-package com.hcmus.chatapplication.entities;
+package com.hcmus.server.entities;
 
 public enum MessageType {
     CHAT,

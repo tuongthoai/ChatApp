@@ -1,7 +1,7 @@
-package com.hcmus.chatapplication.config;
+package com.hcmus.server.config;
 
-import com.hcmus.chatapplication.entities.ChatMessage;
-import com.hcmus.chatapplication.entities.MessageType;
+import com.hcmus.server.entities.ChatMessage;
+import com.hcmus.server.entities.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
