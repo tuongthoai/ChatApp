@@ -19,10 +19,7 @@ public class SocketSessionContext extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        // Send the received message to all sessions in the group
-        for (WebSocketSession webSocketSession : sessions) {
-            webSocketSession.sendMessage(new TextMessage("User " + session.getId() + ": " + payload));
-        }
+
     }
 
     @Override
