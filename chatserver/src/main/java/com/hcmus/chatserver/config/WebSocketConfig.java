@@ -1,7 +1,6 @@
 package com.hcmus.chatserver.config;
 
 import com.hcmus.chatserver.context.SocketSessionContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
