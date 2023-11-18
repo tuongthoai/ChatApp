@@ -20,7 +20,7 @@ public class SocketSessionContext extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
+        System.out.println(message.getPayload());
     }
 
     @Override

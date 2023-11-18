@@ -12,6 +12,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -26,12 +27,16 @@ public class ClientSession implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         StandardWebSocketClient client = new StandardWebSocketClient();
         try {
-            session = client.execute(new ChatMsgHandler(), new URI("ws://localhost:8080/chat").toString()).get();
+            session = client.execute(new ChatMsgHandler(), new URI(socketRegisterPath).toString()).get();
             System.out.println("Client connected");
         } catch (Exception e) {
+            // Throw Error msg to UI
+
             e.printStackTrace();
         }
         mapper = new ObjectMapper();
+
+        sendMsg2Server(new HashMap<>(), "Xin chào tất cả mọi người!!!");
     }
 
     public void sendMsg2Server(@NonNull Map<String, Object> header, @NonNull String msg) throws Exception {
