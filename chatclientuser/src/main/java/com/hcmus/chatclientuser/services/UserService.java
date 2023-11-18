@@ -23,22 +23,6 @@ public class UserService {
         String msg = " Hello world";
         session.sendMsg2Server(header, msg);
     }
-
-    public void login(String username, String pass) {
-        RestTemplate template = new RestTemplate();
-        template.exchange("localhost:8080", HttpMethod.POST, header, context);
-    }
-
-
-    public List<User> getUserList(List<FilterObject> filter, int sortOrder, String sortBy) {
-        List<User> result;
-
-        String query = "SELECT * FROM USER WHERE {FILTER.KEY} = {FILTER.VALUE} ORDERBY";
-
-
-        // call jdbc for all user
-        return result;
-    }
 }
 
 
