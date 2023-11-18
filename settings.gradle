@@ -1,3 +1,4 @@
 rootProject.name = 'chat-app'
 
-include 'chatserver'
+include ('chatserver')
+include('chatclientuser')

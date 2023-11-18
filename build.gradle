@@ -5,8 +5,13 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: "groovy"
+    apply plugin: 'idea'
 
-    sourceCompatibility = '17'
+    group project.parent.group
+    version project.parent.version
+    sourceCompatibility = 17
+    targetCompatibility = 17
 
     repositories {
         // Use 'jcenter' for resolving your dependencies.
