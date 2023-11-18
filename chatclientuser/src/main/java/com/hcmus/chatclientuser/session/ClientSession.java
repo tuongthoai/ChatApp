@@ -18,27 +18,25 @@ import java.util.Map;
 public class ClientSession implements InitializingBean {
     private static WebSocketSession session = null;
 
-    {
-        StandardWebSocketClient client = new StandardWebSocketClient();
-        try {
-            session = client.execute(new ChatMsgHandler(), new URI(this.socketRegisterPath).toString()).get();
-            System.out.println("Client connected");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Value("${socket.register.path}")
     private String socketRegisterPath;
     private ObjectMapper mapper = null;
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        StandardWebSocketClient client = new StandardWebSocketClient();
+        try {
+            session = client.execute(new ChatMsgHandler(), new URI("ws://localhost:8080/chat").toString()).get();
+            System.out.println("Client connected");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mapper = new ObjectMapper();
     }
 
-    public void sendMsg2Server(@NonNull Map<String, Object> header,@NonNull String msg) throws Exception {
-        MessageEntity send_msg = new MessageEntity(header, msg);
-        session.sendMessage(new TextMessage(mapper.writeValueAsString(send_msg)));
+    public void sendMsg2Server(@NonNull Map<String, Object> header, @NonNull String msg) throws Exception {
+        session.sendMessage(new TextMessage(mapper.writeValueAsString(new MessageEntity(header, msg))));
     }
 }
+
+
