@@ -4,6 +4,14 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
+allprojects {
+    apply {
+        plugin('java')
+        plugin('java-library')
+        plugin('org.springframework.boot')
+    }
+}
+
 group = 'com.hcmus'
 version = '0.0.1-SNAPSHOT'
 
@@ -18,8 +26,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

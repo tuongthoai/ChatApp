@@ -40,7 +40,7 @@ public class ClientSession implements InitializingBean {
     }
 
     public void sendMsg2Server(@NonNull Map<String, Object> header, @NonNull String msg) throws Exception {
-        session.sendMessage(new TextMessage(mapper.writeValueAsString(new MessageEntity(header, msg))));
+        if (session != null ) session.sendMessage(new TextMessage(mapper.writeValueAsString(new MessageEntity(header, msg))));
     }
 }
 
