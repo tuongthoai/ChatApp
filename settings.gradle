@@ -2,4 +2,5 @@ rootProject.name = 'chat-app'
 
 include 'chat-server'
 include 'chatclientuser'
+include 'chatclientadmin'
 
