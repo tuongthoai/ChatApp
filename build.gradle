@@ -1,14 +1,11 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.17'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
-
 allprojects {
+    repositories {
+        mavenCentral()
+    }
     apply {
         plugin('java')
         plugin('java-library')
-        plugin('org.springframework.boot')
+        plugin('idea')
     }
 }
 
@@ -18,8 +15,6 @@ version = '0.0.1-SNAPSHOT'
 subprojects {
 
     // Apply the java plugin to add support for Java
-    apply plugin: 'java'
-    apply plugin: 'java-library'
     apply plugin: 'eclipse'
 
     sourceCompatibility = 11
@@ -35,12 +30,6 @@ subprojects {
     jar {
         enabled = true
     }
-
-    configurations {
-        all*.exclude module : 'spring-boot-starter-logging'
-        all*.exclude module : 'logback-classic'
-    }
-
     // In this section you declare the dependencies for your production and test code
     dependencies {
         // The production code uses the SLF4J logging API at compile time
