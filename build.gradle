@@ -39,20 +39,5 @@ subprojects {
         // TestNG is also supported by the Gradle Test task. Just change the
         // testImplementation dependency to testImplementation 'org.testng:testng:6.8.1' and add
         // 'test.useTestNG()' to your build script.
-        testImplementation 'junit:junit:4.12'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    }
-
-    eclipse.classpath.file {
-        whenMerged { classpath ->
-            fileTree("libs-src/").matching {
-                include "*.jar"
-            }.each { eachFile ->
-                def lib = new org.gradle.plugins.ide.eclipse.model.Library(fileReference(eachFile))
-                lib.exported = true
-                lib.sourcePath = fileReference(file(eachFile.getAbsolutePath().replace('.jar','-sources.jar') ))
-                classpath.entries << lib
-            }
-        }
     }
 }
