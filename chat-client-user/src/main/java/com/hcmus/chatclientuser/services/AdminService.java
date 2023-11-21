@@ -2,13 +2,16 @@ package com.hcmus.chatclientuser.services;
 
 
 import com.hcmus.chatclientuser.session.ClientSession;
+import com.sun.jdi.ArrayReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.amqp.AbstractRabbitListenerContainerFactoryConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.hcmus.chatclientuser.entities.User;
 
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,17 @@ public class AdminService {
 
     public AdminService() {
         this.restTemplate = new RestTemplate();
+    }
+
+    public List<User> filterByOnlineTimes(List<User> userList, Integer min, Integer max) {
+        List<User> res = new ArrayList<>();
+        for (User user : userList) {
+            Integer cnt = getNumOfTimesOnlineByTime(user.getId(), start, end);
+            if (cnt >= min && cnt <= max) {
+                res.add(user);
+            }
+        }
+        return res;
     }
 
     public ArrayList<Integer> getNumberOfUserByYear(List<User> userList, String year, String criteria) {
@@ -48,14 +62,14 @@ public class AdminService {
         // criteria = "CREATEDTIME"
         // sort by created time
 
-        return new List<User>();
+        return new ArrayList<>();
     }
+    // getUsersByTime(userList, "2020", "CREATEDTIME");
 
     // 6
     public List<User> getNewUserByTime(String start, String end) { // start and end: unix timestamp
         return restTemplate.exchange(API + "/users/new" + start + "/" + end, HttpMethod.GET, null, List.class).getBody();
     }
-    // getUsersByTime(userList, "2020", "CREATEDTIME");
 
     // 7
     public List<User> getFriendsOfUser(String id) {
@@ -75,7 +89,7 @@ public class AdminService {
     }
 
     public List<String> getAllFullnames(List<User> userList) {
-        List<String> names = new List<String>();
+        List<String> names = new ArrayList<>();
         for (User user : userList) {
             names.add(user.getName());
         }
@@ -135,17 +149,6 @@ public class AdminService {
 
     public Integer getNumOfTimesChatGroup(String userID, String start, String end) {
         return restTemplate.exchange(API + "/users/" + userID + "/chatgroup/" + start + "/" + end, HttpMethod.GET, null, Integer.class).getBody();
-    }
-
-    public filterByOnlineTimes(List<User> userList, Integer min, Integer max) {
-        List<User> res = new List<User>();
-        for (User user : userList) {
-            Integer cnt = getNumOfTimesOnlineByTime(user.getId(), start, end);
-            if (cnt >= min && cnt <= max) {
-                res.add(user);
-            }
-        }
-        return res;
     }
 
     // 9
