@@ -2,11 +2,11 @@ package com.hcmus.chatserver.entities;
 
 import java.util.Map;
 
-public class MessageEntity {
+public class SocketMessage {
     private Map<String, Object> headers;
     private String context;
 
-    public MessageEntity(Map<String, Object> headers, String context) {
+    public SocketMessage(Map<String, Object> headers, String context) {
         this.headers = headers;
         this.context = context;
     }

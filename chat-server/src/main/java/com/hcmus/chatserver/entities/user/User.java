@@ -1,4 +1,4 @@
-package com.hcmus.chatserver.entities;
+package com.hcmus.chatserver.entities.user;
 
 
 public class User {
