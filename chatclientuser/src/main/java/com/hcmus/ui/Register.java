@@ -3,29 +3,23 @@ package com.hcmus.ui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
-public class Login extends JFrame {
+public class Register extends JFrame {
     private JPanel panel;
     private JTextField txtUsername;
     private JPasswordField txtPassword;
-    private JButton btnLogin;
+    private JPasswordField txtConfirmPassword;
+    private JButton btnRegister;
+
     private JLabel lblRegister;
-    private JLabel lblForgotPassword;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Login().setVisible(true));
-    }
-
-    public Login() {
+    public Register() {
         init();
         addListener();
     }
 
-    private void init() {
+    private void init(){
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
@@ -47,12 +41,12 @@ public class Login extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JLabel lblLogin = new JLabel("Log in to get started");
-        lblLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblRegister = new JLabel("Register new account");
+        lblRegister.setFont(new Font("Tahoma", Font.BOLD, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 5;
-        panel.add(lblLogin, gbc);
+        panel.add(lblRegister, gbc);
 
         JLabel lblUsername = new JLabel("Username");
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -66,7 +60,7 @@ public class Login extends JFrame {
         txtUsername.setMargin(new Insets(10, 5, 10, 5));
         txtUsername.setBackground(Color.WHITE);
         txtUsername.setForeground(Color.GRAY);
-        gbc.anchor = GridBagConstraints.CENTER;
+        txtUsername.setHorizontalAlignment(SwingConstants.LEFT);
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.gridwidth = 4;
@@ -89,58 +83,54 @@ public class Login extends JFrame {
         gbc.gridy = 2;
         panel.add(txtPassword, gbc);
 
-        lblRegister = new JLabel("Register");
-        lblRegister.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        lblRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JLabel lblConfirmPassword = new JLabel("Confirm Password");
+        lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(lblRegister, gbc);
+        gbc.gridwidth = 1;
+        panel.add(lblConfirmPassword, gbc);
 
-        lblForgotPassword = new JLabel("Forgot password?");
-        lblForgotPassword.setForeground(new Color(128, 128, 128));
-        lblForgotPassword.setHorizontalAlignment(SwingConstants.CENTER);
-        lblForgotPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        lblForgotPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        txtConfirmPassword = new JPasswordField(22);
+        txtConfirmPassword.setMargin(new Insets(10, 5, 10, 5));
+        txtConfirmPassword.setBackground(Color.WHITE);
+        txtConfirmPassword.setForeground(Color.GRAY);
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 3;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(lblForgotPassword, gbc);
+        panel.add(txtConfirmPassword, gbc);
 
-        btnLogin = new JButton("Log in");
-        btnLogin.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnRegister = new JButton("Register");
+        btnRegister.setFont(new Font("Tahoma", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 5;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(btnLogin, gbc);
+        panel.add(btnRegister, gbc);
     }
 
     private void addListener() {
-        btnLogin.addActionListener(new ActionListener() {
+        btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Login");
+                String username = txtUsername.getText();
+                String password = String.valueOf(txtPassword.getPassword());
+                String confirmPassword = String.valueOf(txtConfirmPassword.getPassword());
+                if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!password.equals(confirmPassword)) {
+                    JOptionPane.showMessageDialog(null, "Password and confirm password are not matched", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Register successfully");
+                    dispose();
+                    new Login().setVisible(true);
+                }
             }
         });
+    }
 
-        lblRegister.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                dispose(); // Close current frame
-                new Register().setVisible(true);
-            }
-        });
-
-        lblForgotPassword.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Forgot password");
-            }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new Register().setVisible(true);
         });
     }
 }
