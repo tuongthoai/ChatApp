@@ -43,11 +43,5 @@ public class ChatLayout extends JFrame {
         pack();
         setLocationRelativeTo(null);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new ChatLayout().setVisible(true);
-        });
-    }
 }
 

@@ -1,7 +1,7 @@
 package com.hcmus.ui;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -37,7 +37,6 @@ public class Login extends JFrame {
         panel.setBackground(Color.WHITE);
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         setLocationRelativeTo(null);
-
         setContentPane(panel);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -47,7 +46,6 @@ public class Login extends JFrame {
 
         JLabel lblLogin = new JLabel("Log in to get started");
         lblLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
-
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 5;
@@ -118,13 +116,10 @@ public class Login extends JFrame {
     }
 
     private void addListener() {
-        btnLogin.addActionListener(e -> {
-            String username = txtUsername.getText();
-            String password = String.valueOf(txtPassword.getPassword());
-            if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter username and password");
-            } else {
-                JOptionPane.showMessageDialog(this, "Login successfully");
+        btnLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Login");
             }
         });
 
@@ -132,7 +127,8 @@ public class Login extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Register");
+                dispose(); // Close current frame
+                new Register().setVisible(true);
             }
         });
 
@@ -140,7 +136,8 @@ public class Login extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                JOptionPane.showMessageDialog(null, "Forgot password");
+                dispose(); // Close current frame
+                new ForgotPassword().setVisible(true);
             }
         });
     }
