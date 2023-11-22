@@ -2,6 +2,9 @@ package com.hcmus.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class ChatLayout extends JFrame {
     public ChatLayout() {
@@ -13,26 +16,7 @@ public class ChatLayout extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Sidebar with GridBagLayout
-        JPanel sidebarPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-
-        // Add sidebar components here
-        String currentDir = System.getProperty("user.dir") + "/src/main/java/org/example/";
-        JButton button1 = new JButton(new ImageIcon(currentDir + "chat-icon.png"));
-        JButton button2 = new JButton(new ImageIcon(currentDir + "chat-icon.png"));
-        JButton button3 = new JButton(new ImageIcon(currentDir + "chat-icon.png"));
-        JButton button4 = new JButton(new ImageIcon(currentDir + "chat-icon.png"));
-        sidebarPanel.add(button1, gbc);
-        gbc.gridy++;
-        sidebarPanel.add(button2, gbc);
-        gbc.gridy++;
-        sidebarPanel.add(button3, gbc);
-        gbc.gridy++;
-        sidebarPanel.add(button4, gbc);
+        JPanel sidebarPanel = new Sidebar();
 
         // List of conversations (you can use JList or other components)
         JList<String> conversationList = new JList<>(new String[]{"Conversation 1", "Conversation 2"});
