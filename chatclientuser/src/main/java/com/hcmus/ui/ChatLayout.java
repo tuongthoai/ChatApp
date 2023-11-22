@@ -1,5 +1,7 @@
 package com.hcmus.ui;
 
+import com.hcmus.ui.chatlist.ChatList;
+import com.hcmus.ui.searchbar.SearchBar;
 import com.hcmus.ui.sidebar.Sidebar;
 
 import javax.swing.*;
@@ -18,9 +20,12 @@ public class ChatLayout extends JFrame {
         JPanel sidebarPanel = new Sidebar();
 
         // List of conversations (you can use JList or other components)
-        JList<String> conversationList = new JList<>(new String[]{"Conversation 1", "Conversation 2"});
-        JScrollPane conversationScrollPane = new JScrollPane(conversationList);
+        JPanel chatList = new JPanel();
+        chatList.setLayout(new BorderLayout());
+        JScrollPane conversationScrollPane = new ChatList();
         conversationScrollPane.setPreferredSize(new Dimension(200, 400));
+        chatList.add(new SearchBar(), BorderLayout.NORTH);
+        chatList.add(conversationScrollPane, BorderLayout.CENTER);
 
         // Message box
         JTextArea messageBox = new JTextArea();
@@ -29,7 +34,7 @@ public class ChatLayout extends JFrame {
 
         // Add components to main panel
         mainPanel.add(sidebarPanel, BorderLayout.WEST);
-        mainPanel.add(conversationScrollPane, BorderLayout.CENTER);
+        mainPanel.add(chatList, BorderLayout.CENTER);
         mainPanel.add(messageScrollPane, BorderLayout.EAST);
 
         // Add main panel to the frame
@@ -39,10 +44,10 @@ public class ChatLayout extends JFrame {
         setLocationRelativeTo(null);
     }
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            new ChatLayout().setVisible(true);
-//        });
-//    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ChatLayout().setVisible(true);
+        });
+    }
 }
 
