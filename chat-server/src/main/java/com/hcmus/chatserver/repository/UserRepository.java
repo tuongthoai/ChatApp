@@ -21,7 +21,8 @@ public class UserRepository implements InitializingBean {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public User getUserById(String userId) throws Exception{
-        return null;
+    public User getUserById(int userId) throws Exception{
+        String query = "select * from user_metadata um where um.userid = 1";
+        return jdbcTemplate.queryForObject(query, new UserRowMapper());
     }
 }
