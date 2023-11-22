@@ -1,14 +1,16 @@
 package com.hcmus;
 
 import com.hcmus.socket.ClientSocketHandler;
+import com.hcmus.ui.ChatLayout;
 
+import javax.swing.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class Main {
     public static void main(String[] args) throws URISyntaxException {
-        ClientSocketHandler client = new ClientSocketHandler(new URI("ws://localhost:8080/chat"));
-        client.connect();
-        System.out.println("Hello world!");
+        SwingUtilities.invokeLater(() -> {
+            new ChatLayout().setVisible(true);
+        });
     }
 }
