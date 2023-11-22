@@ -1,10 +1,9 @@
 package com.hcmus.ui;
 
+import com.hcmus.ui.sidebar.Sidebar;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class ChatLayout extends JFrame {
     public ChatLayout() {
@@ -40,10 +39,10 @@ public class ChatLayout extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new ChatLayout().setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            new ChatLayout().setVisible(true);
+//        });
+//    }
 }
 
