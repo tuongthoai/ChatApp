@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 public class Register extends JFrame {
     private JPanel panel;
+    private JTextField txtEmail;
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JPasswordField txtConfirmPassword;
@@ -48,11 +49,29 @@ public class Register extends JFrame {
         gbc.gridwidth = 5;
         panel.add(lblRegister, gbc);
 
+        JLabel lblEmail = new JLabel("Email");
+        lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        panel.add(lblEmail, gbc);
+
+        txtEmail = new JTextField(22);
+        txtEmail.setMargin(new Insets(10, 5, 10, 5));
+        txtEmail.setBackground(Color.WHITE);
+        txtEmail.setForeground(Color.GRAY);
+        txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        gbc.gridwidth = 4;
+        panel.add(txtEmail, gbc);
+
         JLabel lblUsername = new JLabel("Username");
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 12));
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         panel.add(lblUsername, gbc);
 
@@ -62,7 +81,7 @@ public class Register extends JFrame {
         txtUsername.setForeground(Color.GRAY);
         txtUsername.setHorizontalAlignment(SwingConstants.LEFT);
         gbc.gridx = 3;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 4;
         panel.add(txtUsername, gbc);
 
@@ -70,7 +89,7 @@ public class Register extends JFrame {
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         panel.add(lblPassword, gbc);
 
@@ -80,14 +99,14 @@ public class Register extends JFrame {
         txtPassword.setForeground(Color.GRAY);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 3;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         panel.add(txtPassword, gbc);
 
         JLabel lblConfirmPassword = new JLabel("Confirm Password");
         lblConfirmPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
         panel.add(lblConfirmPassword, gbc);
 
@@ -97,13 +116,13 @@ public class Register extends JFrame {
         txtConfirmPassword.setForeground(Color.GRAY);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 3;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         panel.add(txtConfirmPassword, gbc);
 
         btnRegister = new JButton("Register");
         btnRegister.setFont(new Font("Tahoma", Font.BOLD, 16));
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.gridwidth = 5;
         panel.add(btnRegister, gbc);
     }
@@ -112,10 +131,11 @@ public class Register extends JFrame {
         btnRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String email = txtEmail.getText();
                 String username = txtUsername.getText();
                 String password = String.valueOf(txtPassword.getPassword());
                 String confirmPassword = String.valueOf(txtConfirmPassword.getPassword());
-                if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (!password.equals(confirmPassword)) {
                     JOptionPane.showMessageDialog(null, "Password and confirm password are not matched", "Error", JOptionPane.ERROR_MESSAGE);
