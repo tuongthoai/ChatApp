@@ -12,7 +12,7 @@ public class UserService implements InitializingBean {
     private UserRepository userRepository;
     private ObjectMapper mapper;
     public String getUser(int id) throws Exception {
-        return mapper.writeValueAsString(userRepository.getUserById(id));
+        return mapper.writeValueAsString(userRepository.getUser(id));
     }
 
     @Override

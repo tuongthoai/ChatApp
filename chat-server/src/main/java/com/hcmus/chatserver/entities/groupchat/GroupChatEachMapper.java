@@ -1,13 +1,14 @@
 package com.hcmus.chatserver.entities.groupchat;
 
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GroupChatRowMapper implements RowMapper<GroupChat> {
+public class GroupChatEachMapper implements ResultSetExtractor<GroupChat> {
     @Override
-    public GroupChat mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public GroupChat extractData(ResultSet rs) throws SQLException, DataAccessException {
         if (rs.getRow() != 0 && rs.isBeforeFirst()) {
             GroupChat groupChat = new GroupChat();
             groupChat.setGroupId(rs.getInt("groupid"));
