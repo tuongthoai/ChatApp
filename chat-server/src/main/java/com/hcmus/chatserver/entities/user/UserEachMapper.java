@@ -10,7 +10,7 @@ public class UserEachMapper implements ResultSetExtractor<User> {
     @Override
     public User extractData(ResultSet rs) throws SQLException, DataAccessException {
         final User user = new User();
-        if (rs.isBeforeFirst() && rs.getRow() != 0) {
+        if (rs.isBeforeFirst()) {
             rs.next();
             user.setId(rs.getInt("userid"));
             user.setUsername(rs.getString("username"));

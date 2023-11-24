@@ -1,6 +1,5 @@
 package com.hcmus.chatserver.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import com.hcmus.chatserver.entities.groupchat.GroupChatEachMapper;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Types;
 
 @Repository
 public class GroupChatRepository implements InitializingBean {
@@ -19,11 +19,10 @@ public class GroupChatRepository implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        System.out.println(new ObjectMapper().writeValueAsString(getGroupChat(1)));
     }
 
-    public GroupChat getGroupChat(int id) throws Exception {
-        String query = "select * from chat_metadata cm where cm.groupid = %d";
-        return jdbcTemplate.query(String.format(query, id), new GroupChatEachMapper());
+    public GroupChat findGroupChatById(int id) throws Exception {
+        String query = "select * from chat_metadata cm where cm.groupid = ?";
+        return jdbcTemplate.query(query, new Object[]{id}, new int[]{Types.INTEGER}, new GroupChatEachMapper());
     }
 }
