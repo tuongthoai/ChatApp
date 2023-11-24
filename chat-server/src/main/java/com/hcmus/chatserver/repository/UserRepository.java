@@ -65,7 +65,6 @@ public class UserRepository implements InitializingBean {
 
     public void removeUser(int userId) {
         String sql = "delete from user_metadata where userid = %d";
-
         jdbcTemplate.execute(String.format(sql, userId));
     }
 }
