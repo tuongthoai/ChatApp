@@ -1,5 +1,6 @@
 package com.hcmus.ui;
 
+import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
 import com.hcmus.ui.searchbar.SearchBar;
 import com.hcmus.ui.sidebar.Sidebar;
@@ -28,14 +29,12 @@ public class ChatLayout extends JFrame {
         chatList.add(conversationScrollPane, BorderLayout.CENTER);
 
         // Message box
-        JTextArea messageBox = new JTextArea();
-        JScrollPane messageScrollPane = new JScrollPane(messageBox);
-        messageScrollPane.setPreferredSize(new Dimension(500, 400));
+        JPanel chatBox = new ChatBox();
 
         // Add components to main panel
         mainPanel.add(sidebarPanel, BorderLayout.WEST);
         mainPanel.add(chatList, BorderLayout.CENTER);
-        mainPanel.add(messageScrollPane, BorderLayout.EAST);
+        mainPanel.add(chatBox, BorderLayout.EAST);
 
         // Add main panel to the frame
         add(mainPanel);
