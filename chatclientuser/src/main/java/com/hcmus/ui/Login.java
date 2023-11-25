@@ -12,6 +12,7 @@ public class Login extends JFrame {
     private JButton btnLogin;
     private JLabel lblRegister;
     private JLabel lblForgotPassword;
+    private Runnable loginSuccessCallback;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Login().setVisible(true));
@@ -120,6 +121,10 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Login");
+                // if login success, do:
+                if (loginSuccessCallback != null) {
+                    loginSuccessCallback.run();
+                }
             }
         });
 
@@ -140,5 +145,9 @@ public class Login extends JFrame {
                 new ForgotPassword().setVisible(true);
             }
         });
+    }
+
+    public void setLoginSucessCallback(Runnable callback) {
+        this.loginSuccessCallback = callback;
     }
 }

@@ -7,17 +7,28 @@ import java.awt.event.ActionListener;
 
 public class Sidebar extends JPanel {
     private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
-    public Sidebar() {
-        setBackground(new Color(51, 153, 255));
+    private static JPanel contentPanel;
+    private static CardLayout cardLayout;
+    private static JButton selectedButton, button1, button2, button3;
+
+    public Sidebar() {}
+    public Sidebar(JPanel contentPanel, CardLayout cardLayout) {
+        this.cardLayout = cardLayout;
+        this.contentPanel = contentPanel;
+
+        setBackground(new Color(204, 255, 204));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JButton button1 = createButton("Chat", "chat-icon.png");
-        JButton button2 = createButton("Friends", "friends-icon.png");
-        JButton button3 = createButton("Settings", "settings-icon.png");
+        selectedButton = null;
+
+        button1 = createButton("Chat", "chat-icon.png");
+        button2 = createButton("Friends", "friends-icon.png");
+        button3 = createButton("Settings", "settings-icon.png");
 
         add(button1);
         add(button2);
         add(button3);
+
     }
 
     private static JButton createButton(String text, String iconFilename) {
@@ -32,14 +43,19 @@ public class Sidebar extends JPanel {
         button.setIcon(icon);
 
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setBackground(new Color(51, 153, 255));
+        button.setBackground(new Color(204, 255, 204));
         button.setForeground(Color.DARK_GRAY);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
 
         // Add vertical spacing around the button
         button.setBorder(BorderFactory.createEmptyBorder(15, 15, 20, 15));
-        button.addActionListener(new SideBarAction(text));
+        button.addActionListener(new SideBarAction(text, cardLayout, contentPanel));
+
         return button;
+    }
+
+    public static void setSelectedButton(JButton button) {
+        selectedButton = button;
     }
 }
