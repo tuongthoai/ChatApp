@@ -16,10 +16,34 @@ public class ChatBox extends JPanel {
         username = "usn1";
         chatMessages = initChatMessage();
 
+        initComponent();
+    }
+
+    public ArrayList<ChatMessage> getChatMessages() {
+        return chatMessages;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void initComponent(){
         setPreferredSize(new Dimension(500, 400));
         this.setLayout(new BorderLayout());
 
-        //////////////////////////  HEADER ////////////////////
+        JPanel header = createHeaderPanel();
+        add(header, BorderLayout.NORTH);
+
+        JScrollPane scrollPane = createChatContentPanel();
+        add(scrollPane, BorderLayout.CENTER);
+
+        displayChatMessage();
+
+        JPanel footer = createFooterPanel();
+        add(footer, BorderLayout.SOUTH);
+    }
+
+    public JPanel createHeaderPanel(){
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(500, 50));
 
@@ -75,10 +99,10 @@ public class ChatBox extends JPanel {
         buttonPanel.add(memListButton);
 
         header.add(buttonPanel, BorderLayout.EAST);
-        add(header, BorderLayout.NORTH);
-        ////////////////////////////////  HEADER ////////////////////
 
-        ////////////// CHAT CONTENT //////////////////////////////////
+        return header;
+    }
+    public JScrollPane createChatContentPanel(){
         chatContent = new JTextArea();
         chatContent.setEditable(false);
         Font customFont = new Font("Arial", Font.PLAIN, 14); // You can choose your preferred font
@@ -89,40 +113,22 @@ public class ChatBox extends JPanel {
         JScrollPane scrollPane = new JScrollPane(chatContent);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        display();
-        add(scrollPane, BorderLayout.CENTER);
-        ////////////// CHAT CONTENT //////////////////////////////////
-
-        /////////////// FOOTER ///////////////////////////////////
+        return scrollPane;
+    }
+    public JPanel createFooterPanel(){
         JPanel footer = new JPanel(new BorderLayout());
         footer.setPreferredSize(new Dimension(500, 30));
 
-        // Add text input field
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(400, 30));
         footer.add(textField, BorderLayout.WEST);
 
-        // Add send message button
         JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!(textField.getText().isEmpty())){
-                    String mess = textField.getText();
-                    textField.setText(""); // Clear the text field after sending
-
-                    chatMessages.add(new ChatMessage(username, "",mess));
-
-                    display();
-                }
-            }
-        });
+        sendButton.addActionListener(new ChatBoxAction("Send", this, textField));
         footer.add(sendButton, BorderLayout.EAST);
-        add(footer, BorderLayout.SOUTH);
-        /////////////// FOOTER ///////////////////////////////////
+        return  footer;
     }
-
-    private void display() {
+    void displayChatMessage() {
         chatContent.setText(""); // Clear the existing messages before displaying
 
         for (ChatMessage message : chatMessages) {
@@ -134,7 +140,6 @@ public class ChatBox extends JPanel {
             chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
     }
-
     private ArrayList<ChatMessage> initChatMessage(){
         ArrayList<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg","Hello"));
@@ -164,12 +169,7 @@ public class ChatBox extends JPanel {
         int leftPadding = 10;
         int rightPadding = 10;
         button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, text + " Clicked!");
-            }
-        });
+        button.addActionListener(new ChatBoxAction(text));
         return button;
     }
 }
