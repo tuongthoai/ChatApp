@@ -1,4 +1,4 @@
-package com.hcmus.ui;
+package com.hcmus.ui.loginscreens;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

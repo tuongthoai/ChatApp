@@ -1,11 +1,9 @@
 package com.hcmus;
 
-import com.hcmus.ui.ChatLayout;
-import com.hcmus.ui.Login;
+import com.hcmus.ui.chatlayout.ChatLayout;
+import com.hcmus.ui.loginscreens.Login;
 
 import javax.swing.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class Main extends JFrame implements Runnable {
     private Login login;
