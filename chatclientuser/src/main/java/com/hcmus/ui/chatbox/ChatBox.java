@@ -91,9 +91,12 @@ public class ChatBox extends JPanel {
 
         JButton searchButton = createButton("Search", "search-icon.png");
         JButton deleteButton = createButton("Delete", "trash-solid.png");
+        JButton memListButton = createButton("Members", "group.png");
+        memListButton.addActionListener(new MemberListBtnAction(this));
 
         buttonPanel.add(searchButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(memListButton);
 
         header.add(buttonPanel, BorderLayout.EAST);
 
