@@ -17,10 +17,11 @@ public class ChatScreen extends JPanel {
         // List of conversations (you can use JList or other components)
         JPanel chatList = new JPanel();
         chatList.setLayout(new BorderLayout());
-        JScrollPane conversationScrollPane = new ChatList();
-        conversationScrollPane.setPreferredSize(new Dimension(200, 400));
+        JPanel conversationScrollPane = new ChatList();
+        conversationScrollPane.setPreferredSize(new Dimension(220, 400));
         chatList.add(new SearchBar(), BorderLayout.NORTH);
         chatList.add(conversationScrollPane, BorderLayout.CENTER);
+        chatList.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
         // Message box
         JPanel chatBox = new ChatBox();

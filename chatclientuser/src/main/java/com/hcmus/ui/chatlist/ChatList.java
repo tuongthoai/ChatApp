@@ -5,32 +5,75 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-public class ChatList extends JScrollPane {
+public class ChatList extends JPanel {
     private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
+    private static JScrollPane mainPanel;
+    private static JButton addButton;
     public ChatList() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
         List<String> friends = Arrays.asList("User 1", "User 2", "User 3", "User 4", "User 5");
         List<String> chatList = Arrays.asList("All of those captains grab chemical, photonic parasites.", "Hi!!", "Goodbye", "Goodbye", "Goodbye");
+
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new GridBagLayout());
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
         for (int i = 0; i < 10; i++) {
-            panel.add(new ChatListItem("avatar.png", friends.get(0), chatList.get(0)));
+            gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
+            panel.add(new ChatListItem("avatar.png", friends.get(0), chatList.get(0)), gbc);
+
             if (i < 9) {
-                panel.add(new JSeparator());
+                gbc.gridy = i * 2 + 1;
+                gbc.weightx = 1.0; // Make the separator expand horizontally
+                panel.add(new JSeparator(), gbc);
+                gbc.weightx = 0.0; // Reset weightx
             }
         }
-        setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        setViewportView(panel);
+
+        addButton = new JButton("Create a new conversation");
+        addButton.addActionListener(new AddConvoAction());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 0, 5, 0);
+        gbc.gridwidth = 10;
+        add(addButton, gbc);
+
+        mainPanel = new JScrollPane(panel);
+        mainPanel.setPreferredSize(new Dimension(200, 400));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(mainPanel, gbc);
     }
-    private static class ChatListItem extends JButton {
+    private class ChatListItem extends JButton {
         public ChatListItem(String avatarPath, String name, String lastMessage) {
             setBackground(Color.WHITE);
-            setLayout(new BorderLayout());
+            setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+
             JPanel subPanel = new JPanel();
-            subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
+            subPanel.setLayout(new GridBagLayout());
+            subPanel.setBackground(Color.WHITE);
+
+            // Name label
             JLabel nameLabel = new JLabel(name.toUpperCase());
+            nameLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
             nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            nameLabel.setBackground(Color.RED);
-            subPanel.add(nameLabel);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.CENTER;
+            subPanel.add(nameLabel, gbc);
+
+            // Last message text area
             if (lastMessage.length() > 35) {
                 lastMessage = lastMessage.substring(0, 35) + "...";
             }
@@ -38,14 +81,32 @@ public class ChatList extends JScrollPane {
             lastMsg.setLineWrap(true);
             lastMsg.setWrapStyleWord(true);
             lastMsg.setEditable(false);
-            lastMsg.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-            subPanel.add(lastMsg);
+            lastMsg.setFont(new Font("Tahoma", Font.PLAIN, 10));
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.insets = new Insets(5, 0, 0, 0);
+            subPanel.add(lastMsg, gbc);
+
             subPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+            // Avatar icon
             JLabel avatarIcon = new JLabel(new ImageIcon(currentDir + avatarPath));
             avatarIcon.setBorder(new EmptyBorder(0, 0, 0, 10));
-            add(avatarIcon, BorderLayout.WEST);
-            add(subPanel, BorderLayout.CENTER);
-            setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.WEST;
+            add(avatarIcon, gbc);
+
+            // Subpanel containing name and last message
+            gbc.gridx = 1;
+            gbc.gridy = 0;
+            gbc.weightx = 1.0;
+            gbc.weighty = 1.0;
+            gbc.fill = GridBagConstraints.BOTH;
+            add(subPanel, gbc);
+
+            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
     }
 }
