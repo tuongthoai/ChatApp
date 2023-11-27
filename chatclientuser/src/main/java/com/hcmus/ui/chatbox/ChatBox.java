@@ -13,7 +13,7 @@ public class ChatBox extends JPanel {
     private ArrayList<ChatMessage> chatMessages;
     private String username;
     public ChatBox(){
-        username = "usn1";
+        username = "Trans Gia Thinh";
         chatMessages = initChatMessage();
 
         initComponent();
@@ -56,7 +56,7 @@ public class ChatBox extends JPanel {
         userAvatar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         // Create labels for username and status
-        JLabel usernameLabel = new JLabel("Tran Gia Thinh");
+        JLabel usernameLabel = new JLabel(username);
 
         // Create a panel for the status with a small green circle
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // Use FlowLayout
@@ -128,7 +128,7 @@ public class ChatBox extends JPanel {
         footer.add(sendButton, BorderLayout.EAST);
         return  footer;
     }
-    void displayChatMessage() {
+    public void displayChatMessage() {
         chatContent.setText(""); // Clear the existing messages before displaying
 
         for (ChatMessage message : chatMessages) {
@@ -171,5 +171,9 @@ public class ChatBox extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
         button.addActionListener(new ChatBoxAction(text));
         return button;
+    }
+
+    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
     }
 }

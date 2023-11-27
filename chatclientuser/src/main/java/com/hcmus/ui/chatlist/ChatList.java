@@ -1,19 +1,23 @@
 package com.hcmus.ui.chatlist;
 
+import com.hcmus.ui.chatlayout.ChatScreen;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 public class ChatList extends JPanel {
-    private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
-    private static JScrollPane mainPanel;
-    private static JButton addButton;
-    public ChatList() {
+    private final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
+    private JScrollPane mainPanel;
+    private JButton addButton;
+    private ChatScreen chatScreen;
+    public ChatList(ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        List<String> friends = Arrays.asList("User 1", "User 2", "User 3", "User 4", "User 5");
+        List<String> friends = Arrays.asList("User 1", "User 2", "User 3", "User 4", "User 5", "User 6", "User 7", "User 8", "User 9", "User 10");
         List<String> chatList = Arrays.asList("All of those captains grab chemical, photonic parasites.", "Hi!!", "Goodbye", "Goodbye", "Goodbye");
 
         JPanel panel = new JPanel();
@@ -26,7 +30,7 @@ public class ChatList extends JPanel {
 
         for (int i = 0; i < 10; i++) {
             gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
-            panel.add(new ChatListItem("avatar.png", friends.get(0), chatList.get(0)), gbc);
+            panel.add(new ChatListItem("avatar.png", friends.get(i), chatList.get(0)), gbc);
 
             if (i < 9) {
                 gbc.gridy = i * 2 + 1;
@@ -107,6 +111,7 @@ public class ChatList extends JPanel {
             add(subPanel, gbc);
 
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            addActionListener(new SwitchChatAction(name, name + "a", chatScreen));
         }
     }
 }

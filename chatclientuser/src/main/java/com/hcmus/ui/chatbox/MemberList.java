@@ -20,7 +20,19 @@ public class MemberList extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridwidth = 1;
+        gbc.ipadx = 2;
         gbc.insets = new Insets(5, 5, 5, 5);
+
+
+        JButton addNewMember = new JButton("Add new member");
+        addNewMember.setPreferredSize(new Dimension(50, 30));
+        addNewMember.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        add(addNewMember, gbc);
+
+        gbc.gridy = 1;
+
 
         for (int i = 0; i < 10; i++) {
             gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
@@ -49,26 +61,20 @@ public class MemberList extends JPanel {
 
         public MemberCard(String name, String role) {
             setBackground(Color.WHITE);
-            setLayout(new BorderLayout());
+            setLayout(new GridBagLayout());
 
-            JPanel subPanel = new JPanel(new GridBagLayout());
+            JPanel subPanel = new JPanel(new GridLayout(2, 1, 5, 10));
             subPanel.setBackground(Color.WHITE);
 
             GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(7, 7, 7, 7);
 
             // Name label
             JLabel nameLabel = createLabel(name.toUpperCase());
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.anchor = GridBagConstraints.WEST;
             subPanel.add(nameLabel, gbc);
 
             // Role label
             JLabel roleLabel = createLabel(role);
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.anchor = GridBagConstraints.WEST;
+            roleLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
             subPanel.add(roleLabel, gbc);
 
             // Button panel
@@ -86,14 +92,17 @@ public class MemberList extends JPanel {
             // Add the button panel to subPanel
             gbc.gridx = 1;
             gbc.gridy = 0;
-            gbc.gridheight = 2;
-            gbc.anchor = GridBagConstraints.EAST;
+            gbc.anchor = GridBagConstraints.PAGE_END;
             gbc.insets = new Insets(0, 20, 0, 0);
-            subPanel.add(buttonPanel, gbc);
+            add(buttonPanel, gbc);
 
             subPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-            add(subPanel, BorderLayout.CENTER);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.PAGE_START;
+            gbc.insets = new Insets(5, 0, 0, 20);
+            add(subPanel, gbc);
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         }
 
