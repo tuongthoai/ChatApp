@@ -60,6 +60,8 @@ public class UserRepository implements InitializingBean {
 
     public int addUser(User user) throws Exception {
         String sql = "INSERT INTO USER_METADATA (USERNAME, USER_PASSWORD, FULLNAME, USER_ADDRESS, BIRTHDAY, SEX, EMAIL, CREATEDTIME) VALUES (?,?,?,?,?,?,?,?)";
+        //hash password
+        String hashedPassword = hashCode().toString();
         jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getBirthday(), user.getSex(), user.getEmail(), user.getCreatedTime());
         return user.getId();
     }
@@ -77,7 +79,7 @@ public class UserRepository implements InitializingBean {
                 return users.get(0).getId();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             throw new RuntimeException("Logging Failed");
         }
 

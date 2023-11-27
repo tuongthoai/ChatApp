@@ -150,4 +150,8 @@ public class Login extends JFrame {
     public void setLoginSucessCallback(Runnable callback) {
         this.loginSuccessCallback = callback;
     }
+
+    private boolean authenticate(String username, String password) {
+
+    }
 }
