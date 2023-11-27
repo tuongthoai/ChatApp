@@ -13,7 +13,8 @@ public class ChatList extends JPanel {
     private JButton addButton;
     private ChatScreen chatScreen;
     private String user_id;
-    public ChatList() {
+    public ChatList(ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
