@@ -58,13 +58,29 @@ public class UserRepository implements InitializingBean {
         return jdbcTemplate.query(queryBuilder.toString(), args, types, new UserRowMapper());
     }
 
-    public void addUser(User user) throws Exception {
+    public int addUser(User user) throws Exception {
         String sql = "INSERT INTO USER_METADATA (USERNAME, USER_PASSWORD, FULLNAME, USER_ADDRESS, BIRTHDAY, SEX, EMAIL, CREATEDTIME) VALUES (?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getBirthday(), user.getSex(), user.getEmail(), user.getCreatedTime());
+        return user.getId();
     }
 
     public void removeUser(int userId) {
         String sql = "delete from user_metadata where userid = %d";
         jdbcTemplate.execute(String.format(sql, userId));
+    }
+
+    public int validateUsrPwd(String userName, String password) throws Exception {
+        String sql = "select * from user_metadata um where um.username = ? and user_password = ?";
+        try {
+            List<User> users = jdbcTemplate.query(sql, new Object[]{userName, password}, new int[]{Types.VARCHAR, Types.VARCHAR}, new UserRowMapper());
+            if (!users.isEmpty()) {
+                return users.get(0).getId();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Logging Failed");
+        }
+
+        return -1;
     }
 }
