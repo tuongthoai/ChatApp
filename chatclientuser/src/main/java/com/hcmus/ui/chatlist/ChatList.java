@@ -9,6 +9,7 @@ public class ChatList extends JPanel {
     private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private static JScrollPane mainPanel;
     private static JButton addButton;
+    private String user_id;
     public ChatList() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
