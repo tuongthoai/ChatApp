@@ -12,8 +12,8 @@ public class ChatList extends JPanel {
     private JScrollPane mainPanel;
     private JButton addButton;
     private ChatScreen chatScreen;
-    public ChatList(ChatScreen chatScreen) {
-        this.chatScreen = chatScreen;
+    private String user_id;
+    public ChatList() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
