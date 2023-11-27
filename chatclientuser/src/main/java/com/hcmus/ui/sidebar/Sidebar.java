@@ -13,8 +13,8 @@ public class Sidebar extends JPanel {
 
     public Sidebar() {}
     public Sidebar(JPanel contentPanel, CardLayout cardLayout) {
-        this.cardLayout = cardLayout;
-        this.contentPanel = contentPanel;
+        Sidebar.cardLayout = cardLayout;
+        Sidebar.contentPanel = contentPanel;
 
         setBackground(new Color(204, 255, 204));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -29,6 +29,9 @@ public class Sidebar extends JPanel {
         add(button2);
         add(button3);
 
+        // Set the first button as selected
+        button1.setBackground(new Color(153, 255, 153));
+        selectedButton = button1;
     }
 
     private static JButton createButton(String text, String iconFilename) {
@@ -51,6 +54,34 @@ public class Sidebar extends JPanel {
         // Add vertical spacing around the button
         button.setBorder(BorderFactory.createEmptyBorder(15, 15, 20, 15));
         button.addActionListener(new SideBarAction(text, cardLayout, contentPanel));
+
+        // Add hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(153, 255, 153));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                if (button != selectedButton) {
+                    button.setBackground(new Color(204, 255, 204));
+                }
+            }
+        });
+
+        // Add click effect
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedButton != null) {
+                    selectedButton.setBackground(new Color(204, 255, 204));
+                }
+                button.setBackground(new Color(153, 255, 153));
+                selectedButton = button;
+            }
+        });
+
+        // Change the cursor to hand cursor
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         return button;
     }

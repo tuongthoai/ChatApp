@@ -21,12 +21,19 @@ public class SideBarAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (text.equals("Chat")) {
-            cardLayout.show(contentPanel, "CHAT");
-        } else if (text.equals("Friends")) {
-            cardLayout.show(contentPanel, "FRIENDS");
-        } else if (text.equals("Settings")) {
-            cardLayout.show(contentPanel, "SETTINGS");
+        switch (text) {
+            case "Chat":
+                cardLayout.show(contentPanel, "CHAT");
+                break;
+            case "Friends":
+                cardLayout.show(contentPanel, "FRIENDS");
+                break;
+            case "Settings":
+                cardLayout.show(contentPanel, "SETTINGS");
+                break;
+            case "Login":
+                cardLayout.show(contentPanel, "LOGIN");
+                break;
         }
     }
 }
