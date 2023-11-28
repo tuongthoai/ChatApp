@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MemberListBtnAction implements ActionListener {
+public class GroupInfoBtnAction implements ActionListener {
     private JPanel parent;
 
-    public MemberListBtnAction() {}
+    public GroupInfoBtnAction() {}
 
-    public MemberListBtnAction(JPanel parent) {
+    public GroupInfoBtnAction(JPanel parent) {
         this.parent = parent;
     }
 
@@ -18,7 +18,7 @@ public class MemberListBtnAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         List<String> members = List.of("user1", "user22222222222", "user3");
         List<String> roles = List.of("admin", "member", "member");
-        MemberListDialog memListDialog = new MemberListDialog(parent, members, roles);
+        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, members, roles);
         memListDialog.setVisible(true);
     }
 }

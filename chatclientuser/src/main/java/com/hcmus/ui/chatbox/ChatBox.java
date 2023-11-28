@@ -2,8 +2,6 @@ package com.hcmus.ui.chatbox;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -91,12 +89,15 @@ public class ChatBox extends JPanel {
 
         JButton searchButton = createButton("Search", "search-icon.png");
         JButton deleteButton = createButton("Delete", "trash-solid.png");
-        JButton memListButton = createButton("Members", "group.png");
-        memListButton.addActionListener(new MemberListBtnAction(this));
+        JButton infoButton = createButton("Members", "info.png");
+        JButton spamButton = createButton("Spam", "spam.png");
+        infoButton.addActionListener(new GroupInfoBtnAction(this));
+        spamButton.addActionListener(new SpamBtnAction());
 
         buttonPanel.add(searchButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(memListButton);
+        buttonPanel.add(infoButton);
+        buttonPanel.add(spamButton);
 
         header.add(buttonPanel, BorderLayout.EAST);
 
