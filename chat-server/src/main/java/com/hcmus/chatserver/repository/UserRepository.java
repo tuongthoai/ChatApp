@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Type;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class UserRepository implements InitializingBean {
     }
 
     public int validateUsrPwd(String userName, String password) throws Exception {
-        String sql = "select * from user_metadata um where um.username = ? and user_password = ?";
+        String sql = "select * from user_metadata um where um.username = ? and um.password = ?";
         try {
             List<User> users = jdbcTemplate.query(sql, new Object[]{userName, password}, new int[]{Types.VARCHAR, Types.VARCHAR}, new UserRowMapper());
             if (!users.isEmpty()) {
@@ -82,5 +83,16 @@ public class UserRepository implements InitializingBean {
         }
 
         return -1;
+    }
+
+    public int findUserByUsername(String username) throws Exception {
+        String query = "select um.* from user_metadata um where um.username = ?";
+        User user = jdbcTemplate.query(query, new Object[]{username}, new int[]{Types.VARCHAR}, new UserEachMapper());
+        if (user == null) return -1;
+        return user.getId();
+    }
+
+    public boolean userBlock(int userId, int targetId) {
+        return true;
     }
 }

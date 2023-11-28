@@ -36,7 +36,15 @@ public class AccountController implements InitializingBean {
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public String registerUser(LogginRequest request) throws JsonProcessingException {
         RequestResponse response = new RequestResponse();
+        int userId = -1;
+        try {
+            userId = service.registerUser(request);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Error! Please try a gain!!!");
 
+            return mapper.writeValueAsString(response);
+        }
         return mapper.writeValueAsString(response);
     }
 

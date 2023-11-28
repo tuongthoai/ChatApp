@@ -11,8 +11,8 @@ public class User {
     private String address;
     private long birthday;
     private long createdTime;
-    private boolean online;
-    private boolean blocked;
+    private boolean online = false;
+    private boolean blocked = false;
 
     public User() {
     }

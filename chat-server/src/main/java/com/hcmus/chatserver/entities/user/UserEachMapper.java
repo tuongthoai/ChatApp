@@ -9,8 +9,9 @@ import java.sql.SQLException;
 public class UserEachMapper implements ResultSetExtractor<User> {
     @Override
     public User extractData(ResultSet rs) throws SQLException, DataAccessException {
-        final User user = new User();
+        User user = null;
         if (rs.isBeforeFirst()) {
+            user = new User();
             rs.next();
             user.setId(rs.getInt("userid"));
             user.setUsername(rs.getString("username"));
