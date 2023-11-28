@@ -1,5 +1,6 @@
 package com.hcmus.chatserver.service;
 
+import com.hcmus.chatserver.entities.api.LogginRequest;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,17 @@ public class AccountService {
         return user_id;
     }
 
-    public int registerUser(User user) throws Exception {
+    public int registerUser(LogginRequest request) throws Exception {
+        User user = new User();
+        user.setSex(request.getSex());
+        user.setName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setUsername(request.getUserName());
+        user.setPassword(request.getPassWord());
+        user.setAddress(request.getUser_address());
+        user.setBirthday(request.getDateOfBirth());
+        user.setCreatedTime(System.currentTimeMillis());
+
         int usrId = -1;
         try {
             usrId = repository.addUser(user);

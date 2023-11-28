@@ -3,8 +3,8 @@ package com.hcmus.chatserver.entities.api;
 public class LogginRequest {
     private String fullName;
     private String email;
+    private String sex;
     private String user_address;
-    private boolean sex;
     private long dateOfBirth;
     private String userName;
     private String passWord;
@@ -52,19 +52,19 @@ public class LogginRequest {
         this.user_address = user_address;
     }
 
-    public boolean isSex() {
-        return sex;
-    }
-
-    public void setSex(boolean sex) {
-        this.sex = sex;
-    }
-
     public long getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }
