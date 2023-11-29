@@ -46,7 +46,7 @@ public class FriendHomePage extends JPanel {
         ListFriend listFriendCard = new ListFriend(this.data, mainCard, mainContentPanel);
         cardContainPanel.add(listFriendCard, "LIST_FRIEND");
 
-        NewFriend newFriendCard = new NewFriend();
+        NewFriend newFriendCard = new NewFriend(this.data, mainCard, mainContentPanel);
         cardContainPanel.add(newFriendCard, "ADD_FRIEND");
 
         cardLayout.show(cardContainPanel, "LIST_FRIEND");

@@ -21,8 +21,13 @@ public class ListFriend extends JPanel {
         this.data = data;
         this.user_id = "1";
         this.mainContentPanel = mainContentPanel;
+
         ArrayList<User> listFriend = getListFriend(data.getFriendList(), data.getUserList());
 
+        init(listFriend);
+
+    }
+    public void init(ArrayList<User> listFriend){
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
 
@@ -36,7 +41,6 @@ public class ListFriend extends JPanel {
         add(titlePanel, BorderLayout.NORTH);
 
         JPanel listPanel = new JPanel(new GridBagLayout());
-//        listPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
@@ -46,30 +50,26 @@ public class ListFriend extends JPanel {
 
         Font fontText = new Font("Serif", Font.PLAIN, 18);
 
-        for(int i = 1; i < 5; i++){
-            for(User friend : listFriend){
-                JLabel nameLabel = new JLabel(friend.getFullname());
-                nameLabel.setFont(fontText);
-                gbc.gridx = 0;
-                gbc.gridy++;
-                gbc.weightx = 100;
-                listPanel.add(nameLabel, gbc);
+        for(User friend : listFriend){
+            JLabel nameLabel = new JLabel(friend.getFullname());
+            nameLabel.setFont(fontText);
+            gbc.gridx = 0;
+            gbc.gridy++;
+            gbc.weightx = 100;
+            listPanel.add(nameLabel, gbc);
 
-                JButton chatButton = createButton("chat", "chat-icon.png",friend.getUserId());
-                gbc.gridx++;
-                gbc.weightx = 1;
-                listPanel.add(chatButton, gbc);
+            JButton chatButton = createButton("chat", "chat-icon.png",friend.getUserId());
+            gbc.gridx++;
+            gbc.weightx = 1;
+            listPanel.add(chatButton, gbc);
 
-                JButton deleteButton = createButton("delete", "trash-solid.png",friend.getUserId());
-                gbc.gridx++;
-                listPanel.add(deleteButton, gbc);
-            }
+            JButton deleteButton = createButton("delete", "trash-solid.png",friend.getUserId());
+            gbc.gridx++;
+            listPanel.add(deleteButton, gbc);
         }
-
         JScrollPane scrollPane = new JScrollPane(listPanel);
         add(scrollPane, BorderLayout.CENTER);
     }
-
     private ArrayList<User> getListFriend(ArrayList<UserFriend> userFriends, ArrayList<User> users){
         ArrayList<User> res = new ArrayList<>();
         for(UserFriend userFriend : userFriends){
