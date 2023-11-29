@@ -11,10 +11,11 @@ public class DataTest {
     private ArrayList<GroupChatContent> groupChatContent;
     private ArrayList<GroupChatMember> groupChatMember;
 
-    DataTest(){
+    public DataTest(){
         initData();
     }
     private void initData(){
+        userList = new ArrayList<>();
         userList.add(new User("1", "usn1","Tran Nguyen J"));
         userList.add(new User("2", "usn2","Nguyen Van A"));
         userList.add(new User("3", "usn3","Le Van B"));
@@ -25,6 +26,7 @@ public class DataTest {
         userList.add(new User("8", "usn8","Lac G"));
         userList.add(new User("9", "usn9","Cao H"));
 
+        friendList = new ArrayList<>();
         friendList.add(new UserFriend("1", "3"));
         friendList.add(new UserFriend("3", "1"));
         friendList.add(new UserFriend("1", "5"));
@@ -36,11 +38,13 @@ public class DataTest {
         friendList.add(new UserFriend("7", "3"));
         friendList.add(new UserFriend("3", "7"));
 
+        groupChatList = new ArrayList<>();
         groupChatList.add(new GroupChat("1", "Group 1"));
         groupChatList.add(new GroupChat("2", "Group 2"));
         groupChatList.add(new GroupChat("3", "Group 3"));
         groupChatList.add(new GroupChat("4", "Group 4"));
 
+        groupChatOfUser = new ArrayList<>();
         groupChatOfUser.add(new GroupChatOfUser("1","1"));
         groupChatOfUser.add(new GroupChatOfUser("2","1"));
         groupChatOfUser.add(new GroupChatOfUser("3","1"));
@@ -53,11 +57,13 @@ public class DataTest {
         groupChatOfUser.add(new GroupChatOfUser("1","4"));
         groupChatOfUser.add(new GroupChatOfUser("4","4"));
 
+        groupChatAdmin = new ArrayList<>();
         groupChatAdmin.add(new GroupChatAdmin("1","1"));
         groupChatAdmin.add(new GroupChatAdmin("1","2"));
         groupChatAdmin.add(new GroupChatAdmin("3","2"));
         groupChatAdmin.add(new GroupChatAdmin("3","4"));
 
+        groupChatContent = new ArrayList<>();
         groupChatContent.add(new GroupChatContent("1","1","Hello"));
         groupChatContent.add(new GroupChatContent("1","2","Hi"));
         groupChatContent.add(new GroupChatContent("1","3","How are you?"));
@@ -77,7 +83,7 @@ public class DataTest {
         groupChatContent.add(new GroupChatContent("4","1","What are you doing?"));
         groupChatContent.add(new GroupChatContent("4","4","I am doing homework"));
 
-
+        groupChatMember = new ArrayList<>();
         groupChatMember.add(new GroupChatMember("1","1"));
         groupChatMember.add(new GroupChatMember("1","2"));
         groupChatMember.add(new GroupChatMember("1","3"));

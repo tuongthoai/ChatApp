@@ -1,5 +1,7 @@
 package com.hcmus.ui.friendscreen;
 
+import com.hcmus.ui.datatest.DataTest;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +10,11 @@ import java.awt.event.ActionListener;
 public class FriendHomePage extends JPanel {
     private CardLayout cardLayout;
     private JPanel cardContainPanel;
-    public FriendHomePage(){
+    private DataTest data;
+    private CardLayout mainCard;
+    private JPanel mainContentPanel;
+    public FriendHomePage(DataTest data, CardLayout mainCard, JPanel mainContentPanel){
+        this.data = data;
         cardLayout = new CardLayout();
         cardContainPanel = new JPanel();
 
@@ -37,7 +43,7 @@ public class FriendHomePage extends JPanel {
         cardContainPanel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
         cardContainPanel.setBackground(Color.WHITE);
 
-        ListFriend listFriendCard = new ListFriend();
+        ListFriend listFriendCard = new ListFriend(this.data, mainCard, mainContentPanel);
         cardContainPanel.add(listFriendCard, "LIST_FRIEND");
 
         NewFriend newFriendCard = new NewFriend();

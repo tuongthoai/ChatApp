@@ -2,6 +2,7 @@ package com.hcmus.ui.chatlayout;
 
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
+import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.friendscreen.FriendHomePage;
 import com.hcmus.ui.loginscreens.Login;
 import com.hcmus.ui.searchbar.SearchBar;
@@ -35,7 +36,8 @@ public class ChatLayout extends JFrame {
         contentPanel.add(mainScreen, "CHAT");
 
         // Friend screen
-        FriendHomePage friendHomePage = new FriendHomePage();
+        DataTest data  = new DataTest();
+        FriendHomePage friendHomePage = new FriendHomePage(data, cardLayout, contentPanel);
         contentPanel.add(friendHomePage, "FRIENDS");
 
         // Settings screen
