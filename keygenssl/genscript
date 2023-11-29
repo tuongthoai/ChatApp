@@ -1,0 +1,1 @@
+./keytool.exe -genkeypair -v -storetype PKCS12 -keystore D:\HCMUS\Introduction2Java\Project\ChatApp\chatapphcmus.p12 -storepass hcmusa18 -keypass hcmusa18 -keyalg RSA -keysize 2048 -validity 365 -alias chatapphcmus
