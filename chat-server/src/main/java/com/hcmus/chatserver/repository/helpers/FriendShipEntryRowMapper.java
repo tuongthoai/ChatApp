@@ -1,4 +1,4 @@
-package com.hcmus.chatserver.entities.userfriend;
+package com.hcmus.chatserver.repository.helpers;
 
 import org.springframework.jdbc.core.RowMapper;
 

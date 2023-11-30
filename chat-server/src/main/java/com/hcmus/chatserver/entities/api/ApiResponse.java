@@ -1,11 +1,11 @@
-package com.hcmus.chatserver.entities.response;
+package com.hcmus.chatserver.entities.api;
 
-public class RequestResponse {
+public class ApiResponse {
     private boolean error;
     private String errorReason;
     private Object data;
 
-    public RequestResponse() {
+    public ApiResponse() {
     }
 
     public boolean isError() {

@@ -1,7 +1,7 @@
 package com.hcmus.chatserver.repository;
 
-import com.hcmus.chatserver.entities.history.LoginHistoryEntry;
-import com.hcmus.chatserver.entities.history.LoginHistoryRowMapper;
+import com.hcmus.chatserver.repository.helpers.LoginHistoryEntry;
+import com.hcmus.chatserver.repository.helpers.LoginHistoryRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 

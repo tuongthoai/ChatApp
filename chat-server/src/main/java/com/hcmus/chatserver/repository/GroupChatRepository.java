@@ -1,7 +1,7 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
-import com.hcmus.chatserver.entities.groupchat.GroupChatEachMapper;
+import com.hcmus.chatserver.repository.helpers.GroupChatEachMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

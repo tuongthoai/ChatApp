@@ -1,4 +1,4 @@
-package com.hcmus.chatserver.entities.history;
+package com.hcmus.chatserver.repository.helpers;
 
 public class LoginHistoryEntry {
     private long userId;

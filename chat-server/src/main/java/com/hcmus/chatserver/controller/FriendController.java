@@ -1,10 +1,8 @@
 package com.hcmus.chatserver.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.chatserver.entities.response.RequestResponse;
+import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.repository.FriendRepository;
 import com.hcmus.chatserver.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,7 @@ public class FriendController {
 
     @GetMapping("/{userId}")
     public @ResponseBody String finalAllFriend(@PathVariable Integer userId) throws Exception {
-        RequestResponse response = new RequestResponse();
+        ApiResponse response = new ApiResponse();
         try {
             List<User> friends = friendService.findAll(userId);
             response.setData(friends);
@@ -33,7 +31,7 @@ public class FriendController {
 
     @GetMapping("/{userId}/online")
     public @ResponseBody String finalAllFriendOnline(@PathVariable Integer userId) throws Exception {
-        RequestResponse response = new RequestResponse();
+        ApiResponse response = new ApiResponse();
         try {
             List<User> friends = friendService.findAllFriendOnline(userId);
             response.setData(friends);

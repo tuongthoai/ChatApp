@@ -1,5 +1,6 @@
-package com.hcmus.chatserver.entities.groupchat;
+package com.hcmus.chatserver.repository.helpers;
 
+import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

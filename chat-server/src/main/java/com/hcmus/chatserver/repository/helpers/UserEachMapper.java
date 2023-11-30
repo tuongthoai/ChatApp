@@ -1,5 +1,6 @@
-package com.hcmus.chatserver.entities.user;
+package com.hcmus.chatserver.repository.helpers;
 
+import com.hcmus.chatserver.entities.user.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

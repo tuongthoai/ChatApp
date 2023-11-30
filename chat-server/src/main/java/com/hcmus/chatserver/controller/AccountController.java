@@ -2,8 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.chatserver.entities.api.LogginRequest;
-import com.hcmus.chatserver.entities.response.RequestResponse;
+import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.service.AccountService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class AccountController implements InitializingBean {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String loggin(@RequestBody LogginRequest request) throws JsonProcessingException {
-        RequestResponse response = new RequestResponse();
+        ApiResponse response = new ApiResponse();
         int userId = -1;
         try {
             userId = service.authenticateUser(request.getUserName(), request.getPassWord());
@@ -35,7 +34,7 @@ public class AccountController implements InitializingBean {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public String registerUser(LogginRequest request) throws JsonProcessingException {
-        RequestResponse response = new RequestResponse();
+        ApiResponse response = new ApiResponse();
         int userId = -1;
         try {
             userId = service.registerUser(request);

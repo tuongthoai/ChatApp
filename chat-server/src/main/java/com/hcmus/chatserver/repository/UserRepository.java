@@ -1,14 +1,13 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.entities.user.UserEachMapper;
-import com.hcmus.chatserver.entities.user.UserRowMapper;
+import com.hcmus.chatserver.repository.helpers.UserEachMapper;
+import com.hcmus.chatserver.repository.helpers.UserRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Type;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;

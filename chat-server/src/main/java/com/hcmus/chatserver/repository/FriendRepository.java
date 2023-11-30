@@ -1,7 +1,7 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.entities.user.UserRowMapper;
+import com.hcmus.chatserver.repository.helpers.UserRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

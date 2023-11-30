@@ -1,4 +1,4 @@
-package com.hcmus.chatserver.entities.history;
+package com.hcmus.chatserver.repository.helpers;
 
 import org.springframework.jdbc.core.RowMapper;
 

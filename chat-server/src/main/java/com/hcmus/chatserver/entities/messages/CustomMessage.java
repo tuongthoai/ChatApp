@@ -1,12 +1,15 @@
-package com.hcmus.chatserver.entities;
+package com.hcmus.chatserver.entities.messages;
 
 import java.util.Map;
 
-public class SocketMessage {
+public class CustomMessage {
     private Map<String, Object> headers;
     private String context;
 
-    public SocketMessage(Map<String, Object> headers, String context) {
+    public CustomMessage() {
+    }
+
+    public CustomMessage(Map<String, Object> headers, String context) {
         this.headers = headers;
         this.context = context;
     }
