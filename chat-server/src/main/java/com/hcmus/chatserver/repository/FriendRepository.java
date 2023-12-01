@@ -18,7 +18,7 @@ public class FriendRepository implements InitializingBean {
 
     public List<User> findAll(int userId) throws Exception {
         List<User> result = null;
-        String query = "select um.* from user_friend uf join user_metadata um ON um.userid = uf.friendid where uf.userid = ?";
+        String query = "select um.* from user_friend uf join user_metadata um ON um.user_id = uf.friend_id where uf.user_id = ?";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
 
@@ -37,7 +37,7 @@ public class FriendRepository implements InitializingBean {
     }
 
     public List<User> findAllFriendOnline(int userId) throws Exception {
-        String query = "select * from user_friend uf join user_metadata um on uf.friendid = um.userid where uf.userid = ? and um.isonline = true";
+        String query = "select * from user_friend uf join user_metadata um on uf.friend_id = um.user_id where uf.user_id = ? and um.isonline = true";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
     @Override
