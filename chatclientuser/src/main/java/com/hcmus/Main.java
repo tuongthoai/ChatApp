@@ -1,5 +1,6 @@
 package com.hcmus;
 
+import com.hcmus.socket.SocketSession;
 import com.hcmus.ui.chatlayout.ChatLayout;
 import com.hcmus.ui.loginscreens.Login;
 
@@ -19,6 +20,9 @@ public class Main extends JFrame implements Runnable {
         Login login = new Login();
         login.setVisible(true);
 
+        // client socket handler here.....
+        SocketSession session = new SocketSession();
+
         login.setLoginSucessCallback(new Runnable() {
             @Override
             public void run() {
@@ -28,7 +32,6 @@ public class Main extends JFrame implements Runnable {
             }
         });
 
-        // client socket handler here.....
 
     }
 }
