@@ -20,15 +20,13 @@ public class AccountController implements InitializingBean {
         ApiResponse response = new ApiResponse();
         int userId = -1;
         try {
-            userId = service.authenticateUser(request.getUserName(), request.getPassWord());
+            userId = service.authenticateUser(request.getUsername(), request.getPassword());
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Error! Please try a gain!!!");
-
-            return mapper.writeValueAsString(response);
+        } finally {
+            response.setData(userId);
         }
-
-        response.setData(userId);
         return mapper.writeValueAsString(response);
     }
 

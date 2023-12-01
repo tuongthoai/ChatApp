@@ -1,5 +1,7 @@
 package com.hcmus.chatserver.context;
 
+import com.hcmus.chatserver.service.ChatSocketSessionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,6 +13,8 @@ import java.util.Set;
 
 @Service
 public class SocketSessionContext extends TextWebSocketHandler {
+    @Autowired
+    private ChatSocketSessionContext context;
     private static final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
@@ -21,6 +25,7 @@ public class SocketSessionContext extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println(message.getPayload());
+//        session.sendMessage(new TextMessage());
     }
 
     @Override

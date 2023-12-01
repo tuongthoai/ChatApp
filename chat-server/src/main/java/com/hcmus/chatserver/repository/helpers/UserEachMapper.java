@@ -14,7 +14,7 @@ public class UserEachMapper implements ResultSetExtractor<User> {
         if (rs.isBeforeFirst()) {
             user = new User();
             rs.next();
-            user.setId(rs.getInt("userid"));
+            user.setId(rs.getInt("user_id"));
             user.setUsername(rs.getString("username"));
             user.setPassword(rs.getString("user_password"));
             user.setName(rs.getString("fullname"));
@@ -25,6 +25,7 @@ public class UserEachMapper implements ResultSetExtractor<User> {
             user.setCreatedTime(rs.getLong("createdtime"));
             user.setOnline(rs.getBoolean("isonline"));
             user.setBlocked(rs.getBoolean("isblocked"));
+
         }
         return user;
     }
