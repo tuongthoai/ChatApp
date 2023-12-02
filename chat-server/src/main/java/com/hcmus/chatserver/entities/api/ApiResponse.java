@@ -2,6 +2,7 @@ package com.hcmus.chatserver.entities.api;
 
 public class ApiResponse {
     private boolean error;
+    private int errorCode;
     private String errorReason;
     private Object data;
 
@@ -30,5 +31,13 @@ public class ApiResponse {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 }
