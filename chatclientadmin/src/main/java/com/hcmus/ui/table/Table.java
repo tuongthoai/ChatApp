@@ -3,16 +3,12 @@ package com.hcmus.ui.table;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import java.awt.*;
+import javax.swing.table.TableRowSorter;
 import java.lang.reflect.Field;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.function.Predicate;
 
 public class Table<T> extends JScrollPane {
     private final List<String> columnNames;
@@ -20,12 +16,15 @@ public class Table<T> extends JScrollPane {
     private final JTable table;
 
     private final DefaultTableModel model;
+    private final TableRowSorter<DefaultTableModel> sorter;
 
     public Table(List<T> data, List<String> columnNames) throws SQLException {
         this.data = data;
         this.columnNames = columnNames;
         model = new DefaultTableModel(new Vector<>(columnNames), 0);
+        sorter = new TableRowSorter<>(model);
         table = new JTable(model);
+        table.setRowSorter(sorter);
 
         TableColumn column = null;
         for (int i = 0; i < 5; i++) {
@@ -98,6 +97,7 @@ public class Table<T> extends JScrollPane {
         this.data = data;
     }
 
+
 //    public void filterTable(String keyword) {
 //        Predicate<Student> matchesKeyword = student ->
 //                keyword.isEmpty() ||
@@ -126,5 +126,13 @@ public class Table<T> extends JScrollPane {
 
     public JTable getTable() {
         return table;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public TableRowSorter<DefaultTableModel> getSorter() {
+        return sorter;
     }
 }

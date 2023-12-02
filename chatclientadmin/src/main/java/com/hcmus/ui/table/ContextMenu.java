@@ -1,11 +1,9 @@
 package com.hcmus.ui.table;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 public class ContextMenu extends JPopupMenu {
     private JMenuItem editItem;
