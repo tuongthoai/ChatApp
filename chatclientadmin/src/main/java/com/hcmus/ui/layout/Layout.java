@@ -1,9 +1,6 @@
 package com.hcmus.ui.layout;
 
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
-import com.hcmus.ui.table.User;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -45,6 +42,29 @@ public class Layout extends JFrame {
         );
         ContextMenu contextMenu = new ContextMenu(table.getTable(), options);
         SearchBar searchBar = new SearchBar(table.getSorter());
+        FilterMenu filterMenu = new FilterMenu(table.getSorter(), table.getModel());
+
+
+        JTextField username = new JTextField(10);
+        JTextField password = new JTextField(10);
+        JTextField name = new JTextField(10);
+        JTextField email = new JTextField(10);
+        JTextField sex = new JTextField(10);
+
+        username.setName("Username");
+        password.setName("Password");
+        name.setName("name");
+        email.setName("email");
+        sex.setName("sex");
+        filterMenu.setFilterComponents(new JComponent[]{username, password, name, email, sex});
+
+        filterMenu.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
+
+
+        // add menu
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(filterMenu);
+        setJMenuBar(menuBar);
 
 
         add(searchBar, "North");
