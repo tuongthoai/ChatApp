@@ -25,25 +25,6 @@ public class Table<T> extends JScrollPane {
         sorter = new TableRowSorter<>(model);
         table = new JTable(model);
         table.setRowSorter(sorter);
-
-        TableColumn column = null;
-        for (int i = 0; i < 5; i++) {
-            column = table.getColumnModel().getColumn(i);
-            if (i == 0) {
-                // id
-                column.setPreferredWidth(50);
-            } else if (i == 1 || i == 2) {
-                // first name, last name
-                column.setPreferredWidth(100);
-            } else if (i == 3) {
-                // dob
-                column.setPreferredWidth(150);
-            } else {
-                // address
-                column.setPreferredWidth(300);
-            }
-        }
-
         table.setFillsViewportHeight(true);
         setViewportView(table);
         updateTable();

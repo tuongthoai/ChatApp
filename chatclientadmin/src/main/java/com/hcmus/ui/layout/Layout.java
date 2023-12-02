@@ -8,6 +8,7 @@ import com.hcmus.ui.table.User;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Layout extends JFrame {
@@ -32,8 +33,19 @@ public class Layout extends JFrame {
 
         List<String> columnNames = User.getColumnNames();
         Table<User> table = new Table<>(list, columnNames);
-        ContextMenu contextMenu = new ContextMenu(table.getTable());
+        List<String> options = Arrays.asList(
+                "Edit",
+                "Delete",
+                "Block",
+                "Detail",
+                "Login History",
+                "Friend List",
+                "Member List",
+                "Admin List"
+        );
+        ContextMenu contextMenu = new ContextMenu(table.getTable(), options);
         SearchBar searchBar = new SearchBar(table.getSorter());
+
 
         add(searchBar, "North");
         add(table);
