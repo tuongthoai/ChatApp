@@ -23,7 +23,7 @@ public class ClientSocketHandler extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         try {
-            send(new ObjectMapper().writeValueAsString(new ChatMessage()));
+            send(new ObjectMapper().writeValueAsString("Hello world"));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
