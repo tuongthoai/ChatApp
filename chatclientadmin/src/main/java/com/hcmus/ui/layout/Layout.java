@@ -1,7 +1,7 @@
 package com.hcmus.ui.layout;
 
 import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.MainTable;
+import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;
 import com.hcmus.ui.table.User;
 
@@ -33,7 +33,9 @@ public class Layout extends JFrame {
         List<String> columnNames = User.getColumnNames();
         Table<User> table = new Table<>(list, columnNames);
         ContextMenu contextMenu = new ContextMenu(table.getTable());
+        SearchBar searchBar = new SearchBar(table.getSorter());
 
+        add(searchBar, "North");
         add(table);
         setVisible(true);
     }
