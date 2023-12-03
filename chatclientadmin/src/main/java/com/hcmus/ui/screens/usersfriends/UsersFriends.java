@@ -1,4 +1,4 @@
-package com.hcmus.ui.screens;
+package com.hcmus.ui.screens.usersfriends;
 
 import javax.swing.*;
 

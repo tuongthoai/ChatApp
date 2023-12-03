@@ -1,4 +1,4 @@
-package com.hcmus.ui.screens;
+package com.hcmus.ui.screens.chatlist;
 
 import javax.swing.*;
 

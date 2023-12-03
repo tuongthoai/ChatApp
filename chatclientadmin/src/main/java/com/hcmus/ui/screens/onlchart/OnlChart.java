@@ -1,4 +1,4 @@
-package com.hcmus.ui.screens;
+package com.hcmus.ui.screens.onlchart;
 
 import javax.swing.*;
 

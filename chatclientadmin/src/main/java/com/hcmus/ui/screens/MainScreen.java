@@ -1,5 +1,14 @@
 package com.hcmus.ui.screens;
 
+import com.hcmus.ui.screens.chatlist.ChatList;
+import com.hcmus.ui.screens.loginhistory.LoginHistory;
+import com.hcmus.ui.screens.newusers.NewUsers;
+import com.hcmus.ui.screens.onlchart.OnlChart;
+import com.hcmus.ui.screens.onlineusers.OnlineUsers;
+import com.hcmus.ui.screens.regchart.RegChart;
+import com.hcmus.ui.screens.spamlist.SpamList;
+import com.hcmus.ui.screens.userlist.UserList;
+import com.hcmus.ui.screens.usersfriends.UsersFriends;
 import com.hcmus.ui.sidebar.Sidebar;
 
 import javax.swing.*;
