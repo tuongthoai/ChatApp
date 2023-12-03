@@ -16,7 +16,7 @@ public class FriendController {
     @Autowired
     FriendService friendService;
 
-    @GetMapping("/{userId}")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String finalAllFriend(@PathVariable Integer userId) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
@@ -29,7 +29,7 @@ public class FriendController {
         return mapper.writeValueAsString(response);
     }
 
-    @GetMapping("/{userId}/online")
+    @RequestMapping(value = "/{userId}/online", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String finalAllFriendOnline(@PathVariable Integer userId) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
