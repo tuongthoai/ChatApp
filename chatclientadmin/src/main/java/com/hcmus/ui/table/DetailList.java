@@ -8,12 +8,12 @@ import java.util.List;
 public class DetailList<T> extends JDialog {
     private List<T> data;
     private List<String> columnNames;
-    private Table table;
+    private Table<T> table;
 
     public DetailList(List<T> data, List<String> columnNames, String title) throws SQLException {
         this.data = data;
         this.columnNames = columnNames;
-        this.table = new Table(data, columnNames);
+        this.table = new Table<T>(data, columnNames);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(400, 300));

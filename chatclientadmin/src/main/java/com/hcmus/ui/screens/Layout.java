@@ -1,4 +1,4 @@
-package com.hcmus.ui.layout;
+package com.hcmus.ui.screens;
 
 import com.hcmus.ui.table.*;
 
