@@ -59,13 +59,13 @@ public class UserRepository implements InitializingBean {
     }
 
     public int addUser(User user) throws Exception {
-        String sql = "INSERT INTO USER_METADATA (USERNAME, USER_PASSWORD, FULLNAME, USER_ADDRESS, BIRTHDAY, SEX, EMAIL, CREATEDTIME) VALUES (?,?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getBirthday(), user.getSex(), user.getEmail(), user.getCreatedTime());
+        String sql = "INSERT INTO USER_METADATA (USER_ROLE, USERNAME, USER_PASSWORD, FULLNAME, USER_ADDRESS, BIRTHDAY, SEX, EMAIL) VALUES (?,?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql, 2, user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getBirthday(), user.getSex(), user.getEmail());
         return user.getId();
     }
 
-    public void removeUser(int userId) {
-        String sql = "delete from user_metadata where userid = %d";
+    public void removeUser(int userId) throws Exception {
+        String sql = "delete from user_metadata where user_id = %d";
         jdbcTemplate.execute(String.format(sql, userId));
     }
 
@@ -95,8 +95,20 @@ public class UserRepository implements InitializingBean {
         return true;
     }
 
-    public List<User> findAll() {
-        String query = "select * from user_metadata";
+    public List<User> findAll() throws Exception {
+        String query = "select * from user_metadata where user_id != 0";
         return jdbcTemplate.query(query, new UserRowMapper());
     }
+
+    public void updateUser(User user) throws Exception {
+        String query = "update user_metadata set user_role = ?, username = ?, user_password = ?, fullname = ?, user_address = ?, birthday = ?, sex = ?, email = ? where user_id = ?";
+        jdbcTemplate.update(query, 2, user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getBirthday(), user.getSex(), user.getEmail(), user.getId());
+    }
+
+    // admin block user
+    public void adminBlockUser(int userId) throws Exception {
+        String query = "update user_metadata set isblocked = not isblocked where user_id = ?";
+        jdbcTemplate.update(query, userId);
+    }
+
 }

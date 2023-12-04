@@ -30,15 +30,57 @@ public class UserController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
-    public @ResponseBody String addUser(@RequestBody User user) throws Exception {
+    public String addUser(@RequestBody User user) throws Exception {
+//        System.out.println("UserController: " + user.getBirthday());
         ApiResponse response = new ApiResponse();
+        int user_id = -1;
         try {
-            userService.addUser(user);
-            response.setData(user);
+            user_id = userService.addUser(user);
+            response.setData(user_id);
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't add user");
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/remove/{userId}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String removeUser(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.removeUser(userId);
+            response.setData("Remove successfully");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't remove user");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String updateUser(@RequestBody User updatedUser) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.updateUser(updatedUser);
+            response.setData("Update successfully");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't update user");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/adminBlock/{userId}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String adminBlockUser(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.adminBlockUser(userId);
+            response.setData("Block successfully");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't block user");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
 }

@@ -7,6 +7,7 @@ import javax.swing.table.TableRowSorter;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 
@@ -111,7 +112,44 @@ public class Table<T> extends JScrollPane {
 //        });
 //    }
 
+    public int getSelectedRowIndex() {
+        return table.getSelectedRow();
+    }
 
+    public T getSelectedData() {
+        int selectedRowIndex = table.getSelectedRow();
+
+        if (selectedRowIndex != -1) {
+            Vector<Object> rowData = (Vector<Object>) model.getDataVector().get(selectedRowIndex);
+
+            Object[] dataArray = rowData.toArray(new Object[0]);
+
+            try {
+                T selectedData = (T) data.get(0).getClass().newInstance();
+                for (int i = 0; i < columnNames.size(); i++) {
+                    Field field = getFieldByName(selectedData.getClass(), columnNames.get(i));
+
+                    if (field != null) {
+                        field.setAccessible(true);
+                        try {
+                            field.set(selectedData, dataArray[i]);
+                        } catch (IllegalArgumentException e) {
+                            if (dataArray[i].toString().contains("-")) {
+                                LocalDateTime localDate = LocalDateTime.parse(dataArray[i].toString());
+                                field.set(selectedData, UnixTimestampConverter.dateTime2Unix(localDate));
+                            }
+                            else field.set(selectedData, Long.parseLong(dataArray[i].toString()));
+                        }
+                    }
+                }
+                return selectedData;
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException("Error creating or populating data instance", e);
+            }
+        }
+
+        return null;
+    }
 
     public JTable getTable() {
         return table;

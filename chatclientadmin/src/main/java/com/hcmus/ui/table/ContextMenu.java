@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class ContextMenu extends JPopupMenu {
+    private JMenuItem addItem;
     private JMenuItem editItem;
     private JMenuItem deleteItem;
     private JMenuItem blockItem;
@@ -21,6 +22,10 @@ public class ContextMenu extends JPopupMenu {
     public ContextMenu(JTable table, List<String> options) {
         this.table = table;
         this.options = options;
+        if (options.contains("Add")) {
+            addItem = new JMenuItem("Add");
+            add(addItem);
+        }
         if (options.contains("Edit")) {
             editItem = new JMenuItem("Edit");
             add(editItem);
@@ -30,7 +35,7 @@ public class ContextMenu extends JPopupMenu {
             add(deleteItem);
         }
         if (options.contains("Block")) {
-            blockItem = new JMenuItem("Block");
+            blockItem = new JMenuItem("Block/Unblock");
             add(blockItem);
         }
         if (options.contains("Detail")) {
@@ -102,34 +107,35 @@ public class ContextMenu extends JPopupMenu {
         return table.getSelectedRow();
     }
 
-    // Add action listener for each menu item
-    public void addEditListener(ActionListener listener) {
-        editItem.addActionListener(listener);
+    public JMenuItem getAddItem() {
+        return addItem;
+    }
+    public JMenuItem getBlockItem() {
+        return blockItem;
     }
 
-    public void addDeleteListener(ActionListener listener) {
-        deleteItem.addActionListener(listener);
+    public JMenu getDetailItem() {
+        return detailItem;
     }
 
-    public void addBlockListener(ActionListener listener) {
-        blockItem.addActionListener(listener);
+    public JMenuItem getLoginHisItem() {
+        return loginHisItem;
     }
 
-    public void addLoginHisListener(ActionListener listener) {
-        loginHisItem.addActionListener(listener);
+    public JMenuItem getFriendListItem() {
+        return friendListItem;
     }
 
-    public void addFriendListListener(ActionListener listener) {
-        friendListItem.addActionListener(listener);
+    public JMenuItem getMemListItem() {
+        return memListItem;
     }
 
-    public void addMemListListener(ActionListener listener) {
-        memListItem.addActionListener(listener);
+    public JMenuItem getAdminListItem() {
+        return adminListItem;
     }
 
-    public void addAdminListListener(ActionListener listener) {
-        adminListItem.addActionListener(listener);
+    public JTable getTable() {
+        return table;
     }
-
 }
 
