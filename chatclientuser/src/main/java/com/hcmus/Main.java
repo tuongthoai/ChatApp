@@ -1,14 +1,11 @@
 package com.hcmus;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ApiResponse;
-import com.hcmus.socket.SocketSession;
+import com.hcmus.models.ChatMessage;
 import com.hcmus.ui.chatlayout.ChatLayout;
 import com.hcmus.ui.loginscreens.Login;
-import okhttp3.*;
 
 import javax.swing.*;
-import java.io.DataInput;
 import java.io.IOException;
 
 public class Main extends JFrame implements Runnable {
@@ -34,6 +31,7 @@ public class Main extends JFrame implements Runnable {
 //
 //        if(response.isSuccessful()) {
 //            ApiResponse apiResponse = mapper.readValue( response.body().string(), ApiResponse.class);
+//            ChatMessage msg = (ChatMessage) apiResponse.getData();
 //            System.out.println(mapper.writeValueAsString(apiResponse));
 //        }
 
@@ -44,9 +42,6 @@ public class Main extends JFrame implements Runnable {
     public void run() {
         Login login = new Login();
         login.setVisible(true);
-
-        // client socket handler here.....
-        SocketSession session = new SocketSession();
 
         login.setLoginSucessCallback(new Runnable() {
             @Override

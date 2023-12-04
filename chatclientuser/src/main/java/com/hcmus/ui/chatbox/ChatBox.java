@@ -1,11 +1,16 @@
 package com.hcmus.ui.chatbox;
 
+import com.hcmus.observer.Subscribe;
+import com.hcmus.socket.ChatContext;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 
-public class ChatBox extends JPanel {
+public class ChatBox extends JPanel implements Subscribe {
+    private Integer chatId;
+    private ChatContext context;
     private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
@@ -176,5 +181,17 @@ public class ChatBox extends JPanel {
 
     public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
         this.chatMessages = chatMessages;
+    }
+
+    @Override
+    public int getObserverId() {
+        return this.chatId;
+    }
+
+    @Override
+    public void update(Object obj) {
+        ChatMessage msg = (ChatMessage) obj;
+        this.chatMessages.add(msg);
+        displayChatMessage();
     }
 }

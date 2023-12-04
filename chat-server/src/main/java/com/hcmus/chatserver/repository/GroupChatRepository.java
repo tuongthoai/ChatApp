@@ -2,6 +2,7 @@ package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import com.hcmus.chatserver.repository.helpers.GroupChatEachMapper;
+import com.hcmus.chatserver.repository.helpers.GroupChatRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,4 +40,10 @@ public class GroupChatRepository implements InitializingBean {
             }
         });
     }
+
+    public List<GroupChat> findByMemberId(Integer memberId) {
+        String query = "select * from gchat_member gm join gchat_metadata gmet on gmet.group_id = gm.groupchat_id where gm.member_id = ?";
+        return jdbcTemplate.query(query, new Object[]{memberId}, new int[]{Types.INTEGER}, new GroupChatRowMapper());
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.hcmus.ui.screens.userlist;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.user.User;
@@ -19,7 +20,6 @@ public class UserListService {
 
     public List<User> getAllUsers() {
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
                 .url("http://localhost:8080/users/all")
                 .method("GET", null)
@@ -30,7 +30,7 @@ public class UserListService {
         try (Response response = client.newCall(request).execute();) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
-                List<User> data = mapper.convertValue(apiResponse.getData(), mapper.getTypeFactory().constructCollectionType(List.class, User.class));
+                List<User> data = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {});
                 return data;
             }
             else {

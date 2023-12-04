@@ -5,19 +5,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ChatMessage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ClientSocketHandler extends WebSocketClient {
-
-    public ClientSocketHandler(URI serverUri, Draft draft) {
-        super(serverUri, draft);
-    }
-
     public ClientSocketHandler(URI serverURI) {
         super(serverURI);
+    }
+
+    public ClientSocketHandler(URI serverUri, Map<String, String> httpHeaders) {
+        super(serverUri, httpHeaders);
     }
 
     @Override
