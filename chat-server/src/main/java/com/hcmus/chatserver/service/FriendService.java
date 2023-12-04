@@ -13,7 +13,9 @@ public class FriendService {
     FriendRepository repository;
 
     public List<User> findAll(int userId) throws Exception {
-        return repository.findAll(userId);
+        List<User> data = repository.findAll(userId);
+        System.out.println(data);
+        return data;
     }
 
     public List<User> findAllFriendOnline(int userId) throws Exception {

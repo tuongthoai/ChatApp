@@ -36,7 +36,7 @@ public class Table<T> extends JScrollPane {
         for (T item : data) {
             Vector<Object> row = new Vector<>();
             for (String columnName : columnNames) {
-                Field field = getFieldByName(item.getClass(), columnName.toLowerCase().replaceAll("\\s", ""));
+                Field field = getFieldByName(item.getClass(), columnName);
                 if (field != null) {
                     try {
                         field.setAccessible(true);
@@ -59,6 +59,14 @@ public class Table<T> extends JScrollPane {
     }
 
     private Field getFieldByName(Class<?> clazz, String fieldName) {
+        boolean hasSpace = fieldName.contains(" ");
+        if (hasSpace) {
+            fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
+            fieldName = fieldName.replaceAll("\\s", "");
+        }
+        else {
+            fieldName = fieldName.toLowerCase();
+        }
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {

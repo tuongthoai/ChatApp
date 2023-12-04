@@ -94,4 +94,9 @@ public class UserRepository implements InitializingBean {
     public boolean userBlock(int userId, int targetId) {
         return true;
     }
+
+    public List<User> findAll() {
+        String query = "select * from user_metadata";
+        return jdbcTemplate.query(query, new UserRowMapper());
+    }
 }

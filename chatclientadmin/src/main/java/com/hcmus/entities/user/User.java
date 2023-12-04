@@ -1,4 +1,4 @@
-package com.hcmus.ui.table;
+package com.hcmus.entities.user;
 
 import java.util.Arrays;
 import java.util.List;

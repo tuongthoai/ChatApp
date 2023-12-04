@@ -1,5 +1,6 @@
 package com.hcmus.ui.screens;
 
+import com.hcmus.entities.user.User;
 import com.hcmus.ui.table.*;
 
 import javax.swing.*;

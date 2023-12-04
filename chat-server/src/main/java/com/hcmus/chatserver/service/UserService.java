@@ -7,6 +7,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements InitializingBean {
     @Autowired
@@ -14,6 +16,10 @@ public class UserService implements InitializingBean {
     private ObjectMapper mapper;
     public String getUser(int id) throws Exception {
         return mapper.writeValueAsString(userRepository.findUserById(id));
+    }
+
+    public List<User> findAll() throws Exception {
+        return userRepository.findAll();
     }
 
     @Override
