@@ -41,8 +41,8 @@ public class Table<T> extends JScrollPane {
                     try {
                         field.setAccessible(true);
                         Object value = field.get(item);
-                        if (value instanceof LocalDate) {
-                            value = ((LocalDate) value).toString();
+                        if (value instanceof Long) {
+                            value = UnixTimestampConverter.unix2DateTime((long) value).toString();
                         }
                         row.add(value);
                     } catch (IllegalAccessException e) {

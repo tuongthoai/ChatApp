@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.hcmus.chatserver.entities.user.User;
 
 import java.util.List;
@@ -28,6 +25,19 @@ public class UserController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get users");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String addUser(@RequestBody User user) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.addUser(user);
+            response.setData(user);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't add user");
         }
         return mapper.writeValueAsString(response);
     }
