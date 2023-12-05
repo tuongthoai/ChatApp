@@ -1,8 +1,8 @@
 package com.hcmus.ui.screens.userlist.block;
 
 import com.hcmus.entities.user.User;
-import com.hcmus.ui.screens.userlist.ReloadTable;
-import com.hcmus.ui.screens.userlist.UserListService;
+import com.hcmus.ui.table.ReloadTable;
+import com.hcmus.services.UserService;
 import com.hcmus.ui.table.Table;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class BlockDialog extends JDialog {
     private void onOK(ActionEvent e) {
         int userId = selectedUser.getId();
         try {
-            UserListService service = new UserListService();
+            UserService service = new UserService();
             service.adminBlockUser(userId);
             JOptionPane.showMessageDialog(this, "Block/Unblock user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             ReloadTable.reload(table);

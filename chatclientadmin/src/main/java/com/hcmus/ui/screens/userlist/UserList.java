@@ -1,5 +1,6 @@
 package com.hcmus.ui.screens.userlist;
 
+import com.hcmus.services.UserService;
 import com.hcmus.ui.screens.userlist.add.AddAction;
 import com.hcmus.ui.screens.userlist.block.BlockAction;
 import com.hcmus.ui.screens.userlist.delete.DeleteAction;
@@ -15,11 +16,11 @@ import java.util.List;
 public class UserList extends JPanel {
     private Table<User> table;
     private ContextMenu contextMenu;
-    private UserListService service;
+    private UserService service;
 
     public UserList() {
         try {
-            service = new UserListService();
+            service = new UserService();
             List<User> data = service.getAllUsers();
             List<String> columnNames = User.getColumnNames();
 

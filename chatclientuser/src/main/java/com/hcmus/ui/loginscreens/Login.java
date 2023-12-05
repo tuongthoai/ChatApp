@@ -1,5 +1,10 @@
 package com.hcmus.ui.loginscreens;
 
+import com.hcmus.UserProfile;
+import com.hcmus.models.User;
+import com.hcmus.services.AuthService;
+import com.hcmus.services.UserService;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -120,7 +125,34 @@ public class Login extends JFrame {
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Login");
+                String username = txtUsername.getText();
+                String password = new String(txtPassword.getPassword());
+
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter username and password");
+                    return;
+                }
+
+                AuthService authService = new AuthService();
+                int userId = -1;
+                try {
+                    userId =  authService.login(username, password);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Login failed!");
+                    return;
+                }
+
+                JOptionPane.showMessageDialog(null, "Login success!");
+
+                // set current user
+                try {
+                    User user = new UserService().getUserById(userId);
+                    UserProfile.setUserProfile(user);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to get user info!");
+                    return;
+                }
+
                 // if login success, do:
                 if (loginSuccessCallback != null) {
                     loginSuccessCallback.run();

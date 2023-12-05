@@ -47,10 +47,6 @@ public class Main extends JFrame implements Runnable {
         login.setLoginSucessCallback(new Runnable() {
             @Override
             public void run() {
-                // TODO: get user from login
-                User user = new User(1, "usn1", "1234", "Nguyen Xuan Huy", "usn1@gmail.com", "Nam", "Da Nang", 943266359, 1671975000, false, false);
-
-                UserProfile.setUserProfile(user);
                 chatLayout = new ChatLayout();
                 chatLayout.setVisible(true);
                 login.dispose();

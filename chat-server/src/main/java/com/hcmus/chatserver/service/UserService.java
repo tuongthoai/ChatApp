@@ -14,8 +14,8 @@ public class UserService implements InitializingBean {
     @Autowired
     private UserRepository userRepository;
     private ObjectMapper mapper;
-    public String getUser(int id) throws Exception {
-        return mapper.writeValueAsString(userRepository.findUserById(id));
+    public User getUser(int id) throws Exception {
+        return userRepository.findUserById(id);
     }
 
     public List<User> findAll() throws Exception {

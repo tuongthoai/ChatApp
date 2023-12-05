@@ -1,20 +1,16 @@
 package com.hcmus.ui.screens.userlist.add;
 
 import com.hcmus.entities.user.User;
-import com.hcmus.ui.screens.userlist.ReloadTable;
-import com.hcmus.ui.screens.userlist.UserListService;
+import com.hcmus.ui.table.ReloadTable;
+import com.hcmus.services.UserService;
 import com.hcmus.ui.table.Table;
 import com.hcmus.ui.table.UnixTimestampConverter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Locale;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.List;
 
@@ -236,7 +232,7 @@ public class AddDialog extends JDialog {
         long unixBirthday = UnixTimestampConverter.dateTime2Unix(localDate);
         User newUser = new User(1, username, password, name, email, sex, address, unixBirthday, System.currentTimeMillis(), false, false);
         try {
-            UserListService service = new UserListService();
+            UserService service = new UserService();
             service.addUser(newUser);
             JOptionPane.showMessageDialog(this, "Add user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             ReloadTable.reload(tablePanel);

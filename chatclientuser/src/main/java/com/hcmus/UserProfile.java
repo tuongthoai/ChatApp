@@ -13,4 +13,8 @@ public final class UserProfile {
             UserProfile.user = new User(user.getId(), user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getSex(), user.getAddress(), user.getBirthday(), user.getCreatedTime(), user.isOnline(), user.isBlocked());
         }
     }
+
+    public static void clearUserProfile() {
+        UserProfile.user = null;
+    }
 }

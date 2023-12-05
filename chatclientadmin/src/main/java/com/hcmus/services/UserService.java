@@ -1,4 +1,4 @@
-package com.hcmus.ui.screens.userlist;
+package com.hcmus.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,10 +10,10 @@ import okhttp3.*;
 import java.io.IOException;
 import java.util.List;
 
-public class UserListService {
+public class UserService {
     private OkHttpClient client;
     private ObjectMapper mapper;
-    public UserListService() {
+    public UserService() {
         client = new OkHttpClient().newBuilder().build();
         mapper = new ObjectMapper();
     }

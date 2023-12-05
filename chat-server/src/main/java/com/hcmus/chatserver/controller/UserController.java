@@ -83,4 +83,16 @@ public class UserController {
         return mapper.writeValueAsString(response);
     }
 
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public @ResponseBody String getUserById(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            User user = userService.getUser(userId);
+            response.setData(user);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user");
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

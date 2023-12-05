@@ -27,7 +27,7 @@ public class UserRepository implements InitializingBean {
     }
 
     public User findUserById(int userId) {
-        String query = "select * from user_metadata um where um.userid = ?";
+        String query = "select * from user_metadata um where um.user_id = ?";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserEachMapper());
     }
 
@@ -70,7 +70,7 @@ public class UserRepository implements InitializingBean {
     }
 
     public int validateUsrPwd(String userName, String password) throws Exception {
-        String sql = "select * from user_metadata um where um.username = ? and um.password = ?";
+        String sql = "select * from user_metadata um where um.username = ? and um.user_password = ?";
         try {
             List<User> users = jdbcTemplate.query(sql, new Object[]{userName, password}, new int[]{Types.VARCHAR, Types.VARCHAR}, new UserRowMapper());
             if (!users.isEmpty()) {
