@@ -22,15 +22,4 @@ public class Chart extends JPanel {
         setLayout(new BorderLayout());
         add(chartPanel, BorderLayout.CENTER);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            // Example data
-            List<Integer> values = List.of(5,10,15,8,2,4,1,4,6,18,4,1);
-            String year = "2023";
-
-            // Create and show the Chart
-            Chart Chart = new Chart("register",values, year);
-        });
-    }
 }

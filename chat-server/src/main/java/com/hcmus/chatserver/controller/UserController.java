@@ -95,4 +95,16 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+    @RequestMapping(value = "/createdTime", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String getCreatedTime() throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<Long> createdTime = userService.getCreatedTime();
+            response.setData(createdTime);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get created time");
+        }
+        return mapper.writeValueAsString(response);
+    }
 }
