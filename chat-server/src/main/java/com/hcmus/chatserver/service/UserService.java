@@ -46,6 +46,10 @@ public class UserService implements InitializingBean {
         userRepository.adminBlockUser(userId);
     }
 
+    public List<Long> getCreatedTime() throws Exception{
+        return userRepository.getAllCreatedTime();
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         mapper = new ObjectMapper();

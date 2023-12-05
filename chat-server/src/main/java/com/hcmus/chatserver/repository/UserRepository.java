@@ -111,4 +111,13 @@ public class UserRepository implements InitializingBean {
         jdbcTemplate.update(query, userId);
     }
 
+    public List<Long> getAllCreatedTime() throws Exception {
+        String query = "select createdtime from user_metadata";
+        try {
+            return jdbcTemplate.queryForList(query, Long.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve created times");
+        }
+    }
 }
