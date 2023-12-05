@@ -1,5 +1,6 @@
 package com.hcmus.ui.screens.regchart;
 
+import com.hcmus.services.RegChartService;
 import com.hcmus.ui.chart.Chart;
 
 import javax.swing.*;

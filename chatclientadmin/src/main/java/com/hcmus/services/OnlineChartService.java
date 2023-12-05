@@ -1,9 +1,8 @@
-package com.hcmus.ui.screens.regchart;
+package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.entities.api.ApiResponse;
-import com.hcmus.entities.user.User;
 import com.hcmus.ui.table.UnixTimestampConverter;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -16,17 +15,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RegChartService {
+public class OnlineChartService {
     private OkHttpClient client;
     private ObjectMapper mapper;
-    private List<Long> createdTime;
-    public RegChartService() {
+    private List<Long> loginTime;
+    public OnlineChartService() {
         client = new OkHttpClient().newBuilder().build();
         mapper = new ObjectMapper();
 
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/createdTime")
+                .url("http://localhost:8080/loginhistory/logintime")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -35,7 +34,7 @@ public class RegChartService {
         try (Response response = client.newCall(request).execute();) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
-                createdTime = mapper.convertValue(apiResponse.getData(), new TypeReference<List<Long>>() {});
+                loginTime = mapper.convertValue(apiResponse.getData(), new TypeReference<List<Long>>() {});
             }
             else {
                 throw new IOException("Request failed: " + response.code());
@@ -46,25 +45,24 @@ public class RegChartService {
     }
     public List<Integer> getYears(){
         List<Integer> res = new ArrayList<>();
-        for(long time : this.createdTime){
+        for(long time : this.loginTime){
             LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(time);
             if(!res.contains(convertedTime.getYear()))
                 res.add(convertedTime.getYear());
         }
         return res;
     }
-    public int[] getNumberOfRegisterUser(int year){
+    public int[] getNumberOfOnlineUser(int year){
         int[] numberOfUser = new int[12];
         Arrays.fill(numberOfUser, 0, 12, 0);
 
-        for(long createdTime : this.createdTime){
-            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(createdTime);
+        for(long loginTime : this.loginTime){
+            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(loginTime);
             if(convertedTime.getYear() == year){
                 int month = convertedTime.getMonthValue();
                 numberOfUser[month - 1]++;
             }
         }
-
         return numberOfUser;
     }
 }
