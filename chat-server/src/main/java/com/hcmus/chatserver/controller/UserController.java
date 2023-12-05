@@ -44,11 +44,11 @@ public class UserController {
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
-    public @ResponseBody String removeUser(@RequestBody User user) throws Exception {
+    @RequestMapping(value = "/remove", method = RequestMethod.POST)
+    public @ResponseBody String removeUser(@RequestBody int userId) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
-            userService.removeUser(user.getId());
+            userService.removeUser(userId);
             response.setData("Remove successfully");
         } catch (Exception e) {
             response.setError(true);

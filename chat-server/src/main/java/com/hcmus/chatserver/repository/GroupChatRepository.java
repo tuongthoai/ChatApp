@@ -42,7 +42,7 @@ public class GroupChatRepository implements InitializingBean {
     }
 
     public List<GroupChat> findByMemberId(Integer memberId) {
-        String query = "select * from gchat_member gm join gchat_metadata gmet on gmet.group_id = gm.groupchat_id where gm.member_id = ?";
+        String query = "select gmet.* from gchat_member gm join gchat_metadata gmet on gmet.group_id = gm.groupchat_id where gm.member_id = ?";
         return jdbcTemplate.query(query, new Object[]{memberId}, new int[]{Types.INTEGER}, new GroupChatRowMapper());
     }
 

@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ChatScreen extends JPanel {
-    ChatBox chatBox;
+    JPanel chatBoxContainer;
     public ChatScreen() {
         setLayout(new BorderLayout());
 
@@ -27,18 +27,22 @@ public class ChatScreen extends JPanel {
         chatList.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
         // Message box
-        chatBox = new ChatBox();
+        chatBoxContainer = new JPanel();
+        chatBoxContainer.setLayout(new BorderLayout());
+        chatBoxContainer.add(new ChatBox(), BorderLayout.CENTER);
 
         // Add components to main panel
         mainPanel.add(chatList, BorderLayout.WEST);
-        mainPanel.add(chatBox, BorderLayout.CENTER);
+        mainPanel.add(chatBoxContainer, BorderLayout.CENTER);
 
         // Add main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    public void updateChatBox(ArrayList<ChatMessage> chatMessages) {
-        chatBox.setChatMessages(chatMessages);
-        chatBox.displayChatMessage();
+    public void updateChatBox(ChatBox newChatBox) {
+        chatBoxContainer.removeAll();
+        chatBoxContainer.add(newChatBox, BorderLayout.CENTER);
+        chatBoxContainer.revalidate();
+        chatBoxContainer.repaint();
     }
 }

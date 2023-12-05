@@ -14,9 +14,19 @@ public class ChatBox extends JPanel implements Subscribe {
     private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
-    private String username;
+    private String chatName;
     public ChatBox(){
-        username = "Trans Gia Thinh";
+        chatName = "";
+        chatMessages = new ArrayList<>();
+
+        initComponent();
+    }
+
+    public ChatBox(String chatName, Integer chatId) {
+        this.chatName = chatName;
+        this.chatId = chatId;
+
+        // TODO: get chatMessages from server
         chatMessages = initChatMessage();
 
         initComponent();
@@ -27,7 +37,7 @@ public class ChatBox extends JPanel implements Subscribe {
     }
 
     public String getUsername() {
-        return username;
+        return chatName;
     }
 
     public void initComponent(){
@@ -58,8 +68,9 @@ public class ChatBox extends JPanel implements Subscribe {
         JLabel userAvatar = new JLabel(avatarImage);
         userAvatar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-        // Create labels for username and status
-        JLabel usernameLabel = new JLabel(username);
+        // Create labels for chatName and status
+        JLabel usernameLabel = new JLabel(chatName);
+        usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
         // Create a panel for the status with a small green circle
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // Use FlowLayout
@@ -138,7 +149,7 @@ public class ChatBox extends JPanel implements Subscribe {
         chatContent.setText(""); // Clear the existing messages before displaying
 
         for (ChatMessage message : chatMessages) {
-            if(!message.getUsername().equals(this.username))
+            if(!message.getUsername().equals(this.chatName))
                 chatContent.append("< " + message.getUsername() + " >: " + message.getMessage() + "\n");
             else
                 chatContent.append("< Me >: " + message.getMessage() + "\n");

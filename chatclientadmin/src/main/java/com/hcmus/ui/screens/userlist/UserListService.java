@@ -63,16 +63,17 @@ public class UserListService {
 
     public void removeUser(int userId) throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(userId));
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/remove/" + userId)
-                .method("DELETE", null)
+                .url("http://localhost:8080/users/remove")
+                .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
 
         try (Response response = client.newCall(request).execute();) {
             System.out.println("User list service: " + response.body().string());
             if (response.isSuccessful()) {
-//                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
 //                if (apiResponse.isError()) {
 //                    throw new IOException("Request failed: " + response.code());
 //                }
