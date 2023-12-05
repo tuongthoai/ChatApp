@@ -50,10 +50,14 @@ public class UserService {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        try {
-            Response response = client.newCall(request).execute();
-            // ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class); --> LOI O DAY
-            if (response.body().toString().contains("Can't add user")) {
+        try (Response response = client.newCall(request).execute();) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+            }
+            else {
                 throw new IOException("Request failed: " + response.code());
             }
         } catch (IOException e) {
@@ -71,13 +75,9 @@ public class UserService {
                 .build();
 
         try (Response response = client.newCall(request).execute();) {
-            System.out.println("User list service: " + response.body().string());
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
-//                if (apiResponse.isError()) {
-//                    throw new IOException("Request failed: " + response.code());
-//                }
-                if (response.body().toString().contains("Can't remove user")) {
+                if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
                 }
             }

@@ -5,6 +5,7 @@ import com.hcmus.ui.screens.userlist.add.AddAction;
 import com.hcmus.ui.screens.userlist.block.BlockAction;
 import com.hcmus.ui.screens.userlist.delete.DeleteAction;
 import com.hcmus.ui.screens.userlist.edit.EditAction;
+import com.hcmus.ui.screens.userlist.friendlist.FriendListAction;
 import com.hcmus.ui.table.ContextMenu;
 import com.hcmus.ui.table.Table;
 import com.hcmus.entities.user.User;
@@ -25,7 +26,7 @@ public class UserList extends JPanel {
             List<String> columnNames = User.getColumnNames();
 
             table = new Table<User>(data, columnNames);
-            contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail"));
+            contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List"));
 
             // Add action listener for each menu item
             JMenuItem addItem = contextMenu.getAddItem();
@@ -39,6 +40,9 @@ public class UserList extends JPanel {
 
             JMenuItem blockItem = contextMenu.getBlockItem();
             blockItem.addActionListener(new BlockAction(table));
+
+            JMenuItem friendListItem = contextMenu.getFriendListItem();
+            friendListItem.addActionListener(new FriendListAction(table));
         } catch (Exception e) {
             e.printStackTrace();
         }
