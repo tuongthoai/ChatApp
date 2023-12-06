@@ -2,6 +2,8 @@ package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.repository.helpers.LoginHistoryEntry;
 import com.hcmus.chatserver.repository.helpers.LoginHistoryRowMapper;
+import com.hcmus.chatserver.repository.helpers.UserLoginTimeEntry;
+import com.hcmus.chatserver.repository.helpers.UserLoginTimeRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.Types;
 import java.util.List;
+
 @Repository
 public class LoginHistoryRepository implements InitializingBean {
     private final DataSource dataSource;
@@ -33,12 +36,29 @@ public class LoginHistoryRepository implements InitializingBean {
         return jdbcTemplate.query(query, new LoginHistoryRowMapper());
     }
 
-    public List<Long> getAllLoginTime(){
+    public List<Long> getAllLoginTime() {
         String query = "select logintime from login_history";
         try {
             return jdbcTemplate.queryForList(query, Long.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
+            throw new RuntimeException("Failed to retrieve created times");
+        }
+    }
+
+    public List<UserLoginTimeEntry> getAllUserLoginTime() {
+        String query = "SELECT usr.user_id, usr.username, usr.fullname, l.logintime" +
+                " FROM user_metadata usr " +
+                " INNER JOIN (" +
+                "     SELECT user_id, MAX(logintime) AS logintime" +
+                "     FROM login_history" +
+                "     GROUP BY user_id " +
+                ") l ON usr.user_id = l.user_id" +
+                " ORDER BY usr.user_id";
+        try {
+            return jdbcTemplate.query(query, new UserLoginTimeRowMapper());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve created times");
         }
     }

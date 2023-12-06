@@ -10,7 +10,7 @@ public class LoginHistoryRowMapper implements RowMapper<LoginHistoryEntry> {
     public LoginHistoryEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
         LoginHistoryEntry result = new LoginHistoryEntry();
         result.setLoginTime(rs.getLong("logintime"));
-        result.setUserId(rs.getLong("userid"));
+        result.setUserId(rs.getLong("user_id"));
         result.setDctime(rs.getLong("dctime"));
         return result;
     }
