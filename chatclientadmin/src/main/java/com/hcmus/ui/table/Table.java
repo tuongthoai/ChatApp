@@ -23,7 +23,7 @@ public class Table<T> extends JScrollPane {
         this.data = data;
         this.columnNames = columnNames;
         model = new DefaultTableModel(new Vector<>(columnNames), 0);
-        sorter = new TableRowSorter<>(model);
+        sorter = new TableRowSorter<DefaultTableModel>(model);
         table = new JTable(model);
         table.setRowSorter(sorter);
         table.setFillsViewportHeight(true);

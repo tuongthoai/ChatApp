@@ -24,6 +24,7 @@ public class UserList extends JPanel {
     private UserService service;
 
     public UserList() {
+        setLayout(new BorderLayout());
         try {
             service = new UserService();
             List<User> data = service.getAllUsers();
@@ -47,10 +48,6 @@ public class UserList extends JPanel {
             filterMenu.setFilterComponents(new JComponent[]{username, password, name, email, sex});
             filterMenu.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
 
-            // add menu
-            JMenuBar menuBar = new JMenuBar();
-            menuBar.add(filterMenu);
-
 
             // Add action listener for each menu item
             JMenuItem addItem = contextMenu.getAddItem();
@@ -67,6 +64,8 @@ public class UserList extends JPanel {
 
             JMenuItem friendListItem = contextMenu.getFriendListItem();
             friendListItem.addActionListener(new FriendListAction(table));
+
+            contextMenu.setFilterMenu(filterMenu);
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }

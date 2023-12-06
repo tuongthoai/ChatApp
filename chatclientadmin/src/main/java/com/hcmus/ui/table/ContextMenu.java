@@ -18,6 +18,7 @@ public class ContextMenu extends JPopupMenu {
     private JMenuItem adminListItem;
     private JTable table;
     private List<String> options;
+    private JMenuItem filterMenu;
 
     public ContextMenu(JTable table, List<String> options) {
         this.table = table;
@@ -136,6 +137,11 @@ public class ContextMenu extends JPopupMenu {
 
     public JTable getTable() {
         return table;
+    }
+
+    public void setFilterMenu(JMenuItem filterMenu) {
+        this.filterMenu = filterMenu;
+        add(filterMenu);
     }
 }
 

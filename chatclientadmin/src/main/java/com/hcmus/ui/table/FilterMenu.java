@@ -1,9 +1,12 @@
 package com.hcmus.ui.table;
 
+import com.hcmus.helper.VietnameseRowFilter;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilterMenu extends JMenu {
     private JMenuItem filterItem;
@@ -52,6 +55,8 @@ public class FilterMenu extends JMenu {
     }
 
     private void applyFilter() {
+        List<VietnameseRowFilter> filters = new ArrayList<>();
+
         for (JComponent component: this.components){
             if (!(component instanceof JTextField)) {
                 continue;
@@ -59,8 +64,7 @@ public class FilterMenu extends JMenu {
             JTextField textField = (JTextField) component;
             String text = textField.getText();
             String columnName = textField.getName();
-            if (text.trim().isEmpty()) sorter.setRowFilter(null);
-            else {
+            if (!text.isEmpty()) {
                 // get column index
                 int columnIndex = -1;
                 for (int i = 0; i < model.getColumnCount(); i++) {
@@ -70,10 +74,17 @@ public class FilterMenu extends JMenu {
                     }
                 }
                 if (columnIndex == -1) throw new IllegalStateException("Column name not found");
-                System.out.println(columnIndex);
-                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, columnIndex));
+                try {
+                    // filter rows containing text
+                    filters.add(new VietnameseRowFilter(columnIndex, text));
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                    throw new IllegalStateException("Invalid input");
+                }
             }
         }
+
+        sorter.setRowFilter(RowFilter.andFilter(filters));
     }
 
 
