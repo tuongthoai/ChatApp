@@ -89,16 +89,16 @@ public class ContextMenu extends JPopupMenu {
 
         if (row >= 0 && row < table.getRowCount() && column >= 0 && column < table.getColumnCount()) {
             table.setRowSelectionInterval(row, row);
-            editItem.setEnabled(true);
-            deleteItem.setEnabled(true);
-            blockItem.setEnabled(true);
-            detailItem.setEnabled(true);
+            if (editItem != null) editItem.setEnabled(true);
+            if (deleteItem != null) deleteItem.setEnabled(true);
+            if (blockItem != null) blockItem.setEnabled(true);
+            if (detailItem != null) detailItem.setEnabled(true);
         } else {
             table.clearSelection();
-            editItem.setEnabled(false);
-            deleteItem.setEnabled(false);
-            blockItem.setEnabled(false);
-            detailItem.setEnabled(false);
+            if (editItem != null) editItem.setEnabled(false);
+            if (deleteItem != null) deleteItem.setEnabled(false);
+            if (blockItem != null) blockItem.setEnabled(false);
+            if (detailItem != null) detailItem.setEnabled(false);
         }
         show(table, e.getX(), e.getY());
     }

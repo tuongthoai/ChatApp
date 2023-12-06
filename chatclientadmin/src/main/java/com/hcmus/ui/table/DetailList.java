@@ -1,26 +1,32 @@
 package com.hcmus.ui.table;
 
+import com.hcmus.entities.user.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
 public class DetailList<T> extends JDialog {
-    private List<T> data;
-    private List<String> columnNames;
-    private Table<T> table;
+    public DetailList() {}
 
-    public DetailList(List<T> data, List<String> columnNames, String title) throws SQLException {
-        this.data = data;
-        this.columnNames = columnNames;
-        this.table = new Table<T>(data, columnNames);
+    public DetailList(Table<?> tablePanel ,Table<T> contentPanel, String listTitle) throws SQLException {
+        JPanel content = new JPanel();
+        content.setLayout(new GridLayout(1, 1));
+        content.add(contentPanel);
 
+        setPreferredSize(new Dimension(500, 150));
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(400, 300));
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle(title);
-        add(this.table, BorderLayout.CENTER);
+        JPanel title = new JPanel();
+        JLabel titleLabel = new JLabel(listTitle);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        title.add(titleLabel);
 
-        setVisible(true);
+        add(title, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
+
+        setContentPane(contentPanel);
+        pack();
+        setLocationRelativeTo(tablePanel);
     }
 }

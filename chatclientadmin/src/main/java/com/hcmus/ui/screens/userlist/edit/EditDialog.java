@@ -247,7 +247,7 @@ public class EditDialog extends JDialog {
             UserService service = new UserService();
             service.updateUser(newUser);
             JOptionPane.showMessageDialog(this, "Update user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            ReloadTable.reload(tablePanel);
+            ReloadTable.reloadUserTable(tablePanel);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Update user failed", "Error", JOptionPane.ERROR_MESSAGE);

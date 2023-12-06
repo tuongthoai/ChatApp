@@ -3,13 +3,12 @@ package com.hcmus.ui.chatlist;
 import com.hcmus.ChatHashMap;
 import com.hcmus.UserProfile;
 import com.hcmus.models.GroupChat;
+import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatlayout.ChatScreen;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 public class ChatList extends JPanel {
     private JScrollPane mainPanel;
@@ -71,9 +70,9 @@ public class ChatList extends JPanel {
     }
 
     private void getGChatData() {
-        ChatListService chatListService = new ChatListService();
+        GChatService gchatService = new GChatService();
         try {
-            this.groupChats = chatListService.getGChatList(UserProfile.getUserProfile().getId());
+            this.groupChats = gchatService.getGChatList(UserProfile.getUserProfile().getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

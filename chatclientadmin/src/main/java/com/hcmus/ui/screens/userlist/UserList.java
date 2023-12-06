@@ -7,6 +7,8 @@ import com.hcmus.ui.screens.userlist.delete.DeleteAction;
 import com.hcmus.ui.screens.userlist.edit.EditAction;
 import com.hcmus.ui.screens.userlist.friendlist.FriendListAction;
 import com.hcmus.ui.table.ContextMenu;
+import com.hcmus.ui.table.FilterMenu;
+import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;
 import com.hcmus.entities.user.User;
 
@@ -17,6 +19,8 @@ import java.util.List;
 public class UserList extends JPanel {
     private Table<User> table;
     private ContextMenu contextMenu;
+    private FilterMenu filterMenu;
+    private SearchBar searchBar;
     private UserService service;
 
     public UserList() {
@@ -27,6 +31,26 @@ public class UserList extends JPanel {
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List"));
+            filterMenu = new FilterMenu(table.getSorter(), table.getModel());
+            searchBar = new SearchBar(table.getSorter());
+
+            JTextField username = new JTextField(10);
+            JTextField password = new JTextField(10);
+            JTextField name = new JTextField(10);
+            JTextField email = new JTextField(10);
+            JTextField sex = new JTextField(10);
+            username.setName("Username");
+            password.setName("Password");
+            name.setName("name");
+            email.setName("email");
+            sex.setName("sex");
+            filterMenu.setFilterComponents(new JComponent[]{username, password, name, email, sex});
+            filterMenu.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
+
+            // add menu
+            JMenuBar menuBar = new JMenuBar();
+            menuBar.add(filterMenu);
+
 
             // Add action listener for each menu item
             JMenuItem addItem = contextMenu.getAddItem();
@@ -48,6 +72,7 @@ public class UserList extends JPanel {
         }
 
         setLayout(new BorderLayout());
+        add(searchBar, BorderLayout.NORTH);
         add(table, BorderLayout.CENTER);
     }
 }

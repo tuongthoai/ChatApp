@@ -2,6 +2,7 @@ package com.hcmus.ui.screens.userlist.friendlist;
 
 import com.hcmus.entities.user.User;
 import com.hcmus.services.FriendService;
+import com.hcmus.ui.table.DetailList;
 import com.hcmus.ui.table.Table;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendListAction implements ActionListener {
@@ -25,7 +27,7 @@ public class FriendListAction implements ActionListener {
         User user = tablePanel.getSelectedData();
         friendService = new FriendService();
 
-        List<User> friends = null;
+        List<User> friends = new ArrayList<>();
 
         try {
             friends = friendService.getAllFriends(user.getId());
@@ -33,15 +35,12 @@ public class FriendListAction implements ActionListener {
             ex.printStackTrace();
         }
 
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(1, 1));
+        DetailList<User> friendListDialog = null;
         try {
-            contentPanel.add(new Table<User>(friends, User.getColumnNames()));
+            friendListDialog = new DetailList<User>(tablePanel, new Table<User>(friends, User.getColumnNames()), "Friend List - " + user.getUsername());
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-
-        FriendListDialog friendListDialog = new FriendListDialog(tablePanel, contentPanel, user.getUsername());
         friendListDialog.setVisible(true);
     }
 }

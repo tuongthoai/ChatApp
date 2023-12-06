@@ -1,10 +1,9 @@
-package com.hcmus.ui.chatlist;
+package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.GroupChat;
-import com.hcmus.models.User;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,10 +12,10 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.List;
 
-public class ChatListService {
+public class GChatService {
     private OkHttpClient client;
     private ObjectMapper mapper;
-    public ChatListService() {
+    public GChatService() {
         client = new OkHttpClient().newBuilder().build();
         mapper = new ObjectMapper();
     }

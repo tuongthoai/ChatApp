@@ -23,11 +23,11 @@ public class AddDialog extends JDialog {
     private JTextField password;
     private JTextField name;
     private JTextField email;
-    private JList<String> sex;
+    private JComboBox<String> sexComboBox;
     private JTextField address;
-    private JList<String> day;
-    private JList<String> month;
-    private JList<String> year;
+    private JComboBox<String> dayComboBox;
+    private JComboBox<String> monthComboBox;
+    private JComboBox<String> yearComboBox;
 
     public AddDialog(Table<User> tablePanel) {
         this.tablePanel = tablePanel;
@@ -64,14 +64,14 @@ public class AddDialog extends JDialog {
         password = new JTextField(50);
         name = new JTextField(50);
         email = new JTextField(50);
-        sex = new JList<>(new String[] {"Male", "Female", "Other"});
-        day = new JList<>(createStringList(1, 31));
-        month = new JList<>(createStringList(1, 12));
-        year = new JList<>(createStringList(1971, 2023));
+        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nu", "Khac"});
+        dayComboBox = new JComboBox<>(createStringArray(1, 31));
+        monthComboBox = new JComboBox<>(createStringArray(1, 12));
+        yearComboBox = new JComboBox<>(createStringArray(1971, 2023));
         address = new JTextField(50);
     }
 
-    private static String[] createStringList(int start, int end) {
+    private String[] createStringArray(int start, int end) {
         return IntStream.rangeClosed(start, end)
                 .mapToObj(String::valueOf)
                 .toArray(String[]::new);
@@ -89,17 +89,6 @@ public class AddDialog extends JDialog {
         JLabel yearLabel = new JLabel("Year");
         JLabel addressLabel = new JLabel("Address");
 
-        sex.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane sexScrollPane = new JScrollPane(sex);
-        sexScrollPane.setPreferredSize(new Dimension(30, 30));
-        day.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane dayScrollPane = new JScrollPane(day);
-        month.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane monthScrollPane = new JScrollPane(month);
-        year.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane yearScrollPane = new JScrollPane(year);
-
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(1, 5, 1, 5);
@@ -113,7 +102,9 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.gridwidth = 3;
         contentPane.add(username, gbc);
+        gbc.gridwidth = 1;
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -121,7 +112,9 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 1;
+        gbc.gridwidth = 3;
         contentPane.add(password, gbc);
+        gbc.gridwidth = 1;
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -129,7 +122,9 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 2;
+        gbc.gridwidth = 3;
         contentPane.add(name, gbc);
+        gbc.gridwidth = 1;
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -137,7 +132,9 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 3;
+        gbc.gridwidth = 3;
         contentPane.add(email, gbc);
+        gbc.gridwidth = 1;
 
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -145,7 +142,7 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 4;
-        contentPane.add(sexScrollPane, gbc);
+        contentPane.add(sexComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -167,15 +164,15 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 6;
-        contentPane.add(dayScrollPane, gbc);
+        contentPane.add(dayComboBox, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 6;
-        contentPane.add(monthScrollPane, gbc);
+        contentPane.add(monthComboBox, gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 6;
-        contentPane.add(yearScrollPane, gbc);
+        contentPane.add(yearComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -183,7 +180,9 @@ public class AddDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 7;
+        gbc.gridwidth = 3;
         contentPane.add(address, gbc);
+        gbc.gridwidth = 1;
 
         gbc.insets = new Insets(10, 5, 2, 5);
         gbc.gridx = 1;
@@ -212,10 +211,10 @@ public class AddDialog extends JDialog {
         String name = this.name.getText();
         String email = this.email.getText();
         String address = this.address.getText();
-        String sex = this.sex.getSelectedValue();
-        String day = this.day.getSelectedValue();
-        String month = this.month.getSelectedValue();
-        String year = this.year.getSelectedValue();
+        String sex = (String) this.sexComboBox.getSelectedItem();
+        String day = (String) dayComboBox.getSelectedItem();
+        String month = (String) monthComboBox.getSelectedItem();
+        String year = (String) yearComboBox.getSelectedItem();
 
 
         if (username.isEmpty() || password.isEmpty() || name.isEmpty() || email.isEmpty() || address.isEmpty()) {
@@ -235,7 +234,7 @@ public class AddDialog extends JDialog {
             UserService service = new UserService();
             service.addUser(newUser);
             JOptionPane.showMessageDialog(this, "Add user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            ReloadTable.reload(tablePanel);
+            ReloadTable.reloadUserTable(tablePanel);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Add user failed", "Error", JOptionPane.ERROR_MESSAGE);

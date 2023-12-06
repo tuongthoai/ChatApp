@@ -77,7 +77,7 @@ public class DeleteDialog extends JDialog {
             UserService service = new UserService();
             service.removeUser(userId);
             JOptionPane.showMessageDialog(this, "Remove user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            ReloadTable.reload(table);
+            ReloadTable.reloadUserTable(table);
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Remove user failed", "Error", JOptionPane.ERROR_MESSAGE);

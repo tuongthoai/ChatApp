@@ -1,8 +1,8 @@
-package com.hcmus.ui.screens.userlist.block;
+package com.hcmus.ui.screens.spamlist.block;
 
-import com.hcmus.entities.user.User;
-import com.hcmus.ui.table.ReloadTable;
+import com.hcmus.entities.spam.SpamReport;
 import com.hcmus.services.UserService;
+import com.hcmus.ui.table.ReloadTable;
 import com.hcmus.ui.table.Table;
 
 import javax.swing.*;
@@ -12,17 +12,17 @@ import java.awt.event.ActionEvent;
 public class BlockDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
-    private Table<User> table;
+    private Table<SpamReport> table;
     private JPanel label;
     private JPanel contentPanel;
-    private User selectedUser;
+    private SpamReport selectedReport;
 
     public BlockDialog() {
     }
 
-    public BlockDialog(Table<User> table) {
+    public BlockDialog(Table<SpamReport> table) {
         this.table = table;
-        this.selectedUser = table.getSelectedData();
+        this.selectedReport = table.getSelectedData();
 
         contentPanel = new JPanel();
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -47,7 +47,7 @@ public class BlockDialog extends JDialog {
 
         label = new JPanel();
         label.setLayout(new BorderLayout());
-        label.add(new JLabel("Are you sure you want to block/unblock " + (selectedUser.getName())), BorderLayout.CENTER);
+        label.add(new JLabel("Are you sure you want to block/unblock " + (selectedReport.getReportedUsername())), BorderLayout.CENTER);
     }
 
     public void setupLayout() {
@@ -72,12 +72,12 @@ public class BlockDialog extends JDialog {
     }
 
     private void onOK(ActionEvent e) {
-        int userId = selectedUser.getId();
+        int userId = selectedReport.getReportedUserId();
         try {
             UserService service = new UserService();
             service.adminBlockUser(userId);
             JOptionPane.showMessageDialog(this, "Block/Unblock user successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            ReloadTable.reloadUserTable(table);
+            ReloadTable.reloadSpamTable(table);
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Block/Unblock user failed", "Error", JOptionPane.ERROR_MESSAGE);

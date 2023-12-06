@@ -26,4 +26,24 @@ public class GroupChatController {
         response.setData(service.findGroupChatOfUser(userId));
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/gchats/all", method = RequestMethod.GET)
+    public @ResponseBody String findAllGChats() throws Exception {
+        ApiResponse response = new ApiResponse();
+        response.setData(service.findAllGroupChat());
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/gchats/members/{groupId}", method = RequestMethod.GET)
+    public @ResponseBody String findAllMembers(@PathVariable Integer groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        response.setData(service.findAllMembers(groupId));
+        return mapper.writeValueAsString(response);
+    }
+    @RequestMapping(value = "/gchats/admins/{groupId}", method = RequestMethod.GET)
+    public @ResponseBody String findAllAdmins(@PathVariable Integer groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        response.setData(service.findAllAdmins(groupId));
+        return mapper.writeValueAsString(response);
+    }
 }
