@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,8 +118,22 @@ public class UserRepository implements InitializingBean {
         try {
             return jdbcTemplate.queryForList(query, Long.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve created times");
+        }
+    }
+
+    public List<User> getNewUser(BigInteger startDate, BigInteger endDate) {
+        String query = "select * from user_metadata where createdtime between ? and ?";
+        try {
+            // system out the query after adding parameter
+            System.out.println(startDate);
+            System.out.println(endDate);
+
+            return jdbcTemplate.query(query, new Object[]{startDate, endDate}, new int[]{Types.BIGINT, Types.BIGINT}, new UserRowMapper());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            throw new RuntimeException("Failed to retrieve new users");
         }
     }
 }

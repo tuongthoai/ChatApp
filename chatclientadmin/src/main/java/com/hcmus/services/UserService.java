@@ -8,7 +8,9 @@ import com.hcmus.entities.user.User;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserService {
     private OkHttpClient client;
@@ -30,7 +32,10 @@ public class UserService {
         try (Response response = client.newCall(request).execute();) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
-                List<User> data = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {});
+                List<User> data = new ArrayList<>();
+                if (!apiResponse.isError()) {
+                    data = mapper.readValue(mapper.writeValueAsString(apiResponse.getData()), new TypeReference<List<User>>() {});
+                }
                 return data;
             }
             else {

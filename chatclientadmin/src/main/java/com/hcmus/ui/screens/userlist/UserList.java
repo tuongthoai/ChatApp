@@ -25,7 +25,7 @@ public class UserList extends JPanel {
             List<User> data = service.getAllUsers();
             List<String> columnNames = User.getColumnNames();
 
-            table = new Table<User>(data, columnNames);
+            table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List"));
 
             // Add action listener for each menu item
@@ -44,7 +44,7 @@ public class UserList extends JPanel {
             JMenuItem friendListItem = contextMenu.getFriendListItem();
             friendListItem.addActionListener(new FriendListAction(table));
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
 
         setLayout(new BorderLayout());

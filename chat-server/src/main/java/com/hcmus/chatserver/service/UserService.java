@@ -7,6 +7,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -53,5 +56,16 @@ public class UserService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         mapper = new ObjectMapper();
+    }
+
+    // format date: yyyy-mm-dd
+    public List<User> getNewUser(String startDate, String endDate) throws Exception {
+        // convert to big integer
+        Timestamp startTimestamp = Timestamp.valueOf(startDate + " 00:00:00");
+        Timestamp endTimestamp = Timestamp.valueOf(endDate + " 23:59:59");
+        BigInteger start = new BigInteger(String.valueOf(startTimestamp.toInstant().getEpochSecond()));
+        BigInteger end = new BigInteger(String.valueOf(endTimestamp.toInstant().getEpochSecond()));
+
+        return userRepository.getNewUser(start, end);
     }
 }

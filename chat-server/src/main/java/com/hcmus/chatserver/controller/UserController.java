@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.hcmus.chatserver.entities.user.User;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -104,6 +105,25 @@ public class UserController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get created time");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value= "/newUser", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
+    public @ResponseBody String getNewUser(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            // check date format
+            System.out.println(startDate);
+            if (startDate.length() != 10 || endDate.length() != 10) {
+                throw new Exception("Date format is not correct");
+            }
+
+            List<User> users = userService.getNewUser(startDate, endDate);
+            response.setData(users);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get new user");
         }
         return mapper.writeValueAsString(response);
     }
