@@ -1,9 +1,9 @@
-package com.hcmus.chatserver.entities.user;
+package com.hcmus.chatserver.repository.helpers;
 
 import lombok.Data;
 
 @Data
-public class User {
+public class UserActivityEntry {
     private int id;
     private String username;
     private String password;
@@ -15,7 +15,10 @@ public class User {
     private long createdTime;
     private boolean online = false;
     private boolean blocked = false;
+    private int loginCount;
+    private int chatWithCount;
+    private int chatGroupCount;
 
-    public User() {
+    public UserActivityEntry() {
     }
 }

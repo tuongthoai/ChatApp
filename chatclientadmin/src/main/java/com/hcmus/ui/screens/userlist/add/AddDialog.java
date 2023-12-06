@@ -239,7 +239,7 @@ public class AddDialog extends JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Add user failed", "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             return;
         }
     }

@@ -1,6 +1,8 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
+import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
+import com.hcmus.chatserver.repository.helpers.UserActivityRowMapper;
 import com.hcmus.chatserver.repository.helpers.UserEachMapper;
 import com.hcmus.chatserver.repository.helpers.UserRowMapper;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,5 +136,34 @@ public class UserRepository implements InitializingBean {
             e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve new users");
         }
+    }
+
+    public List<UserActivityEntry> getUserActivity(BigInteger start, BigInteger end) {
+        // get all user active in a period of time
+        String query = "WITH active_user AS (\n" +
+                "    SELECT user_id, logintime\n" +
+                "    FROM login_history\n" +
+                "    WHERE logintime BETWEEN ? AND ?\n" +
+                ")\n" +
+                "\n" +
+                "SELECT\n" +
+                "    usr.*,\n" +
+                "    COUNT(DISTINCT login_history.logintime) AS logincount,\n" +
+                "    COUNT(DISTINCT gchat_member.member_id) AS chatwithcount,\n" +
+                "    COUNT(DISTINCT user_gchat_list.group_id) AS chatgroupcount\n" +
+                "FROM user_metadata usr\n" +
+                "JOIN active_user ON usr.user_id = active_user.user_id\n" +
+                "LEFT JOIN login_history on usr.user_id = login_history.user_id\n" +
+                "LEFT JOIN user_gchat_list ON usr.user_id = user_gchat_list.user_id\n" +
+                "LEFT JOIN gchat_member ON user_gchat_list.group_id = gchat_member.groupchat_id\n" +
+                "GROUP BY usr.user_id\n" +
+                "ORDER BY usr.user_id";
+        try {
+            return jdbcTemplate.query(query, new Object[]{start, end}, new int[]{Types.BIGINT, Types.BIGINT}, new UserActivityRowMapper());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            throw new RuntimeException("Failed to retrieve user activity");
+        }
+
     }
 }
