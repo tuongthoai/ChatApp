@@ -26,6 +26,7 @@ public class GroupChatRepository implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         jdbcTemplate = new JdbcTemplate(dataSource);
+        System.out.println("Done GChat Repo");
     }
 
     public GroupChat findGroupChatById(int id) throws Exception {
@@ -61,5 +62,4 @@ public class GroupChatRepository implements InitializingBean {
         String query = "select u.* from gchat_admins ga join user_metadata u on u.user_id = ga.admin_id where ga.group_id = ?";
         return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
-
 }

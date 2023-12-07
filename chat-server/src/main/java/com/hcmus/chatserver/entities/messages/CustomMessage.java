@@ -3,30 +3,30 @@ package com.hcmus.chatserver.entities.messages;
 import java.util.Map;
 
 public class CustomMessage {
-    private Map<String, Object> headers;
-    private String context;
+    private Map<String, String> headers;
+    private String content;
 
     public CustomMessage() {
     }
 
-    public CustomMessage(Map<String, Object> headers, String context) {
+    public CustomMessage(Map<String, String> headers, String content) {
         this.headers = headers;
-        this.context = context;
+        this.content = content;
     }
 
-    public Map<String, Object> getHeaders() {
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Map<String, Object> headers) {
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 
-    public String getContext() {
-        return context;
+    public String getContent() {
+        return content;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

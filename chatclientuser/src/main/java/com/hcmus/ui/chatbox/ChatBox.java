@@ -36,6 +36,7 @@ public class ChatBox extends JPanel implements Subscribe {
         msgHeaders.put("GCHAT_ID", String.valueOf(chatId));
         msgHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
         this.chatMessages = new ArrayList<>();
+        this.context.addObserver(this);
         initComponent();
     }
 

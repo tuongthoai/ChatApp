@@ -80,7 +80,7 @@ public class ChatContext extends WebSocketClient {
         }
 
         if (msg != null) {
-            this.notify(Integer.valueOf(msg.getHeaders().get("GCHATID")), msg);
+            this.notify(Integer.valueOf(msg.getHeaders().get("GCHAT_ID")), msg);
         }
     }
 

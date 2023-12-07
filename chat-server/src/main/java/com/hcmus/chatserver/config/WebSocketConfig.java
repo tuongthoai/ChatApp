@@ -1,6 +1,7 @@
 package com.hcmus.chatserver.config;
 
 import com.hcmus.chatserver.context.SocketSessionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -12,6 +13,8 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
+    @Autowired
+    private SocketSessionContext context;
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
@@ -21,10 +24,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(getHandler(), "/chat").setAllowedOrigins("*");
-    }
-
-    public WebSocketHandler getHandler() {
-        return new SocketSessionContext();
+        registry.addHandler(context, "/chat").setAllowedOrigins("*");
     }
 }
