@@ -9,13 +9,14 @@ import java.util.ArrayList;
 
 
 public class ChatBox extends JPanel implements Subscribe {
+    private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private Integer chatId;
     private ChatContext context;
-    private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
     private String chatName;
-    public ChatBox(){
+
+    public ChatBox() {
         chatName = "";
         chatMessages = new ArrayList<>();
 
@@ -33,15 +34,44 @@ public class ChatBox extends JPanel implements Subscribe {
         initComponent();
     }
 
+    private static JButton createButton(String text, String iconFilename) {
+        JButton button = new JButton();
+
+        button.setVerticalTextPosition(SwingConstants.BOTTOM);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        // Load the icon
+        ImageIcon icon = new ImageIcon(imageDir + iconFilename);
+        button.setIcon(icon);
+
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setForeground(Color.DARK_GRAY);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+
+        // Add vertical spacing around the button
+        int topPadding = 10;
+        int bottomPadding = 10;
+        int leftPadding = 10;
+        int rightPadding = 10;
+        button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
+        button.addActionListener(new ChatBoxAction(text));
+        return button;
+    }
+
     public ArrayList<ChatMessage> getChatMessages() {
         return chatMessages;
+    }
+
+    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
     }
 
     public String getUsername() {
         return chatName;
     }
 
-    public void initComponent(){
+    public void initComponent() {
         setPreferredSize(new Dimension(500, 400));
         this.setLayout(new BorderLayout());
 
@@ -57,7 +87,7 @@ public class ChatBox extends JPanel implements Subscribe {
         add(footer, BorderLayout.SOUTH);
     }
 
-    public JPanel createHeaderPanel(){
+    public JPanel createHeaderPanel() {
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(500, 50));
 
@@ -120,7 +150,8 @@ public class ChatBox extends JPanel implements Subscribe {
 
         return header;
     }
-    public JScrollPane createChatContentPanel(){
+
+    public JScrollPane createChatContentPanel() {
         chatContent = new JTextArea();
         chatContent.setEditable(false);
         Font customFont = new Font("Arial", Font.PLAIN, 14); // You can choose your preferred font
@@ -133,7 +164,8 @@ public class ChatBox extends JPanel implements Subscribe {
 
         return scrollPane;
     }
-    public JPanel createFooterPanel(){
+
+    public JPanel createFooterPanel() {
         JPanel footer = new JPanel(new BorderLayout());
         footer.setPreferredSize(new Dimension(500, 30));
 
@@ -144,13 +176,14 @@ public class ChatBox extends JPanel implements Subscribe {
         JButton sendButton = new JButton("Send");
         sendButton.addActionListener(new ChatBoxAction("Send", this, textField));
         footer.add(sendButton, BorderLayout.EAST);
-        return  footer;
+        return footer;
     }
+
     public void displayChatMessage() {
         chatContent.setText(""); // Clear the existing messages before displaying
 
         for (ChatMessage message : chatMessages) {
-            if(!message.getUsername().equals(this.chatName))
+            if (!message.getUsername().equals(this.chatName))
                 chatContent.append("< " + message.getUsername() + " >: " + message.getMessage() + "\n");
             else
                 chatContent.append("< Me >: " + message.getMessage() + "\n");
@@ -158,41 +191,14 @@ public class ChatBox extends JPanel implements Subscribe {
             chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
     }
-    private ArrayList<ChatMessage> initChatMessage(){
+
+    private ArrayList<ChatMessage> initChatMessage() {
         ArrayList<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg","Hello"));
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg","I am Gia Thinh"));
-        chatMessages.add(new ChatMessage("usn1", "","Hello"));
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg","Nice to meet you"));
+        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "Hello"));
+        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "I am Gia Thinh"));
+        chatMessages.add(new ChatMessage("usn1", "", "Hello"));
+        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "Nice to meet you"));
         return chatMessages;
-    }
-    private static JButton createButton(String text, String iconFilename) {
-        JButton button = new JButton();
-
-        button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setHorizontalTextPosition(SwingConstants.CENTER);
-
-        // Load the icon
-        ImageIcon icon = new ImageIcon(imageDir + iconFilename);
-        button.setIcon(icon);
-
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setForeground(Color.DARK_GRAY);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-
-        // Add vertical spacing around the button
-        int topPadding = 10;
-        int bottomPadding = 10;
-        int leftPadding = 10;
-        int rightPadding = 10;
-        button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
-        button.addActionListener(new ChatBoxAction(text));
-        return button;
-    }
-
-    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
-        this.chatMessages = chatMessages;
     }
 
     @Override

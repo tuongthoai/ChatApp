@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class ChatListItem extends JButton {
     private final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
+
     public ChatListItem(String avatarPath, String name, String lastMessage) {
         setBackground(Color.WHITE);
         setLayout(new GridBagLayout());

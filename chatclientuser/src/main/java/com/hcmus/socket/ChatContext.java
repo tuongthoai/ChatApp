@@ -30,6 +30,7 @@ public class ChatContext extends WebSocketClient {
         }
         return INSTANCE;
     }
+
     public static ChatContext getInstance(URI _uri, Map<String, String> _headers) {
         webSocketUri = _uri;
         headers = _headers;
@@ -37,6 +38,14 @@ public class ChatContext extends WebSocketClient {
             INSTANCE = new ChatContext(webSocketUri, headers);
         }
         return INSTANCE;
+    }
+
+    public static void setHeaders(Map<String, String> headers) {
+        ChatContext.headers = headers;
+    }
+
+    public static void setWebSocketUri(URI webSocketUri) {
+        ChatContext.webSocketUri = webSocketUri;
     }
 
     public void addObserver(Subscribe subscriber) {
@@ -49,14 +58,6 @@ public class ChatContext extends WebSocketClient {
 
     public void notify(Integer id, Object obj) {
         (subscribersMap.get(id)).update(obj);
-    }
-
-    public static void setHeaders(Map<String, String> headers) {
-        ChatContext.headers = headers;
-    }
-
-    public static void setWebSocketUri(URI webSocketUri) {
-        ChatContext.webSocketUri = webSocketUri;
     }
 
     @Override

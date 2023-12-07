@@ -5,21 +5,23 @@ import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatListItem;
 
 import java.util.HashMap;
+
 public class ChatHashMap {
+    private static ChatHashMap instance = null;
     private ChatContext context;
     private HashMap<ChatListItem, ChatBox> chatHashMap;
+
     private ChatHashMap() {
         chatHashMap = new HashMap<>();
     }
 
-    private static ChatHashMap instance = null;
-
     public static ChatHashMap getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ChatHashMap();
         }
         return instance;
     }
+
     public void addChat(ChatListItem chatListItem, int chatId, String chatName) {
         if (chatHashMap == null) {
             chatHashMap = new HashMap<>();
