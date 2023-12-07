@@ -2,6 +2,7 @@ package com.hcmus.chatserver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.user.User;
+import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.repository.UserRepository;
 import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
 import org.springframework.beans.factory.InitializingBean;
@@ -78,6 +79,10 @@ public class UserService implements InitializingBean {
         BigInteger end = new BigInteger(String.valueOf(endTimestamp.toInstant().getEpochSecond()));
 
         return userRepository.getUserActivity(start, end);
+    }
+
+    public List<UserDTO> getDirInDirFriend() throws Exception{
+        return userRepository.getDirInDirFriend();
     }
 
 

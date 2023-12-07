@@ -1,10 +1,8 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
-import com.hcmus.chatserver.repository.helpers.UserActivityRowMapper;
-import com.hcmus.chatserver.repository.helpers.UserEachMapper;
-import com.hcmus.chatserver.repository.helpers.UserRowMapper;
+import com.hcmus.chatserver.entities.user.UserDTO;
+import com.hcmus.chatserver.repository.helpers.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -164,6 +162,33 @@ public class UserRepository implements InitializingBean {
             e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve user activity");
         }
-
+    }
+    public List<UserDTO> getDirInDirFriend() throws Exception {
+        String query = "select \n" +
+                "\tme.user_id as user_id,\n" +
+                "\tme.username as username,\n" +
+                "\tme.fullname as fullname,\n" +
+                "\tme.sex as sex,\n" +
+                "\tme.createdtime as createdtime,\n" +
+                "\tcount (distinct friend1.friend_id) as directfriend, \n" +
+                "\t(count (distinct friend1.friend_id) + count (distinct friend2.friend_id)) as indirectfriend\n" +
+                "from user_metadata me \n" +
+                "join user_friend friend1 on me.user_id = friend1.user_id \n" +
+                "join user_friend friend2 on (\n" +
+                "\tfriend1.friend_id = friend2.user_id AND\n" +
+                "\tfriend2.friend_id != me.user_id) \n" +
+                "where friend2.friend_id NOT IN (select friend.friend_id \n" +
+                "\t\t\t\t\t\t\t  \tfrom user_metadata me1 \n" +
+                "\t\t\t\t\t\t\t  \tjoin user_friend friend on me1.user_id = friend.user_id \n" +
+                "\t\t\t\t\t\t\t  \twhere me1.user_id = me.user_id\n" +
+                "\t\t\t\t\t\t\t \t)\t\n" +
+                "group by me.user_id\n" +
+                "order by me.user_id\n";
+        try {
+            return jdbcTemplate.query(query, new UserDTORowMapper());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            throw new RuntimeException("Failed to retrieve direct - indirect friend");
+        }
     }
 }
