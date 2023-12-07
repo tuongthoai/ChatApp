@@ -47,9 +47,13 @@ public class Main extends JFrame implements Runnable {
         login.setLoginSucessCallback(new Runnable() {
             @Override
             public void run() {
-                chatLayout = new ChatLayout();
-                chatLayout.setVisible(true);
-                login.dispose();
+                try {
+                    chatLayout = new ChatLayout();
+                    chatLayout.setVisible(true);
+                    login.dispose();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

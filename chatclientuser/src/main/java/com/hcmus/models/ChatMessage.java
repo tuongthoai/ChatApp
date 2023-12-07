@@ -1,9 +1,10 @@
 package com.hcmus.models;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChatMessage {
-    private HashMap<String, Object> headers;
+    private Map<String, String> headers;
     private String content;
 
     public ChatMessage() {
@@ -11,16 +12,16 @@ public class ChatMessage {
         content = null;
     }
 
-    public ChatMessage(HashMap<String, Object> headers, String content) {
+    public ChatMessage(Map<String, String> headers, String content) {
         this.headers = headers;
         this.content = content;
     }
 
-    public HashMap<String, Object> getHeaders() {
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(HashMap<String, Object> headers) {
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 

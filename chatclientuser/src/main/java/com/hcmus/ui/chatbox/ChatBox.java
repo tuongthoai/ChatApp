@@ -1,11 +1,15 @@
 package com.hcmus.ui.chatbox;
 
+import com.hcmus.UserProfile;
+import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscribe;
 import com.hcmus.socket.ChatContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ChatBox extends JPanel implements Subscribe {
@@ -15,6 +19,7 @@ public class ChatBox extends JPanel implements Subscribe {
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
     private String chatName;
+    private Map<String, String> msgHeaders;
 
     public ChatBox() {
         chatName = "";
@@ -27,10 +32,10 @@ public class ChatBox extends JPanel implements Subscribe {
         this.chatName = chatName;
         this.chatId = chatId;
         this.context = context;
-
-        // TODO: get chatMessages from server
-        chatMessages = initChatMessage();
-
+        this.msgHeaders = new HashMap<>();
+        msgHeaders.put("GCHAT_ID", String.valueOf(chatId));
+        msgHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
+        this.chatMessages = new ArrayList<>();
         initComponent();
     }
 
@@ -69,6 +74,46 @@ public class ChatBox extends JPanel implements Subscribe {
 
     public String getUsername() {
         return chatName;
+    }
+
+    public ChatContext getContext() {
+        return context;
+    }
+
+    public void setContext(ChatContext context) {
+        this.context = context;
+    }
+
+    public Integer getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
+    }
+
+    public JTextArea getChatContent() {
+        return chatContent;
+    }
+
+    public void setChatContent(JTextArea chatContent) {
+        this.chatContent = chatContent;
+    }
+
+    public String getChatName() {
+        return chatName;
+    }
+
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
+    }
+
+    public Map<String, String> getMsgHeaders() {
+        return msgHeaders;
+    }
+
+    public void setMsgHeaders(Map<String, String> msgHeaders) {
+        this.msgHeaders = msgHeaders;
     }
 
     public void initComponent() {
@@ -181,24 +226,16 @@ public class ChatBox extends JPanel implements Subscribe {
 
     public void displayChatMessage() {
         chatContent.setText(""); // Clear the existing messages before displaying
-
+        Map<String, String> headers = null;
         for (ChatMessage message : chatMessages) {
-            if (!message.getUsername().equals(this.chatName))
-                chatContent.append("< " + message.getUsername() + " >: " + message.getMessage() + "\n");
-            else
-                chatContent.append("< Me >: " + message.getMessage() + "\n");
-
+            headers = message.getHeaders();
+            if (headers.get("GCHAT_ID").equals(String.valueOf(this.chatId))) {
+                chatContent.append("< Me >: " + message.getContent() + "\n");
+            } else {
+                chatContent.append("< " + headers.get("USER_SEND_ID") + " >: " + message.getContent() + "\n");
+            }
             chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
-    }
-
-    private ArrayList<ChatMessage> initChatMessage() {
-        ArrayList<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "Hello"));
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "I am Gia Thinh"));
-        chatMessages.add(new ChatMessage("usn1", "", "Hello"));
-        chatMessages.add(new ChatMessage("usn2", "LogoHCMUS.jpg", "Nice to meet you"));
-        return chatMessages;
     }
 
     @Override

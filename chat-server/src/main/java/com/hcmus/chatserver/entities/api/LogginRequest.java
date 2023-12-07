@@ -1,4 +1,4 @@
-package com.hcmus.chatserver.controller;
+package com.hcmus.chatserver.entities.api;
 
 public class LogginRequest {
     private String username;

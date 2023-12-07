@@ -36,6 +36,11 @@ public class ChatContext extends WebSocketClient {
         headers = _headers;
         if (INSTANCE == null) {
             INSTANCE = new ChatContext(webSocketUri, headers);
+            try {
+                INSTANCE.connectBlocking();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return INSTANCE;
     }
@@ -75,7 +80,7 @@ public class ChatContext extends WebSocketClient {
         }
 
         if (msg != null) {
-            this.notify((Integer) msg.getHeaders().get("GCHATID"), msg);
+            this.notify(Integer.valueOf(msg.getHeaders().get("GCHATID")), msg);
         }
     }
 

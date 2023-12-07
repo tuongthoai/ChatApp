@@ -1,6 +1,6 @@
 package com.hcmus.chatserver.service;
 
-import com.hcmus.chatserver.controller.LogginRequest;
+import com.hcmus.chatserver.entities.api.LogginRequest;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

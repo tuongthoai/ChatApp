@@ -17,19 +17,17 @@ import java.util.Set;
 public class SocketSessionContext extends TextWebSocketHandler {
     @Autowired
     private ChatSocketSessionContext context;
-    private static final Set<WebSocketSession> sessions = new HashSet<>();
-
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         HttpHeaders headers = session.getHandshakeHeaders();
         Map<String, Object> atttributes = session.getAttributes();
-        sessions.add(session);
+//        sessions.add(session);
+        context.addSession(Integer.valueOf((String) atttributes.get("user_send_id")), session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println(message.getPayload());
-//        session.sendMessage(new TextMessage());
     }
 
     @Override

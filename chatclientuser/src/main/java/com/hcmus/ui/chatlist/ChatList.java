@@ -43,7 +43,7 @@ public class ChatList extends JPanel {
         // init websocket
         Map<String, String> wsHeaders = new HashMap<>();
         URI wsUri = new URI("ws://localhost:8080/chat");
-        wsHeaders.put("USER_SENT_ID", String.valueOf(UserProfile.getUserProfile().getId()));
+        wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
         ChatContext context = ChatContext.getInstance(wsUri, wsHeaders);
 
         // init ChatHashMap

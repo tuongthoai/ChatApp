@@ -15,6 +15,6 @@ public class SwitchChatAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        chatScreen.updateChatBox(ChatHashMap.getChat((ChatListItem) e.getSource()));
+        chatScreen.updateChatBox(ChatHashMap.getInstance().getChat((ChatListItem) e.getSource()));
     }
 }

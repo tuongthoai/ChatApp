@@ -43,7 +43,9 @@ public class ChatSocketSessionContext {
         session2User.remove(sessionId);
     }
 
-
+    public void addSession(Integer userId, WebSocketSession session) {
+        sessions.put(userId, session);
+    }
 
     public void addGroupChat(int gChatId, List<Integer> membersId) {
         groupCharMembers.put(gChatId, membersId);

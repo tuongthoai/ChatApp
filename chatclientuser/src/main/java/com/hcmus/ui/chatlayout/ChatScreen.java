@@ -1,14 +1,12 @@
 package com.hcmus.ui.chatlayout;
 
 import com.hcmus.ui.chatbox.ChatBox;
-import com.hcmus.ui.chatbox.ChatMessage;
 import com.hcmus.ui.chatlist.ChatList;
 import com.hcmus.ui.searchbar.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 public class ChatScreen extends JPanel {
     JPanel chatBoxContainer;
