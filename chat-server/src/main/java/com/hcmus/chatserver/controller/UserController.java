@@ -2,6 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
+import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
 import com.hcmus.chatserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,18 @@ public class UserController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get user activity");
+        }
+        return mapper.writeValueAsString(response);
+    }
+    @RequestMapping(value = "/dirInDirFriend", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String getDirInDirFriend() throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<UserDTO> dirInDirFriend = userService.getDirInDirFriend();
+            response.setData(dirInDirFriend);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get direct - indirect friend");
         }
         return mapper.writeValueAsString(response);
     }

@@ -48,7 +48,7 @@ public class SideBarAction implements ActionListener {
                 cardLayout.show(contentPanel, "SPAM_LIST");
                 break;
             case "Users' friends":
-                cardLayout.show(contentPanel, "USER_FRIENDS");
+                cardLayout.show(contentPanel, "USERS_FRIENDS");
                 break;
         }
     }
