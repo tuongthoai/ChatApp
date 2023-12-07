@@ -8,19 +8,35 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.spec.ECField;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChatContext extends WebSocketClient {
+    private static ChatContext INSTANCE = null;
+    private static Map<String, String> headers;
+    private static URI webSocketUri;
     private final Map<Integer, Subscribe> subscribersMap = new HashMap<>();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public ChatContext(URI serverUri) {
-        super(serverUri);
+    private ChatContext(URI serverUri, Map<String, String> httpHeaders) {
+        super(serverUri, httpHeaders);
     }
 
-    public ChatContext(URI serverUri, Map<String, String> httpHeaders) {
-        super(serverUri, httpHeaders);
+    public static ChatContext getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ChatContext(webSocketUri, headers);
+        }
+        return INSTANCE;
+    }
+    public static ChatContext getInstance(URI _uri, Map<String, String> _headers) {
+        webSocketUri = _uri;
+        headers = _headers;
+        if (INSTANCE == null) {
+            INSTANCE = new ChatContext(webSocketUri, headers);
+        }
+        return INSTANCE;
     }
 
     public void addObserver(Subscribe subscriber) {
@@ -33,6 +49,14 @@ public class ChatContext extends WebSocketClient {
 
     public void notify(Integer id, Object obj) {
         (subscribersMap.get(id)).update(obj);
+    }
+
+    public static void setHeaders(Map<String, String> headers) {
+        ChatContext.headers = headers;
+    }
+
+    public static void setWebSocketUri(URI webSocketUri) {
+        ChatContext.webSocketUri = webSocketUri;
     }
 
     @Override

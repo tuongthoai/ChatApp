@@ -19,10 +19,6 @@ public class Login extends JFrame {
     private JLabel lblForgotPassword;
     private Runnable loginSuccessCallback;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Login().setVisible(true));
-    }
-
     public Login() {
         init();
         addListener();
@@ -136,7 +132,7 @@ public class Login extends JFrame {
                 AuthService authService = new AuthService();
                 int userId = -1;
                 try {
-                    userId =  authService.login(username, password);
+                    userId = authService.login(username, password);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Login failed!");
                     return;

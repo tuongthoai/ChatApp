@@ -4,19 +4,25 @@ import com.hcmus.ChatHashMap;
 import com.hcmus.UserProfile;
 import com.hcmus.models.GroupChat;
 import com.hcmus.services.GChatService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatlayout.ChatScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 public class ChatList extends JPanel {
     private JScrollPane mainPanel;
     private JButton addButton;
     private ChatScreen chatScreen;
     private List<String> friendNames;
     private List<GroupChat> groupChats;
-    public ChatList(ChatScreen chatScreen) {
+    public ChatList(ChatScreen chatScreen) throws URISyntaxException {
         this.chatScreen = chatScreen;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -34,11 +40,22 @@ public class ChatList extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
+        // init websocket
+        Map<String, String> wsHeaders = new HashMap<>();
+        URI wsUri = new URI("ws://localhost:8080/chat");
+        wsHeaders.put("USER_SENT_ID", String.valueOf(UserProfile.getUserProfile().getId()));
+        ChatContext context = ChatContext.getInstance(wsUri, wsHeaders);
+
+        // init ChatHashMap
+        ChatHashMap chatHashMap = ChatHashMap.getInstance();
+        chatHashMap.setContext(context);
+
         int gchatSize = groupChats.size();
         for (int i = 0; i < gchatSize; i++) {
             gbc.gridy = i * 2;
-            ChatListItem chatListItem = new ChatListItem("avatar.png", groupChats.get(i).getGroupName(), chatList.get(0));
-            ChatHashMap.addChat(chatListItem, groupChats.get(i).getGroupId(), groupChats.get(i).getGroupName());
+            GroupChat groupChat = groupChats.get(i);
+            ChatListItem chatListItem = new ChatListItem("avatar.png", groupChat.getGroupName(), chatList.get(0));
+            chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName());
             chatListItem.addActionListener(new SwitchChatAction(chatScreen));
             panel.add(chatListItem, gbc);
 

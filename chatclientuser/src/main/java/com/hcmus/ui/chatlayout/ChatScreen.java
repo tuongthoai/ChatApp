@@ -7,11 +7,12 @@ import com.hcmus.ui.searchbar.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class ChatScreen extends JPanel {
     JPanel chatBoxContainer;
-    public ChatScreen() {
+    public ChatScreen() throws URISyntaxException {
         setLayout(new BorderLayout());
 
         // Main panel with BorderLayout

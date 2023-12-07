@@ -10,13 +10,14 @@ import com.hcmus.ui.sidebar.Sidebar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URISyntaxException;
 
 public class ChatLayout extends JFrame {
     private JPanel mainPanel;
     private JPanel contentPanel;
     private CardLayout cardLayout;
 
-    public ChatLayout() {
+    public ChatLayout() throws URISyntaxException {
         setTitle("Chat UI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(800, 600));

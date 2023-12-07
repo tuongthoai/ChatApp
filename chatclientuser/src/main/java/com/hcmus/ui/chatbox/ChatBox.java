@@ -22,9 +22,10 @@ public class ChatBox extends JPanel implements Subscribe {
         initComponent();
     }
 
-    public ChatBox(String chatName, Integer chatId) {
+    public ChatBox(String chatName, Integer chatId, ChatContext context) {
         this.chatName = chatName;
         this.chatId = chatId;
+        this.context = context;
 
         // TODO: get chatMessages from server
         chatMessages = initChatMessage();
