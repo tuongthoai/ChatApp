@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String sex;
     private String address;
+    private String role;
     private long birthday;
     private long createdTime;
     private boolean online = false;
@@ -116,5 +117,13 @@ public class User {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

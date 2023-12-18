@@ -23,7 +23,7 @@ public class ChatBoxSearchAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JDialog searchInfoDialog = new JDialog();
+        JDialog searchInfoDialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(chatBox));
         searchInfoDialog.setTitle("Message Search");
         searchInfoDialog.setLocationRelativeTo(null);
         searchInfoDialog.setSize(400, 150);

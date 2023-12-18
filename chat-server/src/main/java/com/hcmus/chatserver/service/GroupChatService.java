@@ -1,6 +1,7 @@
 package com.hcmus.chatserver.service;
 
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
+import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.GroupChatRepository;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,9 @@ public class GroupChatService {
             gchatId.add(chat.getGroupId());
         }
         return gchatId;
+    }
+
+    public List<GroupChatMember> findAllMembersOfGroup(int gchatId) throws Exception {
+        return repository.findMembersOf(gchatId);
     }
 }

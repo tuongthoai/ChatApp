@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/gchats")
 public class GroupChatController {
     private final ObjectMapper mapper = new ObjectMapper();
     private final GroupChatService service;
@@ -20,31 +21,38 @@ public class GroupChatController {
         this.service = service;
     }
 
-    @RequestMapping(value = "/gchats/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public @ResponseBody String findGchats(@PathVariable Integer userId) throws JsonProcessingException {
         ApiResponse response = new ApiResponse();
         response.setData(service.findGroupChatOfUser(userId));
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value = "/gchats/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public @ResponseBody String findAllGChats() throws Exception {
         ApiResponse response = new ApiResponse();
         response.setData(service.findAllGroupChat());
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value = "/gchats/members/{groupId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/members/{groupId}", method = RequestMethod.GET)
     public @ResponseBody String findAllMembers(@PathVariable Integer groupId) throws Exception {
         ApiResponse response = new ApiResponse();
         response.setData(service.findAllMembers(groupId));
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value = "/gchats/admins/{groupId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admins/{groupId}", method = RequestMethod.GET)
     public @ResponseBody String findAllAdmins(@PathVariable Integer groupId) throws Exception {
         ApiResponse response = new ApiResponse();
         response.setData(service.findAllAdmins(groupId));
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/members/show/{groupId}", method = RequestMethod.GET)
+    public @ResponseBody String findAllMembersOfGroup(@PathVariable Integer groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        response.setData(service.findAllMembersOfGroup(groupId));
         return mapper.writeValueAsString(response);
     }
 }

@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.util.List;
 
 public class GroupInfoDialog extends JDialog {
-    private JPanel parent;
+    private ChatBox parent;
 
     public GroupInfoDialog() {}
 
-    public GroupInfoDialog(JPanel parent, List<String> members, List<String> roles) {
-        super((JFrame) SwingUtilities.getWindowAncestor(parent), "Group chat information", true);
+    public GroupInfoDialog(ChatBox parent, List<String> members, List<String> roles) {
+        super((JFrame) SwingUtilities.getWindowAncestor(parent), parent.getChatName() + " Information", true);
         this.parent = parent;
 
         MemberList memberList = new MemberList(members, roles);

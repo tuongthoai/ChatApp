@@ -1,6 +1,7 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
+import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.helpers.GroupChatEachMapper;
 import com.hcmus.chatserver.repository.helpers.GroupChatRowMapper;
@@ -61,5 +62,23 @@ public class GroupChatRepository implements InitializingBean {
     public List<User> findAllAdmins(int groupId) throws Exception {
         String query = "select u.* from gchat_admins ga join user_metadata u on u.user_id = ga.admin_id where ga.group_id = ?";
         return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new UserRowMapper());
+    }
+
+    public List<GroupChatMember> findMembersOf(int groupChatId) throws Exception {
+        String query = "select * " +
+                "from gchat_member gm " +
+                "join user_metadata um ON gm.member_id = um.user_id " +
+                "join roles r on r.role_id = um.user_role " +
+                "where gm.groupchat_id = ?";
+        return jdbcTemplate.query(query, new Object[]{groupChatId}, new int[]{Types.INTEGER}, new RowMapper<GroupChatMember>() {
+            @Override
+            public GroupChatMember mapRow(ResultSet rs, int rowNum) throws SQLException {
+                GroupChatMember member = new GroupChatMember();
+                member.setUserId(rs.getInt("user_id"));
+                member.setUsername(rs.getString("username"));
+                member.setRole(rs.getString("role_name"));
+                return member;
+            }
+        });
     }
 }
