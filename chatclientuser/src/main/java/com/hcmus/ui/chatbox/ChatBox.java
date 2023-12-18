@@ -2,8 +2,11 @@ package com.hcmus.ui.chatbox;
 
 import com.hcmus.UserProfile;
 import com.hcmus.models.ChatMessage;
-import com.hcmus.observer.Subscribe;
+import com.hcmus.observer.Subscriber;
 import com.hcmus.socket.ChatContext;
+import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.ChatBoxSearchAction;
+import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.GroupInfoBtnAction;
+import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.SpamBtnAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ChatBox extends JPanel implements Subscribe {
+public class ChatBox extends JPanel implements Subscriber {
     private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private Integer chatId;
     private ChatContext context;
@@ -38,83 +41,6 @@ public class ChatBox extends JPanel implements Subscribe {
         this.chatMessages = new ArrayList<>();
         this.context.addObserver(this);
         initComponent();
-    }
-
-    private static JButton createButton(String text, String iconFilename) {
-        JButton button = new JButton();
-
-        button.setVerticalTextPosition(SwingConstants.BOTTOM);
-        button.setHorizontalTextPosition(SwingConstants.CENTER);
-
-        // Load the icon
-        ImageIcon icon = new ImageIcon(imageDir + iconFilename);
-        button.setIcon(icon);
-
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setForeground(Color.DARK_GRAY);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-
-        // Add vertical spacing around the button
-        int topPadding = 10;
-        int bottomPadding = 10;
-        int leftPadding = 10;
-        int rightPadding = 10;
-        button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
-        button.addActionListener(new ChatBoxAction(text));
-        return button;
-    }
-
-    public ArrayList<ChatMessage> getChatMessages() {
-        return chatMessages;
-    }
-
-    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
-        this.chatMessages = chatMessages;
-    }
-
-    public String getUsername() {
-        return chatName;
-    }
-
-    public ChatContext getContext() {
-        return context;
-    }
-
-    public void setContext(ChatContext context) {
-        this.context = context;
-    }
-
-    public Integer getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
-    }
-
-    public JTextArea getChatContent() {
-        return chatContent;
-    }
-
-    public void setChatContent(JTextArea chatContent) {
-        this.chatContent = chatContent;
-    }
-
-    public String getChatName() {
-        return chatName;
-    }
-
-    public void setChatName(String chatName) {
-        this.chatName = chatName;
-    }
-
-    public Map<String, String> getMsgHeaders() {
-        return msgHeaders;
-    }
-
-    public void setMsgHeaders(Map<String, String> msgHeaders) {
-        this.msgHeaders = msgHeaders;
     }
 
     public void initComponent() {
@@ -180,6 +106,8 @@ public class ChatBox extends JPanel implements Subscribe {
 
         JPanel buttonPanel = new JPanel();
 
+
+        // implement data retrieve for this.
         JButton searchButton = createButton("Search", "search-icon.png");
         JButton deleteButton = createButton("Delete", "trash-solid.png");
         JButton infoButton = createButton("Members", "info.png");
@@ -237,6 +165,87 @@ public class ChatBox extends JPanel implements Subscribe {
             }
             chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
+    }
+
+    private JButton createButton(String text, String iconFilename) {
+        JButton button = new JButton();
+
+        button.setVerticalTextPosition(SwingConstants.BOTTOM);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        // Load the icon
+        ImageIcon icon = new ImageIcon(imageDir + iconFilename);
+        button.setIcon(icon);
+
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setForeground(Color.DARK_GRAY);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+
+        // Add vertical spacing around the button
+        int topPadding = 10;
+        int bottomPadding = 10;
+        int leftPadding = 10;
+        int rightPadding = 10;
+        button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
+        if (text.equals("Search")) {
+            button.addActionListener(new ChatBoxSearchAction(this));
+        } else {
+            button.addActionListener(new ChatBoxAction(text));
+        }
+        return button;
+    }
+
+    public ArrayList<ChatMessage> getChatMessages() {
+        return chatMessages;
+    }
+
+    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
+    }
+
+    public String getUsername() {
+        return chatName;
+    }
+
+    public ChatContext getContext() {
+        return context;
+    }
+
+    public void setContext(ChatContext context) {
+        this.context = context;
+    }
+
+    public Integer getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
+    }
+
+    public JTextArea getChatContent() {
+        return chatContent;
+    }
+
+    public void setChatContent(JTextArea chatContent) {
+        this.chatContent = chatContent;
+    }
+
+    public String getChatName() {
+        return chatName;
+    }
+
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
+    }
+
+    public Map<String, String> getMsgHeaders() {
+        return msgHeaders;
+    }
+
+    public void setMsgHeaders(Map<String, String> msgHeaders) {
+        this.msgHeaders = msgHeaders;
     }
 
     @Override

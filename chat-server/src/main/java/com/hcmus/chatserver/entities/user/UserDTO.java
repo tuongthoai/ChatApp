@@ -9,7 +9,9 @@ public class UserDTO {
     private int friends;
     private int acquaintances;
 
-    public UserDTO(){}
+    public UserDTO() {
+    }
+
     public UserDTO(int id, String username, String name, String sex, long createdTime, int friends, int acquaintances) {
         this.id = id;
         this.username = username;

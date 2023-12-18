@@ -2,23 +2,20 @@ package com.hcmus.socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ChatMessage;
-import com.hcmus.observer.Subscribe;
-import com.sun.security.jgss.GSSUtil;
+import com.hcmus.observer.Subscriber;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.spec.ECField;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChatContext extends WebSocketClient {
     private static ChatContext INSTANCE = null;
-    private static Map<String, String> headers;
     private static URI webSocketUri;
-    private final Map<Integer, Subscribe> subscribersMap = new HashMap<>();
     private final ObjectMapper mapper = new ObjectMapper();
+    private static Map<String, String> headers;
+    private final Map<Integer, Subscriber> subscribersMap = new HashMap<>();
 
     private ChatContext(URI serverUri, Map<String, String> httpHeaders) {
         super(serverUri, httpHeaders);
@@ -53,11 +50,11 @@ public class ChatContext extends WebSocketClient {
         ChatContext.webSocketUri = webSocketUri;
     }
 
-    public void addObserver(Subscribe subscriber) {
+    public void addObserver(Subscriber subscriber) {
         subscribersMap.put(subscriber.getObserverId(), subscriber);
     }
 
-    public void removeObserver(Subscribe subscriber) {
+    public void removeObserver(Subscriber subscriber) {
         subscribersMap.remove(subscriber.getObserverId());
     }
 
@@ -91,6 +88,6 @@ public class ChatContext extends WebSocketClient {
 
     @Override
     public void onError(Exception ex) {
-
+        System.err.println(ex.getStackTrace());
     }
 }

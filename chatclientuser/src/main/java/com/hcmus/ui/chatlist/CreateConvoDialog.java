@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateConvoDialog {
-    CreateConvoDialog(List<String> listFriend){
+    CreateConvoDialog(List<String> listFriend) {
         JPanel mainPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -19,35 +19,35 @@ public class CreateConvoDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
 
 
-        JLabel jlTitle = new JLabel("Create a new Group chat",JLabel.CENTER);
+        JLabel jlTitle = new JLabel("Create a new Group chat", JLabel.CENTER);
         Font font1 = new Font("Serif", Font.BOLD, 24);
         jlTitle.setFont(font1);
         jlTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(jlTitle, gbc);
 
         JLabel grNameLabel = new JLabel("Group Name");
-        grNameLabel.setFont(new Font("Serif",Font.PLAIN, 18));
+        grNameLabel.setFont(new Font("Serif", Font.PLAIN, 18));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         mainPanel.add(grNameLabel, gbc);
 
         JTextField grNameField = new JTextField(20);
-        grNameField.setFont(new Font("Serif",Font.PLAIN, 18));
+        grNameField.setFont(new Font("Serif", Font.PLAIN, 18));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         mainPanel.add(grNameField, gbc);
 
         JLabel searchLabel = new JLabel("Search friend");
-        searchLabel.setFont(new Font("Serif",Font.PLAIN, 18));
+        searchLabel.setFont(new Font("Serif", Font.PLAIN, 18));
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         mainPanel.add(searchLabel, gbc);
 
         JTextField searchField = new JTextField(20);
-        searchField.setFont(new Font("Serif",Font.PLAIN, 18));
+        searchField.setFont(new Font("Serif", Font.PLAIN, 18));
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
@@ -90,7 +90,6 @@ public class CreateConvoDialog {
             mainPanel.add(addButton, gbc);
         }
 
-        int result = JOptionPane.showConfirmDialog(null, mainPanel, "Create New Group Chat",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, mainPanel, "Create New Group Chat", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
     }
 }

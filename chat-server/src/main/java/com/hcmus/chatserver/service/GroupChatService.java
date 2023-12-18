@@ -21,6 +21,7 @@ public class GroupChatService {
     public List<GroupChat> findGroupChatOfUser(int userId) {
         return repository.findByMemberId(userId);
     }
+
     public List<GroupChat> findAllGroupChat() throws Exception {
         return repository.findAll();
     }
@@ -28,6 +29,7 @@ public class GroupChatService {
     public List<User> findAllMembers(int groupId) throws Exception {
         return repository.findAllMembers(groupId);
     }
+
     public List<User> findAllAdmins(int groupId) throws Exception {
         return repository.findAllAdmins(groupId);
     }

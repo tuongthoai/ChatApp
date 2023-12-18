@@ -19,6 +19,7 @@ public class LoginHistoryController {
     private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     LoginHistoryService loginHistoryService;
+
     @RequestMapping(value = "/logintime", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String getLoginTime() throws Exception {
         ApiResponse response = new ApiResponse();

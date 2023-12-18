@@ -15,10 +15,13 @@ import java.util.Objects;
 
 @Service
 public class EmailService {
-    @Autowired private JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}") private String sender;
-    public String sendSimpleEmail(EmailDetails emailDetails){
+    @Value("${spring.mail.username}")
+    private String sender;
+
+    public String sendSimpleEmail(EmailDetails emailDetails) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(sender);
@@ -33,17 +36,18 @@ public class EmailService {
             return "Email sent failed";
         }
     }
-    public String sendEmailWithAttachment(EmailDetails emailDetails){
+
+    public String sendEmailWithAttachment(EmailDetails emailDetails) {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = null;
         try {
-            helper = new MimeMessageHelper(message,true);
+            helper = new MimeMessageHelper(message, true);
             helper.setFrom(sender);
             helper.setTo(emailDetails.getRecipient());
             helper.setSubject(emailDetails.getSubject());
             helper.setText(emailDetails.getMsgBody());
             FileSystemResource file = new FileSystemResource(emailDetails.getAttachment());
-            helper.addAttachment(Objects.requireNonNull(file.getFilename()),file);
+            helper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
             javaMailSender.send(message);
             return "Email sent successfully";
         } catch (Exception e) {

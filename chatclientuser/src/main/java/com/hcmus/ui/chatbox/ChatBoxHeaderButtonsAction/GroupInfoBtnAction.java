@@ -1,4 +1,6 @@
-package com.hcmus.ui.chatbox;
+package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
+
+import com.hcmus.ui.chatbox.GroupInfoDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

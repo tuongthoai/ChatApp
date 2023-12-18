@@ -99,6 +99,7 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+
     @RequestMapping(value = "/createdTime", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String getCreatedTime() throws Exception {
         ApiResponse response = new ApiResponse();
@@ -112,7 +113,7 @@ public class UserController {
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value= "/newUser", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
+    @RequestMapping(value = "/newUser", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
     public @ResponseBody String getNewUser(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
@@ -131,7 +132,7 @@ public class UserController {
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value= "/activity", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
+    @RequestMapping(value = "/activity", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
     public @ResponseBody String getUserActivity(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
@@ -149,6 +150,7 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+
     @RequestMapping(value = "/dirInDirFriend", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String getDirInDirFriend() throws Exception {
         ApiResponse response = new ApiResponse();

@@ -47,7 +47,7 @@ public class ChatSocketSessionContext implements InitializingBean {
     public void send2Group(Integer groupId, TextMessage msg) throws Exception {
         if (groupChatMembers.containsKey(groupId)) {
             List<Integer> members = groupChatMembers.get(groupId);
-            for(Integer id : members){
+            for (Integer id : members) {
                 if (sessions.containsKey(id)) {
                     sessions.get(id).sendMessage(msg);
                 }
@@ -70,11 +70,9 @@ public class ChatSocketSessionContext implements InitializingBean {
         // get all chat members
         try {
             List<Integer> groupChatIdsOfUser = service.findAllGroupChatByUserId(userId);
-            for(Integer gchatId : groupChatIdsOfUser) {
+            for (Integer gchatId : groupChatIdsOfUser) {
                 List<User> membersId = service.findAllMembers(gchatId);
-                List<Integer> integerList = membersId.stream()
-                        .map(User::getId)
-                        .collect(Collectors.toList());
+                List<Integer> integerList = membersId.stream().map(User::getId).collect(Collectors.toList());
                 if (!groupChatMembers.containsKey(gchatId)) {
                     groupChatMembers.put(gchatId, integerList);
                 }

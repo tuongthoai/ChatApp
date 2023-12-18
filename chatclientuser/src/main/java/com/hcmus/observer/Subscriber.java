@@ -1,6 +1,6 @@
 package com.hcmus.observer;
 
-public interface Subscribe {
+public interface Subscriber {
     int getObserverId();
     void update(Object obj);
 }

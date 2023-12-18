@@ -40,6 +40,7 @@ public class GroupChatController {
         response.setData(service.findAllMembers(groupId));
         return mapper.writeValueAsString(response);
     }
+
     @RequestMapping(value = "/gchats/admins/{groupId}", method = RequestMethod.GET)
     public @ResponseBody String findAllAdmins(@PathVariable Integer groupId) throws Exception {
         ApiResponse response = new ApiResponse();

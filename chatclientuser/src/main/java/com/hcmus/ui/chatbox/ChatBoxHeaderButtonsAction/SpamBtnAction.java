@@ -1,4 +1,4 @@
-package com.hcmus.ui.chatbox;
+package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

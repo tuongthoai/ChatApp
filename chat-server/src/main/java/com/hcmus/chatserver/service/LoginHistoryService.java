@@ -15,11 +15,12 @@ public class LoginHistoryService implements InitializingBean {
     @Autowired
     private LoginHistoryRepository loginHistoryRepository;
     private ObjectMapper mapper;
-    public List<Long> getLoginTime() throws Exception{
+
+    public List<Long> getLoginTime() throws Exception {
         return loginHistoryRepository.getAllLoginTime();
     }
 
-    public List<UserLoginTimeEntry> getUserLoginTime() throws Exception{
+    public List<UserLoginTimeEntry> getUserLoginTime() throws Exception {
         return loginHistoryRepository.getAllUserLoginTime();
     }
 

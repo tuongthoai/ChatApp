@@ -1,12 +1,5 @@
 package com.hcmus.chatserver.entities.user;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-@Data
-@Getter
-@Setter
 public class User {
     private int id;
     private String username;
@@ -21,6 +14,20 @@ public class User {
     private boolean blocked = false;
 
     public User() {
+    }
+
+    public User(int id, String username, String password, String name, String email, String sex, String address, long birthday, long createdTime, boolean online, boolean blocked) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.sex = sex;
+        this.address = address;
+        this.birthday = birthday;
+        this.createdTime = createdTime;
+        this.online = online;
+        this.blocked = blocked;
     }
 
     public int getId() {

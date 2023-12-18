@@ -22,6 +22,8 @@ public class ListFriend extends JPanel {
         this.user_id = "1";
         this.mainContentPanel = mainContentPanel;
 
+
+        // get Friend List
         ArrayList<User> listFriend = getListFriend(data.getFriendList(), data.getUserList());
 
         init(listFriend);

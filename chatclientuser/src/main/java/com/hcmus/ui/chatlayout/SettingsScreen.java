@@ -12,6 +12,7 @@ public class SettingsScreen extends JPanel {
     private JButton button;
     private JButton button1;
     private ChangePasswordScreen changePasswordScreen;
+
     public SettingsScreen() {
         setLayout(new BorderLayout());
 
@@ -61,6 +62,7 @@ public class SettingsScreen extends JPanel {
 
         return northPanel;
     }
+
     private JPanel initCenterPanel() {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -118,6 +120,7 @@ public class SettingsScreen extends JPanel {
 
         return southPanel;
     }
+
     private void changePassword() {
         changePasswordScreen = new ChangePasswordScreen(this);
         this.setVisible(false);
@@ -133,7 +136,6 @@ public class SettingsScreen extends JPanel {
         // open login frame
         Login login = new Login();
         login.setVisible(true);
-
     }
 
     private void addListener() {

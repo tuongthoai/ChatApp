@@ -8,8 +8,8 @@ public class ChangePasswordScreen extends JPanel {
     private JTextField oldPassword;
     private JTextField newPassword;
     private JTextField confirmPassword;
-
     private JPanel parent;
+
     public ChangePasswordScreen(JPanel parent) {
         this.parent = parent;
         setLayout(new GridBagLayout());
@@ -42,7 +42,7 @@ public class ChangePasswordScreen extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        oldPassword.setMargin(new Insets(5, 5,5, 0));
+        oldPassword.setMargin(new Insets(5, 5, 5, 0));
         add(oldPassword, gbc);
 
         gbc.gridx = 0;
@@ -53,7 +53,7 @@ public class ChangePasswordScreen extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
-        newPassword.setMargin(new Insets(5,5, 5, 0));
+        newPassword.setMargin(new Insets(5, 5, 5, 0));
         add(newPassword, gbc);
 
         gbc.gridx = 0;
@@ -64,7 +64,7 @@ public class ChangePasswordScreen extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        confirmPassword.setMargin(new Insets(5,5, 5, 0));
+        confirmPassword.setMargin(new Insets(5, 5, 5, 0));
         add(confirmPassword, gbc);
 
         gbc.gridx = 0;

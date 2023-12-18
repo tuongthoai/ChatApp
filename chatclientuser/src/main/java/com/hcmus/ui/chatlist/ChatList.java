@@ -22,6 +22,7 @@ public class ChatList extends JPanel {
     private ChatScreen chatScreen;
     private List<String> friendNames;
     private List<GroupChat> groupChats;
+
     public ChatList(ChatScreen chatScreen) throws URISyntaxException {
         this.chatScreen = chatScreen;
         setLayout(new GridBagLayout());

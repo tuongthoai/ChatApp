@@ -1,7 +1,5 @@
 package com.hcmus.chatserver.controller;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.email.EmailDetails;
@@ -11,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class EmailController {
-    @Autowired private EmailService emailService;
     private final ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String sendEmail(@RequestBody EmailDetails emailDetails) throws Exception {
@@ -27,6 +26,7 @@ public class EmailController {
         }
         return mapper.writeValueAsString(response);
     }
+
     @RequestMapping(value = "/sendMailWithAttachment", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String sendEmailWithAttachment(@RequestBody EmailDetails emailDetails) throws Exception {
         ApiResponse response = new ApiResponse();

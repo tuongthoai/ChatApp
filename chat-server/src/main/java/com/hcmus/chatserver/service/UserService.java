@@ -19,6 +19,7 @@ public class UserService implements InitializingBean {
     @Autowired
     private UserRepository userRepository;
     private ObjectMapper mapper;
+
     public User getUser(int id) throws Exception {
         return userRepository.findUserById(id);
     }
@@ -51,7 +52,7 @@ public class UserService implements InitializingBean {
         userRepository.adminBlockUser(userId);
     }
 
-    public List<Long> getCreatedTime() throws Exception{
+    public List<Long> getCreatedTime() throws Exception {
         return userRepository.getAllCreatedTime();
     }
 
@@ -81,11 +82,7 @@ public class UserService implements InitializingBean {
         return userRepository.getUserActivity(start, end);
     }
 
-    public List<UserDTO> getDirInDirFriend() throws Exception{
+    public List<UserDTO> getDirInDirFriend() throws Exception {
         return userRepository.getDirInDirFriend();
     }
-
-
-
-
 }
