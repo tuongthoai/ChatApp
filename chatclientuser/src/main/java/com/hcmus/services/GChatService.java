@@ -56,7 +56,7 @@ public class GChatService {
         try {
             MediaType mediaType = MediaType.parse("text/plain");
             RequestBody body = RequestBody.create(mediaType, "");
-            Request request = new Request.Builder().url("localhost:8080/gchats/members/show/1").method("GET", body).build();
+            Request request = new Request.Builder().url("http://localhost:8080/gchats/members/show/" + gchatId).method("GET", null).build();
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {

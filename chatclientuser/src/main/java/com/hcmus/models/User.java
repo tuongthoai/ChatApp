@@ -13,6 +13,7 @@ public class User {
     private long createdTime;
     private boolean online = false;
     private boolean blocked = false;
+    private String role;
 
     public User() {
     }
@@ -117,5 +118,13 @@ public class User {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
