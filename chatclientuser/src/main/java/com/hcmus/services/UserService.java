@@ -9,11 +9,26 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class UserService {
+    private static UserService instance;
+
+    static {
+        instance = null;
+    }
+
     private OkHttpClient client;
     private ObjectMapper mapper;
+
     public UserService() {
         client = new OkHttpClient().newBuilder().build();
         mapper = new ObjectMapper();
+    }
+
+    public static UserService getInstance() {
+        if (instance == null) {
+            instance = new UserService();
+            return instance;
+        }
+        return instance;
     }
 
     public User getUserById(int userId) {
@@ -31,7 +46,8 @@ public class UserService {
                 throw new IOException("Request failed: " + response.code());
             }
 
-            User user = mapper.convertValue(apiResponse.getData(), new TypeReference<User>() {});
+            User user = mapper.convertValue(apiResponse.getData(), new TypeReference<User>() {
+            });
 
             return user;
         } catch (IOException e) {

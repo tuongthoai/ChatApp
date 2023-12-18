@@ -129,7 +129,7 @@ public class Login extends JFrame {
                     return;
                 }
 
-                AuthService authService = new AuthService();
+                AuthService authService = AuthService.getInstance();
                 int userId = -1;
                 try {
                     userId = authService.login(username, password);
@@ -142,7 +142,8 @@ public class Login extends JFrame {
 
                 // set current user
                 try {
-                    User user = new UserService().getUserById(userId);
+                    UserService service = UserService.getInstance();
+                    User user = service.getUserById(userId);
                     UserProfile.setUserProfile(user);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Failed to get user info!");

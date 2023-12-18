@@ -1,11 +1,14 @@
 package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
+import com.hcmus.models.GroupChatMember;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatbox.GroupInfoDialog;
+import okhttp3.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupInfoBtnAction implements ActionListener {
@@ -21,9 +24,12 @@ public class GroupInfoBtnAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // CALL API FOR CHAT INFO
 
-        List<String> members = List.of("user1", "user22222222222", "user3");
-        List<String> roles = List.of("admin", "member", "member");
-        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, members, roles);
+        List<String> membersName = new ArrayList<>();
+        List<String> roles = new ArrayList<>();
+
+
+
+        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, membersName, roles);
         memListDialog.setVisible(true);
     }
 }

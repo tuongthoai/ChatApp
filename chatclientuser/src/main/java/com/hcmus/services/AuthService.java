@@ -11,11 +11,25 @@ import java.io.IOException;
 import java.util.List;
 
 public class AuthService {
+    private static AuthService instance;
+
+    static {
+        instance = null;
+    }
+
     private OkHttpClient client;
     private ObjectMapper mapper;
-    public AuthService() {
+
+    private AuthService() {
         client = new OkHttpClient().newBuilder().build();
         mapper = new ObjectMapper();
+    }
+
+    public static AuthService getInstance() {
+        if (instance == null) {
+            return instance = new AuthService();
+        }
+        return instance;
     }
 
     public int login(String username, String password) throws JsonProcessingException {

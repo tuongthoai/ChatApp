@@ -88,7 +88,7 @@ public class ChatList extends JPanel {
     }
 
     private void getGChatData() {
-        GChatService gchatService = new GChatService();
+        GChatService gchatService = GChatService.getInstance();
         try {
             this.groupChats = gchatService.getGChatList(UserProfile.getUserProfile().getId());
         } catch (Exception e) {
