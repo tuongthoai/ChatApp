@@ -2,13 +2,18 @@ package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.entities.user.UserDTO;
+import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.helpers.*;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -190,5 +195,22 @@ public class UserRepository implements InitializingBean {
             e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve direct - indirect friend");
         }
+    }
+
+    public UserStatisticSummary getStatisticSummary(int userId) {
+        String query = "";
+        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<UserStatisticSummary>() {
+            @Override
+            public UserStatisticSummary extractData(ResultSet rs) throws SQLException, DataAccessException {
+                UserStatisticSummary result = new UserStatisticSummary();
+                if (rs.next()) {
+                    result.setLastLogin(rs.getLong("last_login"));
+                    result.setNoFiends(rs.getLong("no_friends"));
+                    result.setNoGroupChat(rs.getLong("no_group_chat"));
+                    return result;
+                }
+                return null;
+            }
+        });
     }
 }

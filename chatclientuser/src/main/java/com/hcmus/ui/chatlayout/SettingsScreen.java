@@ -1,5 +1,8 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.UserProfile;
+import com.hcmus.models.User;
+import com.hcmus.services.UserService;
 import com.hcmus.ui.loginscreens.Login;
 
 import javax.swing.*;
@@ -12,6 +15,7 @@ public class SettingsScreen extends JPanel {
     private JButton button;
     private JButton button1;
     private ChangePasswordScreen changePasswordScreen;
+    private User user = null;
 
     public SettingsScreen() {
         setLayout(new BorderLayout());
@@ -45,7 +49,7 @@ public class SettingsScreen extends JPanel {
         infoPanel.setLayout(new GridLayout(2, 1, 5, 5));
         infoPanel.setBackground(new Color(0, 0, 0, 0));
 
-        JLabel username = new JLabel("Username");
+        JLabel username = new JLabel(getUser().getUsername());
         username.setFont(new Font("Tahoma", Font.BOLD, 20));
         infoPanel.add(username);
 
@@ -55,11 +59,7 @@ public class SettingsScreen extends JPanel {
         infoPanel.add(status);
 
         accountPanel.add(infoPanel, BorderLayout.EAST);
-
-
         northPanel.add(accountPanel, BorderLayout.WEST);
-
-
         return northPanel;
     }
 
@@ -77,7 +77,7 @@ public class SettingsScreen extends JPanel {
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 180, 10, 180));
         infoPanel.setLayout(new GridLayout(5, 1, 0, 5));
 
-        JLabel email = new JLabel("Email: " + "example@gmail.com");
+        JLabel email = new JLabel("Email: " + getUser().getEmail());
         email.setFont(new Font("Tahoma", Font.PLAIN, 15));
         email.setAlignmentX(Component.LEFT_ALIGNMENT);
         infoPanel.add(email);
@@ -151,5 +151,23 @@ public class SettingsScreen extends JPanel {
                 logout();
             }
         });
+    }
+
+    public User getUser() {
+        if (this.user == null) {
+            UserService service = UserService.getInstance();
+            User curUser = null;
+            try {
+                curUser = service.getUserById(UserProfile.getUserProfile().getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (curUser == null) {
+                curUser = new User();
+                curUser.setName("DEFAULT_NAME");
+            }
+            this.user = curUser;
+        }
+        return this.user;
     }
 }

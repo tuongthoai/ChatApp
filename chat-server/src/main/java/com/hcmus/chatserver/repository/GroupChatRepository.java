@@ -8,7 +8,9 @@ import com.hcmus.chatserver.repository.helpers.GroupChatRowMapper;
 import com.hcmus.chatserver.repository.helpers.UserRowMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -78,6 +80,16 @@ public class GroupChatRepository implements InitializingBean {
                 member.setUsername(rs.getString("username"));
                 member.setRole(rs.getString("role_name"));
                 return member;
+            }
+        });
+    }
+
+    public long countNoGroupChatOf(int userId) throws Exception {
+        String query = "select count(*) from gchat_member gm where gm.member_id = ?";
+        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Long>() {
+            @Override
+            public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
+                return rs.getLong(1);
             }
         });
     }

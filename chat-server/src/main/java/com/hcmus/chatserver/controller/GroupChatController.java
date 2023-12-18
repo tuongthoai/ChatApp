@@ -55,4 +55,11 @@ public class GroupChatController {
         response.setData(service.findAllMembersOfGroup(groupId));
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/{userId}/count", method = RequestMethod.GET)
+    public @ResponseBody String countGroupChatOf(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        response.setData(service.countNoGroupChatOf(userId));
+        return mapper.writeValueAsString(response);
+    }
 }

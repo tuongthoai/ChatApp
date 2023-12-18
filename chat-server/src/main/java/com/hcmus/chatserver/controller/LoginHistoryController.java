@@ -6,10 +6,7 @@ import com.hcmus.chatserver.repository.helpers.LoginHistoryEntry;
 import com.hcmus.chatserver.repository.helpers.UserLoginTimeEntry;
 import com.hcmus.chatserver.service.LoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +35,19 @@ public class LoginHistoryController {
         ApiResponse response = new ApiResponse();
         try {
             List<UserLoginTimeEntry> userLoginTime = loginHistoryService.getUserLoginTime();
+            response.setData(userLoginTime);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user login history time");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/{userId}/last", method = RequestMethod.GET)
+    public @ResponseBody String getlastlogin(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            Long userLoginTime = loginHistoryService.getLastLoginOf(userId);
             response.setData(userLoginTime);
         } catch (Exception e) {
             response.setError(true);

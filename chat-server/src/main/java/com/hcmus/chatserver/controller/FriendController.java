@@ -41,4 +41,17 @@ public class FriendController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/{userId}/count", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String countFriends(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            Long no_friends = friendService.countFriendsOf(userId);
+            response.setData(no_friends);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user's friends online");
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

@@ -4,9 +4,7 @@ import com.hcmus.UserProfile;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.socket.ChatContext;
-import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.ChatBoxSearchAction;
-import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.GroupInfoBtnAction;
-import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.SpamBtnAction;
+import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,8 +110,7 @@ public class ChatBox extends JPanel implements Subscriber {
         JButton deleteButton = createButton("Delete", "trash-solid.png");
         JButton infoButton = createButton("Members", "info.png");
         JButton spamButton = createButton("Spam", "spam.png");
-        infoButton.addActionListener(new GroupInfoBtnAction(this));
-        spamButton.addActionListener(new SpamBtnAction());
+
 
         buttonPanel.add(searchButton);
         buttonPanel.add(deleteButton);
@@ -143,12 +140,12 @@ public class ChatBox extends JPanel implements Subscriber {
         JPanel footer = new JPanel(new BorderLayout());
         footer.setPreferredSize(new Dimension(500, 30));
 
-        JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(400, 30));
-        footer.add(textField, BorderLayout.WEST);
+        JTextField msgContentSendInfo = new JTextField();
+        msgContentSendInfo.setPreferredSize(new Dimension(400, 30));
+        footer.add(msgContentSendInfo, BorderLayout.WEST);
 
         JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(new ChatBoxAction("Send", this, textField));
+        sendButton.addActionListener(new ChatBoxSendMsgBtnAction(this, msgContentSendInfo));
         footer.add(sendButton, BorderLayout.EAST);
         return footer;
     }
@@ -190,8 +187,15 @@ public class ChatBox extends JPanel implements Subscriber {
         button.setBorder(BorderFactory.createEmptyBorder(topPadding, leftPadding, bottomPadding, rightPadding));
         if (text.equals("Search")) {
             button.addActionListener(new ChatBoxSearchAction(this));
-        } else {
-            button.addActionListener(new ChatBoxAction(text));
+        }
+        if (text.equals("Members")) {
+            button.addActionListener(new GroupChatInfoBtnAction(this));
+        }
+        if (text.equals("Spam")) {
+            button.addActionListener(new GroupChatSpamBtnAction(this));
+        }
+        if(text.equals("Delete")) {
+            button.addActionListener(new ChatBoxDeleteBtnAction(this));
         }
         return button;
     }

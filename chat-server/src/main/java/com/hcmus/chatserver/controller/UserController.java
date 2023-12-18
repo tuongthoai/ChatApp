@@ -17,7 +17,7 @@ import java.util.List;
 public class UserController {
     private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String findAll() throws Exception {
@@ -153,6 +153,19 @@ public class UserController {
 
     @RequestMapping(value = "/dirInDirFriend", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String getDirInDirFriend() throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<UserDTO> dirInDirFriend = userService.getDirInDirFriend();
+            response.setData(dirInDirFriend);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get direct - indirect friend");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/{userId}/statisticSummary", method = RequestMethod.GET)
+    public @ResponseBody String getStatisticSummary(@PathVariable int userId) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
             List<UserDTO> dirInDirFriend = userService.getDirInDirFriend();

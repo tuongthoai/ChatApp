@@ -3,6 +3,7 @@ package com.hcmus.chatserver.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.entities.user.UserDTO;
+import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.UserRepository;
 import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
 import org.springframework.beans.factory.InitializingBean;
@@ -84,5 +85,9 @@ public class UserService implements InitializingBean {
 
     public List<UserDTO> getDirInDirFriend() throws Exception {
         return userRepository.getDirInDirFriend();
+    }
+
+    public UserStatisticSummary getStatisticSummary(int userId) throws Exception {
+        return userRepository.getStatisticSummary(userId);
     }
 }

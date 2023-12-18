@@ -31,13 +31,10 @@ public class UserService {
         return instance;
     }
 
-    public User getUserById(int userId) {
+    public User getUserById(int userId) throws Exception {
+        User user = null;
         MediaType mediaType = MediaType.parse("application/json");
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/users/" + userId)
-                .method("GET", null)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url("http://localhost:8080/users/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -46,12 +43,11 @@ public class UserService {
                 throw new IOException("Request failed: " + response.code());
             }
 
-            User user = mapper.convertValue(apiResponse.getData(), new TypeReference<User>() {
+            user = mapper.convertValue(apiResponse.getData(), new TypeReference<User>() {
             });
-
-            return user;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return user;
     }
 }

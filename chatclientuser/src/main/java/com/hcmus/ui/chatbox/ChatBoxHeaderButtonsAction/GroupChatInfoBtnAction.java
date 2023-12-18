@@ -4,20 +4,19 @@ import com.hcmus.models.GroupChatMember;
 import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatbox.GroupInfoDialog;
-import okhttp3.*;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupInfoBtnAction implements ActionListener {
+public class GroupChatInfoBtnAction implements ActionListener {
     private ChatBox parent;
 
-    public GroupInfoBtnAction() {}
+    public GroupChatInfoBtnAction() {
+    }
 
-    public GroupInfoBtnAction(ChatBox parent) {
+    public GroupChatInfoBtnAction(ChatBox parent) {
         this.parent = parent;
     }
 
@@ -32,12 +31,7 @@ public class GroupInfoBtnAction implements ActionListener {
 
         List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
 
-        for(GroupChatMember mem : members) {
-            membersName.add(mem.getUsername());
-            roles.add(mem.getRole());
-        }
-
-        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, membersName, roles);
+        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, members);
         memListDialog.setVisible(true);
     }
 }

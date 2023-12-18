@@ -30,4 +30,8 @@ public class FriendService {
         // check if block
         return true;
     }
+
+    public long countFriendsOf(int userId) throws Exception {
+        return repository.countFriendOf(userId);
+    }
 }

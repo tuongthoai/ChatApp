@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatbox;
 
+import com.hcmus.models.GroupChatMember;
 import com.hcmus.ui.chatlist.ChatList;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.util.List;
 public class MemberList extends JPanel {
     private JScrollPane mainPanel;
 
-    public MemberList(List<String> members, List<String> roles) {
+    public MemberList(List<GroupChatMember> members) {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -26,19 +27,18 @@ public class MemberList extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
 
 
-        JButton addNewMember = new JButton("Add new member");
-        addNewMember.setPreferredSize(new Dimension(50, 30));
-        addNewMember.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        add(addNewMember, gbc);
+        JButton addNewMemberBtn = new JButton("Add new member");
+        addNewMemberBtn.setPreferredSize(new Dimension(50, 30));
+        addNewMemberBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        add(addNewMemberBtn, gbc);
 
         gbc.gridy = 1;
-
-
-        for (int i = 0; i < 10; i++) {
+        int n = members.size();
+        for (int i = 0; i < n; i++) {
             gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
-            panel.add(new MemberCard(members.get(0), roles.get(0)), gbc);
+            panel.add(new MemberCard(members.get(i).getUsername(), members.get(i).getRole()), gbc);
 
-            if (i < 9) {
+            if (i < n - 1) {
                 gbc.gridy = i * 2 + 1;
                 gbc.weightx = 1.0; // Make the separator expand horizontally
                 panel.add(new JSeparator(), gbc);

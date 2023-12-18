@@ -47,4 +47,8 @@ public class GroupChatService {
     public List<GroupChatMember> findAllMembersOfGroup(int gchatId) throws Exception {
         return repository.findMembersOf(gchatId);
     }
+
+    public long countNoGroupChatOf(int userId) throws Exception {
+        return repository.countNoGroupChatOf(userId);
+    }
 }

@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoginHistoryService implements InitializingBean {
+public class LoginHistoryService {
     @Autowired
     private LoginHistoryRepository loginHistoryRepository;
-    private ObjectMapper mapper;
 
     public List<Long> getLoginTime() throws Exception {
         return loginHistoryRepository.getAllLoginTime();
@@ -24,8 +23,7 @@ public class LoginHistoryService implements InitializingBean {
         return loginHistoryRepository.getAllUserLoginTime();
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        mapper = new ObjectMapper();
+    public long getLastLoginOf(int userId) throws Exception {
+        return loginHistoryRepository.getLastLogin(userId);
     }
 }
