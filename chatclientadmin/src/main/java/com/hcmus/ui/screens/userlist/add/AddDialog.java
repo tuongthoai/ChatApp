@@ -64,7 +64,7 @@ public class AddDialog extends JDialog {
         password = new JTextField(50);
         name = new JTextField(50);
         email = new JTextField(50);
-        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nu", "Khac"});
+        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nữ", "Khác"});
         dayComboBox = new JComboBox<>(createStringArray(1, 31));
         monthComboBox = new JComboBox<>(createStringArray(1, 12));
         yearComboBox = new JComboBox<>(createStringArray(1971, 2023));

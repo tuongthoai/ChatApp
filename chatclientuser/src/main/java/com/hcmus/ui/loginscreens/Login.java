@@ -135,6 +135,10 @@ public class Login extends JFrame {
                 int userId = -1;
                 try {
                     userId = authService.login(username, password);
+                    if (userId == -1) {
+                        JOptionPane.showMessageDialog(null, "Invalid username or password!");
+                        return;
+                    }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Login failed!");
                     return;

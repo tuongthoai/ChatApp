@@ -1,5 +1,7 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.services.AuthService;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -83,5 +85,16 @@ public class ChangePasswordScreen extends JPanel {
 
     private void addListener() {
         changeButton.addActionListener(new ChangePasswordAction(this));
+    }
+    public String getOldPassword() {
+        return oldPassword.getText();
+    }
+
+    public String getNewPassword() {
+        return newPassword.getText();
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword.getText();
     }
 }

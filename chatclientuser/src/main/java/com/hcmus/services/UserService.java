@@ -1,5 +1,6 @@
 package com.hcmus.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ApiResponse;
@@ -67,5 +68,24 @@ public class UserService {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public void updateUser(User user) throws JsonProcessingException {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(user));
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/users/update")
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.body().toString().contains("Can't update user")) {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

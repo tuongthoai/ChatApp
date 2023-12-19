@@ -23,11 +23,11 @@ public class EditDialog extends JDialog {
     private JTextField password;
     private JTextField name;
     private JTextField email;
-    private JList<String> sex;
+    private JComboBox<String> sexComboBox;
     private JTextField address;
-    private JList<String> day;
-    private JList<String> month;
-    private JList<String> year;
+    private JComboBox<String> dayComboBox;
+    private JComboBox<String> monthComboBox;
+    private JComboBox<String> yearComboBox;
     private User selectedUser;
 
     public EditDialog(Table<User> tablePanel) {
@@ -70,20 +70,24 @@ public class EditDialog extends JDialog {
         name.setText(selectedUser.getName());
         email = new JTextField(50);
         email.setText(selectedUser.getEmail());
-        sex = new JList<>(new String[] {"Nam", "Nữ", "Khác"});
-        sex.setSelectedValue(selectedUser.getSex(), true);
         address = new JTextField(50);
         address.setText(selectedUser.getAddress());
+        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nữ", "Khác"});
+        sexComboBox.setSelectedItem(selectedUser.getSex());
 
-//        LocalDateTime localDateBirthday = UnixTimestampConverter.unix2DateTime(selectedUser.getBirthday());
+        int day = UnixTimestampConverter.unix2DateTime(selectedUser.getBirthday()).getDayOfMonth();
+        int month = UnixTimestampConverter.unix2DateTime(selectedUser.getBirthday()).getMonthValue();
+        int year = UnixTimestampConverter.unix2DateTime(selectedUser.getBirthday()).getYear();
 
-        day = new JList<>(createStringList(1, 31));
-//        day.setSelectedValue(localDateBirthday.getDayOfMonth(), true);
-        month = new JList<>(createStringList(1, 12));
-        year = new JList<>(createStringList(1971, 2023));
+        dayComboBox = new JComboBox<>(createStringArray(1, 31));
+        dayComboBox.setSelectedItem(String.valueOf(day));
+        monthComboBox = new JComboBox<>(createStringArray(1, 12));
+        monthComboBox.setSelectedItem(String.valueOf(month));
+        yearComboBox = new JComboBox<>(createStringArray(1971, 2023));
+        yearComboBox.setSelectedItem(String.valueOf(year));
     }
 
-    private static String[] createStringList(int start, int end) {
+    private static String[] createStringArray(int start, int end) {
         return IntStream.rangeClosed(start, end)
                 .mapToObj(String::valueOf)
                 .toArray(String[]::new);
@@ -100,17 +104,6 @@ public class EditDialog extends JDialog {
         JLabel monthLabel = new JLabel("Month");
         JLabel yearLabel = new JLabel("Year");
         JLabel addressLabel = new JLabel("Address");
-
-        sex.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane sexScrollPane = new JScrollPane(sex);
-        sexScrollPane.setPreferredSize(new Dimension(30, 30));
-        day.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane dayScrollPane = new JScrollPane(day);
-        month.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane monthScrollPane = new JScrollPane(month);
-        year.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane yearScrollPane = new JScrollPane(year);
-
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -157,7 +150,7 @@ public class EditDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 4;
-        contentPane.add(sexScrollPane, gbc);
+        contentPane.add(sexComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -179,15 +172,15 @@ public class EditDialog extends JDialog {
 
         gbc.gridx = 1;
         gbc.gridy = 6;
-        contentPane.add(dayScrollPane, gbc);
+        contentPane.add(dayComboBox, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 6;
-        contentPane.add(monthScrollPane, gbc);
+        contentPane.add(monthComboBox, gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 6;
-        contentPane.add(yearScrollPane, gbc);
+        contentPane.add(yearComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 7;
@@ -224,10 +217,10 @@ public class EditDialog extends JDialog {
         String name = this.name.getText();
         String email = this.email.getText();
         String address = this.address.getText();
-        String sex = this.sex.getSelectedValue();
-        String day = this.day.getSelectedValue();
-        String month = this.month.getSelectedValue();
-        String year = this.year.getSelectedValue();
+        String sex = (String) this.sexComboBox.getSelectedItem();
+        String day = (String) this.dayComboBox.getSelectedItem();
+        String month = (String) this.monthComboBox.getSelectedItem();
+        String year = (String) this.yearComboBox.getSelectedItem();
 
 
         if (username.isEmpty() || password.isEmpty() || name.isEmpty() || email.isEmpty() || address.isEmpty() || sex.isEmpty()) {
