@@ -1,13 +1,14 @@
 package com.hcmus.chatserver.repository.helpers;
 
+import com.hcmus.chatserver.entities.user.UserActivity;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserActivityRowMapper implements RowMapper<UserActivityEntry>{
+public class UserActivityRowMapper implements RowMapper<UserActivity>{
     @Override
-    public UserActivityEntry mapRow(ResultSet rs, int rowNum) throws SQLException{
-        UserActivityEntry user = new UserActivityEntry();
+    public UserActivity mapRow(ResultSet rs, int rowNum) throws SQLException{
+        UserActivity user = new UserActivity();
         user.setId(rs.getInt("user_id"));
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("user_password"));

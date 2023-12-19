@@ -25,7 +25,17 @@ public class NewUsers extends JPanel {
             searchBar = new SearchBar(table.getSorter());
             dateRangeSelector = new DateRangeSelector();
 
-
+            // add event listener to date range selector
+            dateRangeSelector.getSearchButton().addActionListener(e -> {
+                try {
+                    java.util.List<User> filteredData = service.getNewUser(dateRangeSelector.getStartDate(), dateRangeSelector.getEndDate());
+                    System.out.println(filteredData.size());
+                    table.updateData(filteredData);
+                    table.updateTable();
+                } catch (Exception ex) {
+                    ex.printStackTrace(System.err);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }

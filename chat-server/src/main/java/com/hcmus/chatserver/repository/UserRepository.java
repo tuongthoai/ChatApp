@@ -1,6 +1,7 @@
 package com.hcmus.chatserver.repository;
 
 import com.hcmus.chatserver.entities.user.User;
+import com.hcmus.chatserver.entities.user.UserActivity;
 import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.helpers.*;
@@ -141,12 +142,15 @@ public class UserRepository implements InitializingBean {
         }
     }
 
-    public List<UserActivityEntry> getUserActivity(BigInteger start, BigInteger end) {
+    public List<UserActivity> getUserActivity(BigInteger start, BigInteger end) {
+        String timeQuery = "WHERE logintime BETWEEN " + start + " AND " + end;
+        if (start.compareTo(BigInteger.ZERO) == 0 || end.compareTo(BigInteger.ZERO) == 0) {
+            timeQuery = "";
+        }
         // get all user active in a period of time
         String query = "WITH active_user AS (\n" +
                 "    SELECT user_id, logintime\n" +
-                "    FROM login_history\n" +
-                "    WHERE logintime BETWEEN ? AND ?\n" +
+                "    FROM login_history\n" + timeQuery +
                 ")\n" +
                 "\n" +
                 "SELECT\n" +
@@ -162,7 +166,7 @@ public class UserRepository implements InitializingBean {
                 "GROUP BY usr.user_id\n" +
                 "ORDER BY usr.user_id";
         try {
-            return jdbcTemplate.query(query, new Object[]{start, end}, new int[]{Types.BIGINT, Types.BIGINT}, new UserActivityRowMapper());
+            return jdbcTemplate.query(query, new UserActivityRowMapper());
         } catch (Exception e) {
             e.printStackTrace(System.err);
             throw new RuntimeException("Failed to retrieve user activity");

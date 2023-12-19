@@ -1,9 +1,12 @@
-package com.hcmus.chatserver.repository.helpers;
+package com.hcmus.entities.user;
 
 import lombok.Data;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Data
-public class UserActivityEntry {
+public class UserActivity {
     private int id;
     private String username;
     private String password;
@@ -19,6 +22,13 @@ public class UserActivityEntry {
     private int chatWithCount;
     private int chatGroupCount;
 
-    public UserActivityEntry() {
+    public UserActivity() {
+    }
+
+    public static List<String> getColumnNames() {
+        return Arrays.asList(
+                "ID", "Username", "Password", "Name", "Email",
+                "Sex", "Address", "Birthday", "Created Time", "Online", "Blocked", "Login Count", "Chat With Count", "Chat Group Count"
+        );
     }
 }

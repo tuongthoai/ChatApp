@@ -3,13 +3,13 @@ package com.hcmus.chatserver.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.user.UserDTO;
-import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
+import com.hcmus.chatserver.entities.user.UserActivity;
 import com.hcmus.chatserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.hcmus.chatserver.entities.user.User;
 
-import javax.websocket.server.PathParam;
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -113,16 +113,14 @@ public class UserController {
         return mapper.writeValueAsString(response);
     }
 
-    @RequestMapping(value = "/newUser", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
-    public @ResponseBody String getNewUser(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
+    @RequestMapping(value = "/new", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
+    public @ResponseBody String getNewUser(@RequestParam("startDate") BigInteger startDate, @RequestParam("endDate") BigInteger endDate) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
-            // check date format
-            System.out.println(startDate);
-            if (startDate.length() != 10 || endDate.length() != 10) {
+            // check epoch time
+            if (startDate.compareTo(BigInteger.valueOf(0)) < 0 || endDate.compareTo(BigInteger.valueOf(0)) < 0) {
                 throw new Exception("Date format is not correct");
             }
-
             List<User> users = userService.getNewUser(startDate, endDate);
             response.setData(users);
         } catch (Exception e) {
@@ -133,16 +131,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/activity", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8", params = {"startDate", "endDate"})
-    public @ResponseBody String getUserActivity(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws Exception {
+    public @ResponseBody String getUserActivity(@RequestParam("startDate") BigInteger startDate, @RequestParam("endDate") BigInteger endDate) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
             // check date format
-            System.out.println(startDate);
-            if (startDate.length() != 10 || endDate.length() != 10) {
+            if (startDate.compareTo(BigInteger.valueOf(0)) < 0 || endDate.compareTo(BigInteger.valueOf(0)) < 0) {
                 throw new Exception("Date format is not correct");
             }
 
-            List<UserActivityEntry> users = userService.getUserActivity(startDate, endDate);
+            List<UserActivity> users = userService.getUserActivity(startDate, endDate);
             response.setData(users);
         } catch (Exception e) {
             response.setError(true);

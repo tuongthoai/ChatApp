@@ -97,6 +97,9 @@ public class DateRangeSelector extends JPanel {
         }
     }
 
+    public JButton getSearchButton() {
+        return searchButton;
+    }
     public Date getStartDate() {
         return (Date) startDatePicker.getModel().getValue();
     }
