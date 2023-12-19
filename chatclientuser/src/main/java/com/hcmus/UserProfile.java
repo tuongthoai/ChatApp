@@ -13,4 +13,7 @@ public final class UserProfile {
             UserProfile.user = user;
         }
     }
+    public static void removeUserProfile() {
+        UserProfile.user = null;
+    }
 }

@@ -136,6 +136,7 @@ public class SettingsScreen extends JPanel {
         // open login frame
         Login login = new Login();
         login.setVisible(true);
+        UserProfile.removeUserProfile();
     }
 
     private void addListener() {

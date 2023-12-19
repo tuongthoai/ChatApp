@@ -4,11 +4,13 @@ import com.hcmus.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.AuthService;
 import com.hcmus.services.UserService;
+import com.hcmus.ui.chatlayout.ChatLayout;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URISyntaxException;
 
 public class Login extends JFrame {
     private JPanel panel;
@@ -17,7 +19,7 @@ public class Login extends JFrame {
     private JButton btnLogin;
     private JLabel lblRegister;
     private JLabel lblForgotPassword;
-    private Runnable loginSuccessCallback;
+    private ChatLayout chatLayout;
 
     public Login() {
         init();
@@ -151,8 +153,13 @@ public class Login extends JFrame {
                 }
 
                 // if login success, do:
-                if (loginSuccessCallback != null) {
-                    loginSuccessCallback.run();
+                try {
+                    chatLayout = new ChatLayout();
+                    chatLayout.setVisible(true);
+                    // close current frame
+                    dispose();
+                } catch (URISyntaxException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -174,9 +181,5 @@ public class Login extends JFrame {
                 new ForgotPassword().setVisible(true);
             }
         });
-    }
-
-    public void setLoginSucessCallback(Runnable callback) {
-        this.loginSuccessCallback = callback;
     }
 }

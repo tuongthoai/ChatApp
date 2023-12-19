@@ -82,6 +82,6 @@ public class ChangePasswordScreen extends JPanel {
     }
 
     private void addListener() {
-        changeButton.addActionListener(e -> changePassword());
+        changeButton.addActionListener(new ChangePasswordAction(this));
     }
 }

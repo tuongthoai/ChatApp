@@ -18,6 +18,7 @@ public class User {
     private long createdTime;
     private boolean online = false;
     private boolean blocked = false;
+    private String role;
 
     public User() {
     }

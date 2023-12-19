@@ -20,20 +20,5 @@ public class Main extends JFrame implements Runnable {
     public void run() {
         Login login = new Login();
         login.setVisible(true);
-
-        login.setLoginSucessCallback(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    chatLayout = new ChatLayout();
-                    chatLayout.setVisible(true);
-                    login.dispose();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
     }
 }
