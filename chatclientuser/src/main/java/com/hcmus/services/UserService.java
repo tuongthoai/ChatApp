@@ -15,8 +15,8 @@ public class UserService {
         instance = null;
     }
 
-    private OkHttpClient client;
-    private ObjectMapper mapper;
+    private final OkHttpClient client;
+    private final ObjectMapper mapper;
 
     public UserService() {
         client = new OkHttpClient().newBuilder().build();
@@ -49,5 +49,23 @@ public class UserService {
             throw new RuntimeException(e);
         }
         return user;
+    }
+
+    public long countFriends(int userId) throws Exception {
+        Long result = Long.valueOf(0);
+        Request request = new Request.Builder().url("http://localhost:8080/users/" + userId + "/countFriends").method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new IOException("Request failed: " + response.code());
+            }
+
+            result = mapper.convertValue(apiResponse.getData(), Long.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

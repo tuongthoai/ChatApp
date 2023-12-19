@@ -90,4 +90,8 @@ public class UserService implements InitializingBean {
     public UserStatisticSummary getStatisticSummary(int userId) throws Exception {
         return userRepository.getStatisticSummary(userId);
     }
+
+    public long countUserFriends(int userId) throws Exception {
+        return userRepository.countFriends(userId);
+    }
 }

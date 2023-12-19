@@ -52,6 +52,7 @@ public class LoginHistoryController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get user login history time");
+            e.printStackTrace();
         }
         return mapper.writeValueAsString(response);
     }

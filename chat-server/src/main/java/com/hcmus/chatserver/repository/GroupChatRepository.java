@@ -89,7 +89,11 @@ public class GroupChatRepository implements InitializingBean {
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Long>() {
             @Override
             public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
-                return rs.getLong(1);
+                if(rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getLong(1);
+                }
+                return 0L;
             }
         });
     }
