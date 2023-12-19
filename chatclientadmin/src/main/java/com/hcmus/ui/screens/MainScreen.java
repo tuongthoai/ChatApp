@@ -22,13 +22,16 @@ public class MainScreen extends JFrame {
     public MainScreen() {
         setTitle("Chat management system");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(1000, 600));
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         contentPanel = new JPanel();
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
+
+
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Sidebar
         Sidebar sidebar = new Sidebar(contentPanel, cardLayout);

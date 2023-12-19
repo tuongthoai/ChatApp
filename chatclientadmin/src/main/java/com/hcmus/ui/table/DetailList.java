@@ -15,7 +15,7 @@ public class DetailList<T> extends JDialog {
         content.setLayout(new GridLayout(1, 1));
         content.add(contentPanel);
 
-        setPreferredSize(new Dimension(500, 150));
+        setPreferredSize(new Dimension(800, 400));
         setLayout(new BorderLayout());
         JPanel title = new JPanel();
         JLabel titleLabel = new JLabel(listTitle);
