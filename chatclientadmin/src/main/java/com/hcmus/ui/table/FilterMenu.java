@@ -30,6 +30,10 @@ public class FilterMenu extends JMenu {
         filterItem.addActionListener(e -> {
             showFilterDialog();
         });
+
+        clearFilterItem.addActionListener(e -> {
+            sorter.setRowFilter(null);
+        });
     }
 
     public void setFilterComponents(JComponent... components) {

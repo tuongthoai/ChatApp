@@ -9,14 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class UserActivity extends JPanel {
+public class UserActivityUI extends JPanel {
     private Table<UserActivity> table;
     private SearchBar searchBar;
     private UserService service;
 
     private DateRangeSelector dateRangeSelector;
 
-    public UserActivity() {
+    public UserActivityUI() {
         setLayout(new BorderLayout());
         try {
             service = new UserService();
