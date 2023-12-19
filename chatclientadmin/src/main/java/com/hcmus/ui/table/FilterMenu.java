@@ -17,8 +17,8 @@ public class FilterMenu extends JMenu {
     private TableRowSorter<DefaultTableModel> sorter;
     private DefaultTableModel model;
 
-    public FilterMenu(TableRowSorter<DefaultTableModel> sorter, DefaultTableModel model) {
-        super("Filter");
+    public FilterMenu(TableRowSorter<DefaultTableModel> sorter, DefaultTableModel model, String filterName) {
+        super(filterName);
         this.model = model;
         this.sorter = sorter;
 

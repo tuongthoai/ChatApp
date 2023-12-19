@@ -28,7 +28,7 @@ public class ChatList extends JPanel {
 
             table = new Table<GroupChat>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Detail", "Member List", "Admin List"));
-            filterMenu = new FilterMenu(table.getSorter(), table.getModel());
+            filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter by Group Name");
             searchBar = new SearchBar(table.getSorter());
 
             JTextField groupName = new JTextField(10);

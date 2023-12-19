@@ -32,7 +32,7 @@ public class UserList extends JPanel {
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List"));
-            filterMenu = new FilterMenu(table.getSorter(), table.getModel());
+            filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter");
             searchBar = new SearchBar(table.getSorter());
 
             JTextField username = new JTextField(10);
