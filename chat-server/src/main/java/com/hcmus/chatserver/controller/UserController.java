@@ -176,4 +176,18 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/{userId}/countFriends", method = RequestMethod.GET)
+    public @ResponseBody String countFriends(@PathVariable int userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            long cnt = userService.countUserFriends(userId);
+            response.setData(cnt);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't count user's fiends");
+            e.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

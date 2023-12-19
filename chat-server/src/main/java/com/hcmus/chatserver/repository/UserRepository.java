@@ -213,4 +213,19 @@ public class UserRepository implements InitializingBean {
             }
         });
     }
+
+    public long countFriends(int userId) throws Exception {
+        String query = "select count(*) from user_friend uf where uf.user_id = ?";
+        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Long>() {
+            @Override
+            public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getLong(1);
+                }
+
+                return Long.valueOf(0);
+            }
+        });
+    }
 }

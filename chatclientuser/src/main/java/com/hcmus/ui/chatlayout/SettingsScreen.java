@@ -1,7 +1,10 @@
 package com.hcmus.ui.chatlayout;
 
 import com.hcmus.UserProfile;
+import com.hcmus.models.GroupChat;
 import com.hcmus.models.User;
+import com.hcmus.services.AuthService;
+import com.hcmus.services.GChatService;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.loginscreens.Login;
 
@@ -9,6 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class SettingsScreen extends JPanel {
     private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
@@ -82,22 +88,43 @@ public class SettingsScreen extends JPanel {
         email.setAlignmentX(Component.LEFT_ALIGNMENT);
         infoPanel.add(email);
 
-        JLabel friendsNumber = new JLabel("Friends: " + "52");
+        UserService service = UserService.getInstance();
+        long friendCnt = 0;
+        try {
+            friendCnt = service.countFriends(getUser().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JLabel friendsNumber = new JLabel("Friends: " + friendCnt);
         friendsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         friendsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
         infoPanel.add(friendsNumber);
 
-        JLabel groupsNumber = new JLabel("Groups: " + "17");
+        GChatService gChatService = GChatService.getInstance();
+        long gChatCnt = 0;
+        try {
+            gChatCnt = gChatService.countNoGroupChat(getUser().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JLabel groupsNumber = new JLabel("Groups: " + gChatCnt);
         groupsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         groupsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
         infoPanel.add(groupsNumber);
 
-        JLabel messagesNumber = new JLabel("Messages: " + "100");
-        messagesNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        messagesNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(messagesNumber);
+//        JLabel messagesNumber = new JLabel("Messages: " + "100");
+//        messagesNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//        messagesNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
+//        infoPanel.add(messagesNumber);
 
-        JLabel lastLogin = new JLabel("Last login: " + "2021-05-01 10:00:00");
+        AuthService authService = AuthService.getInstance();
+        long lastLoginTimeStamp = 0;
+        try {
+            lastLoginTimeStamp = authService.lastLogin(getUser().getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        JLabel lastLogin = new JLabel("Last login: " + LocalDateTime.ofInstant(Instant.ofEpochMilli(lastLoginTimeStamp), ZoneId.systemDefault()));
         lastLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lastLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
         infoPanel.add(lastLogin);

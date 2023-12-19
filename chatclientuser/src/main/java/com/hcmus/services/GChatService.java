@@ -18,8 +18,8 @@ public class GChatService {
         instance = null;
     }
 
-    private OkHttpClient client;
-    private ObjectMapper mapper;
+    private final OkHttpClient client;
+    private final ObjectMapper mapper;
 
     private GChatService() {
         client = new OkHttpClient().newBuilder().build();
@@ -37,7 +37,7 @@ public class GChatService {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder().url("http://localhost:8080/gchats/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
-        try (Response response = client.newCall(request).execute();) {
+        try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 List<GroupChat> data = mapper.convertValue(apiResponse.getData(), new TypeReference<List<GroupChat>>() {
@@ -63,6 +63,25 @@ public class GChatService {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<GroupChatMember>>() {
                 });
+            } else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public Long countNoGroupChat(int userId) throws Exception {
+        Long result = 0L;
+        try {
+            Request request = new Request.Builder().url("http://localhost:8080/gchats/" + userId + "/count").method("GET", null).build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                result = mapper.convertValue(apiResponse.getData(), Long.class);
             } else {
                 throw new IOException("Request failed: " + response.code());
             }
