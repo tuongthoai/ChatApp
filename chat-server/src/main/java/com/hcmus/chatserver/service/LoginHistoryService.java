@@ -29,5 +29,7 @@ public class LoginHistoryService {
 
     public void persistLoginInfo(int userId) throws Exception {
 
+    public List<LoginHistoryEntry> findAllBy(int userId) throws Exception {
+        return loginHistoryRepository.findAllBy(userId);
     }
 }

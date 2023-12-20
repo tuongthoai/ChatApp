@@ -11,7 +11,7 @@ public class LoginHistoryRowMapper implements RowMapper<LoginHistoryEntry> {
         LoginHistoryEntry result = new LoginHistoryEntry();
         result.setLoginTime(rs.getLong("logintime"));
         result.setUserId(rs.getLong("user_id"));
-        result.setDctime(rs.getLong("dctime"));
+        result.setDcTime(rs.getLong("dctime"));
         return result;
     }
 }

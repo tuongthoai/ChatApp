@@ -5,14 +5,12 @@ import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.UserRepository;
-import com.hcmus.chatserver.repository.helpers.UserActivityEntry;
+import com.hcmus.chatserver.entities.user.UserActivity;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -62,25 +60,12 @@ public class UserService implements InitializingBean {
         mapper = new ObjectMapper();
     }
 
-    // format date: yyyy-mm-dd
-    public List<User> getNewUser(String startDate, String endDate) throws Exception {
-        // convert to big integer
-        Timestamp startTimestamp = Timestamp.valueOf(startDate + " 00:00:00");
-        Timestamp endTimestamp = Timestamp.valueOf(endDate + " 23:59:59");
-        BigInteger start = new BigInteger(String.valueOf(startTimestamp.toInstant().getEpochSecond()));
-        BigInteger end = new BigInteger(String.valueOf(endTimestamp.toInstant().getEpochSecond()));
-
-        return userRepository.getNewUser(start, end);
+    public List<User> getNewUser(BigInteger startDate, BigInteger endDate) throws Exception {
+        return userRepository.getNewUser(startDate, endDate);
     }
 
-    public List<UserActivityEntry> getUserActivity(String startDate, String endDate) throws Exception {
-        // convert to big integer
-        Timestamp startTimestamp = Timestamp.valueOf(startDate + " 00:00:00");
-        Timestamp endTimestamp = Timestamp.valueOf(endDate + " 23:59:59");
-        BigInteger start = new BigInteger(String.valueOf(startTimestamp.toInstant().getEpochSecond()));
-        BigInteger end = new BigInteger(String.valueOf(endTimestamp.toInstant().getEpochSecond()));
-
-        return userRepository.getUserActivity(start, end);
+    public List<UserActivity> getUserActivity(BigInteger startDate, BigInteger endDate) throws Exception {
+        return userRepository.getUserActivity(startDate, endDate);
     }
 
     public List<UserDTO> getDirInDirFriend() throws Exception {

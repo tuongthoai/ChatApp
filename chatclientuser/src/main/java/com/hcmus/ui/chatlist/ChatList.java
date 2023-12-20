@@ -39,6 +39,7 @@ public class ChatList extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weighty = 0.0;
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // init websocket
@@ -55,6 +56,9 @@ public class ChatList extends JPanel {
         for (int i = 0; i < gchatSize; i++) {
             gbc.gridy = i * 2;
             GroupChat groupChat = groupChats.get(i);
+
+            gbc.anchor = GridBagConstraints.NORTH;
+
             ChatListItem chatListItem = new ChatListItem("avatar.png", groupChat.getGroupName(), chatList.get(0));
             chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName());
             chatListItem.addActionListener(new SwitchChatAction(chatScreen));
@@ -69,7 +73,7 @@ public class ChatList extends JPanel {
         }
 
         addButton = new JButton("Create a new conversation");
-        addButton.addActionListener(new AddConvoAction());
+        addButton.addActionListener(new CreateConvoAction());
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;

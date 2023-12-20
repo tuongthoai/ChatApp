@@ -1,4 +1,4 @@
-package com.hcmus.ui.screens.loginhistory;
+package com.hcmus.ui.screens.useractivity;
 
 import com.hcmus.entities.user.User;
 import com.hcmus.entities.user.UserActivity;
@@ -9,14 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class LoginHistory extends JPanel {
+public class UserActivityUI extends JPanel {
     private Table<UserActivity> table;
     private SearchBar searchBar;
     private UserService service;
 
     private DateRangeSelector dateRangeSelector;
 
-    public LoginHistory() {
+    public UserActivityUI() {
         setLayout(new BorderLayout());
         try {
             service = new UserService();

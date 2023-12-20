@@ -37,7 +37,7 @@ public class FriendListAction implements ActionListener {
 
         DetailList<User> friendListDialog = null;
         try {
-            friendListDialog = new DetailList<User>(tablePanel, new Table<User>(friends, User.getColumnNames()), "Friend List - " + user.getUsername());
+            friendListDialog = new DetailList<User>(tablePanel, new Table<User>(friends, User.getColumnNames()), "Friends List - " + user.getUsername());
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
