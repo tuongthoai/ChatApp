@@ -1,8 +1,5 @@
 package com.hcmus;
 
-import com.hcmus.models.ApiResponse;
-import com.hcmus.models.ChatMessage;
-import com.hcmus.models.User;
 import com.hcmus.ui.chatlayout.ChatLayout;
 import com.hcmus.ui.loginscreens.Login;
 

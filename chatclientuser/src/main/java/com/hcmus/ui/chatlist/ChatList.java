@@ -52,6 +52,9 @@ public class ChatList extends JPanel {
         ChatHashMap chatHashMap = ChatHashMap.getInstance();
         chatHashMap.setContext(context);
 
+        // init service for get history msg
+        GChatService service = GChatService.getInstance();
+
         int gchatSize = groupChats.size();
         for (int i = 0; i < gchatSize; i++) {
             gbc.gridy = i * 2;
@@ -60,7 +63,7 @@ public class ChatList extends JPanel {
             gbc.anchor = GridBagConstraints.NORTH;
 
             ChatListItem chatListItem = new ChatListItem("avatar.png", groupChat.getGroupName(), chatList.get(0));
-            chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName());
+            chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName(), service.getAllHistory(groupChat.getGroupId()));
             chatListItem.addActionListener(new SwitchChatAction(chatScreen));
             panel.add(chatListItem, gbc);
 

@@ -1,8 +1,9 @@
 package com.hcmus.chatserver.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.chatserver.entities.messages.CustomMessage;
+import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.service.ChatSocketSessionContext;
+import com.hcmus.chatserver.service.GroupChatService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.List;
 @Service
 public class SocketSessionContext extends TextWebSocketHandler implements InitializingBean {
+    @Autowired
+    private GroupChatService groupChatService;
     private final ChatSocketSessionContext context;
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -35,10 +38,9 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        CustomMessage msg = mapper.readValue(payload, CustomMessage.class);
-        Integer gChatId = Integer.valueOf(msg.getHeaders().get("GCHAT_ID"));
-        Integer userIdSent = Integer.valueOf(msg.getHeaders().get("USER_SEND_ID"));
-        context.send2Group(gChatId, message);
+        ClientChatMessage msg = mapper.readValue(payload, ClientChatMessage.class);
+        context.send2Group(msg.getGroupChatId(), message);
+        groupChatService.persistMsg(msg);
         System.out.println(payload);
     }
 

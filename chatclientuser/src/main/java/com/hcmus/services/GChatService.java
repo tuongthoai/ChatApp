@@ -3,6 +3,7 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ApiResponse;
+import com.hcmus.models.ChatContentDTO;
 import com.hcmus.models.GroupChat;
 import com.hcmus.models.GroupChatMember;
 import okhttp3.*;
@@ -79,6 +80,26 @@ public class GChatService {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 result = mapper.convertValue(apiResponse.getData(), Long.class);
+            } else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public List<ChatContentDTO> getAllHistory(int groupId) {
+        List<ChatContentDTO> result = new ArrayList<>();
+        try {
+            Request request = new Request.Builder().url("http://localhost:8080/gchats/" + groupId + "/messages").method("GET", null).build();
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<ChatContentDTO>>() {
+                });
             } else {
                 throw new IOException("Request failed: " + response.code());
             }

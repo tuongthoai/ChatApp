@@ -2,6 +2,7 @@ package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.UserProfile;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.ui.chatbox.ChatBox;
 
@@ -23,13 +24,16 @@ public class ChatBoxSendMsgBtnAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!(jTextField.getText().isEmpty())) {
-            String mess = jTextField.getText();
+            String content = jTextField.getText();
             jTextField.setText(""); // Clear the text field after sending
-            parent.displayChatMessage();
+
 
             ChatMessage msg = new ChatMessage();
-            msg.setHeaders(parent.getMsgHeaders());
-            msg.setContent(mess);
+            msg.setUserSentId(UserProfile.getUserProfile().getId());
+            msg.setUsername(UserProfile.getUserProfile().getUsername());
+            msg.setMsgContent(content);
+            parent.getChatMessages().add(msg);
+            parent.displayChatMessage();
             try {
                 parent.getContext().send(mapper.writeValueAsString(msg));
             } catch (JsonProcessingException ex) {

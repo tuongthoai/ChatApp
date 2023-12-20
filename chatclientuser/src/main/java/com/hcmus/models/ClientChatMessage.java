@@ -1,13 +1,13 @@
 package com.hcmus.models;
 
-public class ChatMessage {
+public class ClientChatMessage {
     private int userSentId;
     private int groupChatId;
     private String username;
     private String msgType;
     private String msgContent;
 
-    public ChatMessage() {
+    public ClientChatMessage() {
     }
 
     public int getUserSentId() {

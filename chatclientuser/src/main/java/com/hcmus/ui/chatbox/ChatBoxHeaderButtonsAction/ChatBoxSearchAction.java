@@ -1,6 +1,5 @@
 package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
-import com.fasterxml.jackson.core.JsonStreamContext;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.ui.chatbox.ChatBox;
 
@@ -8,10 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.DirectoryNotEmptyException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChatBoxSearchAction implements ActionListener {
     private ChatBox chatBox;
@@ -81,8 +77,7 @@ public class ChatBoxSearchAction implements ActionListener {
 
     // Helper method to format a ChatMessage for display
     private String formatChatMessage(ChatMessage chatMessage) {
-        Map<String, String> headers = chatMessage.getHeaders();
-        String content = chatMessage.getContent();
-        return "Headers: " + headers + "\nContent: " + content;
+        String content = chatMessage.getMsgContent();
+        return "UserSent: " + chatMessage.getUsername() + " Content: " + content;
     }
 }

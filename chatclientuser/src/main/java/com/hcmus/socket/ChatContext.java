@@ -77,7 +77,7 @@ public class ChatContext extends WebSocketClient {
         }
 
         if (msg != null) {
-            this.notify(Integer.valueOf(msg.getHeaders().get("GCHAT_ID")), msg);
+            this.notify(msg.getGroupChatId(), msg);
         }
     }
 

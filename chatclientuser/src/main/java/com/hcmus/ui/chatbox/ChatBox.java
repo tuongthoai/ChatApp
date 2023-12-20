@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.UserProfile;
+import com.hcmus.models.ChatContentDTO;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.socket.ChatContext;
@@ -9,8 +10,7 @@ import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 public class ChatBox extends JPanel implements Subscriber {
@@ -20,24 +20,29 @@ public class ChatBox extends JPanel implements Subscriber {
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
     private String chatName;
-    private Map<String, String> msgHeaders;
 
     public ChatBox() {
         chatName = "";
         chatMessages = new ArrayList<>();
-
         initComponent();
     }
 
-    public ChatBox(String chatName, Integer chatId, ChatContext context) {
+    public ChatBox(String chatName, Integer chatId, ChatContext context, List<ChatContentDTO> history) {
         this.chatName = chatName;
         this.chatId = chatId;
         this.context = context;
-        this.msgHeaders = new HashMap<>();
-        msgHeaders.put("GCHAT_ID", String.valueOf(chatId));
-        msgHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
         this.chatMessages = new ArrayList<>();
         this.context.addObserver(this);
+
+        ChatMessage msgContent;
+        for(ChatContentDTO content : history) {
+            msgContent = new ChatMessage();
+            msgContent.setUserSentId(content.getUsersent());
+            msgContent.setUsername(content.getUsername());
+            msgContent.setGroupChatId(content.getGroup_id());
+            msgContent.setMsgContent(content.getMsg());
+            chatMessages.add(msgContent);
+        }
         initComponent();
     }
 
@@ -152,13 +157,11 @@ public class ChatBox extends JPanel implements Subscriber {
 
     public void displayChatMessage() {
         chatContent.setText(""); // Clear the existing messages before displaying
-        Map<String, String> headers = null;
         for (ChatMessage message : chatMessages) {
-            headers = message.getHeaders();
-            if (Integer.valueOf(headers.get("USER_SEND_ID")) == UserProfile.getUserProfile().getId()) {
-                chatContent.append("< Me >: " + message.getContent() + "\n");
+            if (message.getUserSentId() == UserProfile.getUserProfile().getId()) {
+                chatContent.append("< Me >: " + message.getMsgContent() + "\n");
             } else {
-                chatContent.append("< " + headers.get("USER_SEND_ID") + " >: " + message.getContent() + "\n");
+                chatContent.append("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
             }
             chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
@@ -242,14 +245,6 @@ public class ChatBox extends JPanel implements Subscriber {
 
     public void setChatName(String chatName) {
         this.chatName = chatName;
-    }
-
-    public Map<String, String> getMsgHeaders() {
-        return msgHeaders;
-    }
-
-    public void setMsgHeaders(Map<String, String> msgHeaders) {
-        this.msgHeaders = msgHeaders;
     }
 
     @Override
