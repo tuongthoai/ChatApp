@@ -27,8 +27,8 @@ public class ChatBoxSendMsgBtnAction implements ActionListener {
             String content = jTextField.getText();
             jTextField.setText(""); // Clear the text field after sending
 
-
             ChatMessage msg = new ChatMessage();
+            msg.setGroupChatId(parent.getChatId());
             msg.setUserSentId(UserProfile.getUserProfile().getId());
             msg.setUsername(UserProfile.getUserProfile().getUsername());
             msg.setMsgContent(content);
