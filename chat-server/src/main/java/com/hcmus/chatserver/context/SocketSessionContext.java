@@ -15,11 +15,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.Map;
 import java.util.List;
+
 @Service
 public class SocketSessionContext extends TextWebSocketHandler implements InitializingBean {
+    private final ChatSocketSessionContext context;
     @Autowired
     private GroupChatService groupChatService;
-    private final ChatSocketSessionContext context;
     private ObjectMapper mapper = new ObjectMapper();
 
     public SocketSessionContext(ChatSocketSessionContext context) {
