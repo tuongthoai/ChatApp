@@ -32,7 +32,7 @@ public class BlockDialog extends JDialog {
         initializeButtons();
         setupLayout();
         setPreferredSize(new Dimension(350, 150));
-        setTitle("Delete item");
+        setTitle("Block user");
 
         setContentPane(contentPanel);
         pack();

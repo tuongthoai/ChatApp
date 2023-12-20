@@ -6,6 +6,7 @@ import com.hcmus.ui.screens.userlist.block.BlockAction;
 import com.hcmus.ui.screens.userlist.delete.DeleteAction;
 import com.hcmus.ui.screens.userlist.edit.EditAction;
 import com.hcmus.ui.screens.userlist.friendlist.FriendListAction;
+import com.hcmus.ui.screens.userlist.loginhistory.LoginHistoryAction;
 import com.hcmus.ui.table.ContextMenu;
 import com.hcmus.ui.table.FilterMenu;
 import com.hcmus.ui.table.SearchBar;
@@ -31,7 +32,7 @@ public class UserList extends JPanel {
             List<String> columnNames = User.getColumnNames();
 
             table = new Table<>(data, columnNames);
-            contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List"));
+            contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List", "Login History"));
             filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter");
             searchBar = new SearchBar(table.getSorter());
 
@@ -64,6 +65,9 @@ public class UserList extends JPanel {
 
             JMenuItem friendListItem = contextMenu.getFriendListItem();
             friendListItem.addActionListener(new FriendListAction(table));
+
+            JMenuItem loginHistoryItem = contextMenu.getLoginHisItem();
+            loginHistoryItem.addActionListener(new LoginHistoryAction(table));
 
             contextMenu.setFilterMenu(filterMenu);
         } catch (Exception e) {

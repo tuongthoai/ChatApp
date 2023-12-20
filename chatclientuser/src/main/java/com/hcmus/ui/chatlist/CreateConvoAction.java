@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 
-public class AddConvoAction implements ActionListener {
+public class CreateConvoAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<String> listFriend = Arrays.asList("Tran Gia Thinh", "Lac Thieu Quan", "Tang Tuong Thoai", "Nguyen Cong Khanh", "Nguyen Cao Luan");

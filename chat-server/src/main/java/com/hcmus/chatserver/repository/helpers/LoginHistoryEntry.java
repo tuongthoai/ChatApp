@@ -8,5 +8,5 @@ import lombok.Setter;
 public class LoginHistoryEntry {
     private long userId;
     private long loginTime;
-    private long dctime;
+    private long dcTime;
 }
