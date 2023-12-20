@@ -6,6 +6,7 @@ public class ChatMessage {
     private String username;
     private String msgType;
     private String msgContent;
+    private long sentTime;
 
     public ChatMessage() {
     }
@@ -48,5 +49,13 @@ public class ChatMessage {
 
     public void setGroupChatId(int groupChatId) {
         this.groupChatId = groupChatId;
+    }
+
+    public long getSentTime() {
+        return sentTime;
+    }
+
+    public void setSentTime(long sentTime) {
+        this.sentTime = sentTime;
     }
 }

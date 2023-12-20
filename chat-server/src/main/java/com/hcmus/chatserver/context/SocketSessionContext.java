@@ -27,7 +27,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws IOException {
+    public void afterConnectionEstablished(WebSocketSession session) {
         HttpHeaders headers = session.getHandshakeHeaders();
         List<String> ids = headers.get("user_send_id");
         if (ids != null) {
@@ -47,11 +47,10 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     @Override
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
         System.out.println("A user has terminated");
-        Map<String, Object> atttributes = session.getAttributes();
+        context.removeSession(session.getId());
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("Done");
+    public void afterPropertiesSet() {
     }
 }

@@ -32,8 +32,7 @@ public class ChatBoxSendMsgBtnAction implements ActionListener {
             msg.setUserSentId(UserProfile.getUserProfile().getId());
             msg.setUsername(UserProfile.getUserProfile().getUsername());
             msg.setMsgContent(content);
-            parent.getChatMessages().add(msg);
-            parent.displayChatMessage();
+
             try {
                 parent.getContext().send(mapper.writeValueAsString(msg));
             } catch (JsonProcessingException ex) {

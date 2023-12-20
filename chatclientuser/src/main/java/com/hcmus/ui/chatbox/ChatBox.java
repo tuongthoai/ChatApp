@@ -9,7 +9,7 @@ import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 
@@ -41,8 +41,11 @@ public class ChatBox extends JPanel implements Subscriber {
             msgContent.setUsername(content.getUsername());
             msgContent.setGroupChatId(content.getGroup_id());
             msgContent.setMsgContent(content.getMsg());
+            msgContent.setSentTime(content.getSenttime());
             chatMessages.add(msgContent);
         }
+
+        Collections.sort(chatMessages, Comparator.comparingLong(ChatMessage::getSentTime));
         initComponent();
     }
 
