@@ -155,7 +155,7 @@ public class ChatBox extends JPanel implements Subscriber {
         Map<String, String> headers = null;
         for (ChatMessage message : chatMessages) {
             headers = message.getHeaders();
-            if (headers.get("GCHAT_ID").equals(String.valueOf(this.chatId))) {
+            if (Integer.valueOf(headers.get("USER_SEND_ID")) == UserProfile.getUserProfile().getId()) {
                 chatContent.append("< Me >: " + message.getContent() + "\n");
             } else {
                 chatContent.append("< " + headers.get("USER_SEND_ID") + " >: " + message.getContent() + "\n");
