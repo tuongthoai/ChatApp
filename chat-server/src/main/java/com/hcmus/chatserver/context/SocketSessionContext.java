@@ -26,8 +26,6 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         HttpHeaders headers = session.getHandshakeHeaders();
-        Map<String, Object> atttributes = session.getAttributes();
-//        sessions.add(session);
         List<String> ids = headers.get("user_send_id");
         if (ids != null) {
             context.addSession(Integer.valueOf(ids.get(0)), session);

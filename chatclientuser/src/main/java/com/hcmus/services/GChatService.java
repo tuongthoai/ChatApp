@@ -34,7 +34,6 @@ public class GChatService {
     }
 
     public List<GroupChat> getGChatList(int userId) {
-        MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder().url("http://localhost:8080/gchats/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -54,8 +53,6 @@ public class GChatService {
     public List<GroupChatMember> getGroupChatMembers(int gchatId) {
         List<GroupChatMember> result = new ArrayList<>();
         try {
-            MediaType mediaType = MediaType.parse("text/plain");
-            RequestBody body = RequestBody.create(mediaType, "");
             Request request = new Request.Builder().url("http://localhost:8080/gchats/members/show/" + gchatId).method("GET", null).build();
             Response response = client.newCall(request).execute();
 
