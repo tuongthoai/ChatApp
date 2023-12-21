@@ -1,5 +1,5 @@
-    -- CREATE DATABASE chat_app
-    -- DROP DATABASE CHAT_APP
+-- CREATE DATABASE chat_app
+-- DROP DATABASE CHAT_APP
 
     create table roles (
         role_id int primary key,
@@ -38,7 +38,7 @@
         GROUP_ID SERIAL PRIMARY KEY,
         GROUPNAME VARCHAR,
         CREATEDTIME BIGINT DEFAULT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP),
-        ISGROUP BOOLEAN
+        ISGROUP BOOLEAN DEFAULT FALSE
     );
 
     CREATE TABLE USER_GCHAT_LIST (
@@ -70,26 +70,29 @@
     );
 
     CREATE TABLE GCHAT_CONTENT (
-        GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID) ON DELETE CASCADE,
-        USERSENT INTEGER REFERENCES USER_METADATA (USER_ID) ON DELETE CASCADE,
+        GROUP_ID INTEGER,
+        USERSENT INTEGER,
         MSG VARCHAR,
         MSG_OFFSET INTEGER,
         SENTTIME BIGINT DEFAULT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP),
-        PRIMARY KEY (GROUP_ID, SENTTIME)
+        PRIMARY KEY (GROUP_ID, SENTTIME),
+		    FOREIGN KEY (GROUP_ID, USERSENT) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
     );
 
     CREATE TABLE GCHAT_ADMINS (
-        GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID) ON DELETE CASCADE,
-        ADMIN_ID INTEGER REFERENCES USER_METADATA (USER_ID) ON DELETE CASCADE,
-        PRIMARY KEY (GROUP_ID, ADMIN_ID)
+        GROUP_ID INTEGER,
+        ADMIN_ID INTEGER,
+        PRIMARY KEY (GROUP_ID, ADMIN_ID),
+		    FOREIGN KEY (GROUP_ID, ADMIN_ID) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
     );
 
     CREATE TABLE GCHAT_OFFSET (
-        GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID) ON DELETE CASCADE,
-        USER_ID INTEGER REFERENCES USER_METADATA (USER_ID) ON DELETE CASCADE,
+        GROUP_ID INTEGER,
+        USER_ID INTEGER,
         LASTSEENOFFSET INTEGER,
         LASTRECEIVEDOFFSET INTEGER,
-        PRIMARY KEY (GROUP_ID, USER_ID)
+        PRIMARY KEY (GROUP_ID, USER_ID),
+		    FOREIGN KEY (GROUP_ID, USER_ID) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
     );
 
     insert into ROLES(role_id, role_name) values
@@ -195,3 +198,22 @@
     (2, 2, 5, 6), (2, 3, 6, 6),
     (3, 2, 6, 6), (3, 3, 6, 6), (3, 4, 0, 6),
     (4, 1, 6, 6), (4, 4, 6, 6);
+
+	CREATE OR REPLACE FUNCTION update_isgroup()
+	RETURNS TRIGGER AS $$
+	BEGIN
+		IF TG_OP = 'DELETE' THEN
+			-- Check the count after the deletion
+			IF (SELECT count(*) FROM gchat_member gmb WHERE gmb.groupchat_id = OLD.groupchat_id) > 2 THEN
+				UPDATE gchat_metadata SET isgroup = true WHERE group_id = OLD.groupchat_id;
+			ELSE
+				UPDATE gchat_metadata SET isgroup = false WHERE group_id = OLD.groupchat_id;
+			END IF;
+		ELSE
+			-- Check the count based on the new data
+			IF (SELECT count(*) FROM gchat_member gmb WHERE gmb.groupchat_id = NEW.groupchat_id) > 2 THEN
+				UPDATE gchat_metadata SET isgroup = true WHERE group_id = NEW.groupchat_id;
+			ELSE
+				UPDATE gchat_metadata SET isgroup = false WHERE group_id = NEW.groupchat_id;
+			END IF;END IF;RETURN NEW;END;$$ LANGUAGE plpgsql;CREATE TRIGGER update_isgroup_trigger AFTER INSERT OR UPDATE OR
+DELETE ON gchat_member FOR EACH ROW EXECUTE FUNCTION update_isgroup();
