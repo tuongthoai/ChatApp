@@ -1,6 +1,8 @@
-package com.hcmus.ui.chatbox;
+package com.hcmus.ui.chatbox.RenameAction;
 
 import com.hcmus.services.GChatService;
+import com.hcmus.ui.chatbox.ChatBox;
+import com.hcmus.ui.chatbox.RenameField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
