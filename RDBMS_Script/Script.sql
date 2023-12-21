@@ -70,26 +70,29 @@ CREATE TABLE GCHAT_MEMBER (
 );
 
 CREATE TABLE GCHAT_CONTENT (
-                               GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID),
-                               USERSENT INTEGER REFERENCES USER_METADATA (USER_ID),
+                               GROUP_ID INTEGER,
+                               USERSENT INTEGER,
                                MSG VARCHAR,
                                MSG_OFFSET INTEGER,
                                SENTTIME BIGINT DEFAULT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP) * 1000,
-                               PRIMARY KEY (GROUP_ID, SENTTIME)
+                               PRIMARY KEY (GROUP_ID, SENTTIME),
+                               FOREIGN KEY (GROUP_ID, USERSENT) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE GCHAT_ADMINS (
-                              GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID),
-                              ADMIN_ID INTEGER REFERENCES USER_METADATA (USER_ID),
-                              PRIMARY KEY (GROUP_ID, ADMIN_ID)
+                                GROUP_ID INTEGER,
+                                ADMIN_ID INTEGER,
+                                PRIMARY KEY (GROUP_ID, ADMIN_ID),
+                                FOREIGN KEY (GROUP_ID, ADMIN_ID) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE GCHAT_OFFSET (
-                              GROUP_ID INTEGER REFERENCES GCHAT_METADATA (GROUP_ID),
-                              USER_ID INTEGER REFERENCES USER_METADATA (USER_ID),
-                              LASTSEENOFFSET INTEGER,
-                              LASTRECEIVEDOFFSET INTEGER,
-                              PRIMARY KEY (GROUP_ID, USER_ID)
+                                GROUP_ID INTEGER,
+                                USER_ID INTEGER,
+                                LASTSEENOFFSET INTEGER,
+                                LASTRECEIVEDOFFSET INTEGER,
+                                PRIMARY KEY (GROUP_ID, USER_ID),
+                                FOREIGN KEY (GROUP_ID, USER_ID) REFERENCES GCHAT_MEMBER (GROUPCHAT_ID, MEMBER_ID) ON DELETE CASCADE
 );
 
 insert into ROLES(role_id, role_name) values
