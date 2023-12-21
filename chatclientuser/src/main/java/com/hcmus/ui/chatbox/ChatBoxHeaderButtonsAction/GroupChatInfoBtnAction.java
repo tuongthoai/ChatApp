@@ -22,16 +22,7 @@ public class GroupChatInfoBtnAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // CALL API FOR CHAT INFO
-
-        List<String> membersName = new ArrayList<>();
-        List<String> roles = new ArrayList<>();
-
-        GChatService service = GChatService.getInstance();
-
-        List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
-
-        GroupInfoDialog memListDialog = new GroupInfoDialog(parent, members);
+        GroupInfoDialog memListDialog = new GroupInfoDialog(parent);
         memListDialog.setVisible(true);
     }
 }

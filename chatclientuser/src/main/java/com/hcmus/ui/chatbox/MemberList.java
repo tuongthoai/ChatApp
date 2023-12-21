@@ -14,7 +14,10 @@ public class MemberList extends JPanel {
     public MemberList(List<GroupChatMember> members) {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        add(createMemberScrollPanel(members, gbc), gbc);
+    }
 
+    public JScrollPane createMemberScrollPanel(List<GroupChatMember> members, GridBagConstraints gbc) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
 
@@ -53,7 +56,12 @@ public class MemberList extends JPanel {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-        add(mainPanel, gbc);
+
+        return mainPanel;
+    }
+
+    public void updateMemberList() {
+        removeAll();
     }
 
     private class MemberCard extends JPanel {

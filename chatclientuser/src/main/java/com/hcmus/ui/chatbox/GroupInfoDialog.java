@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.services.GChatService;
 
 import javax.swing.*;
 import java.util.List;
@@ -11,10 +12,11 @@ public class GroupInfoDialog extends JDialog {
     public GroupInfoDialog() {
     }
 
-    public GroupInfoDialog(ChatBox parent, List<GroupChatMember> members) {
-        super((JFrame) SwingUtilities.getWindowAncestor(parent), parent.getChatName() + " Information", true);
+    public GroupInfoDialog(ChatBox parent) {
+        super((JFrame) SwingUtilities.getWindowAncestor(parent), "Group Information", true);
         this.parent = parent;
-
+        GChatService service = GChatService.getInstance();
+        List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
         MemberList memberList = new MemberList(members);
 
         setSize(300, 400);

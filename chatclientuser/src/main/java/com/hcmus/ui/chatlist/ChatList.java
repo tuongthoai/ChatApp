@@ -41,15 +41,9 @@ public class ChatList extends JPanel {
         gbc.weighty = 0.0;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // init websocket
-        Map<String, String> wsHeaders = new HashMap<>();
-        URI wsUri = new URI("ws://localhost:8080/chat");
-        wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
-        ChatContext context = ChatContext.getInstance(wsUri, wsHeaders);
-
         // init ChatHashMap
         ChatHashMap chatHashMap = ChatHashMap.getInstance();
-        chatHashMap.setContext(context);
+        chatHashMap.setContext(this.chatScreen.getContext());
 
         // init service for get history msg
         GChatService service = GChatService.getInstance();

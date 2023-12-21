@@ -1,17 +1,23 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.UserProfile;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.friendscreen.FriendHomePage;
 import com.hcmus.ui.sidebar.Sidebar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChatLayout extends JFrame {
     private JPanel mainPanel;
     private JPanel contentPanel;
     private CardLayout cardLayout;
+    private ChatContext chatContext;
 
     public ChatLayout() throws URISyntaxException {
         setTitle("Chat UI");
@@ -24,12 +30,18 @@ public class ChatLayout extends JFrame {
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
 
+        // init websocket
+        Map<String, String> wsHeaders = new HashMap<>();
+        URI wsUri = new URI("ws://localhost:8080/chat");
+        wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
+        this.chatContext = ChatContext.getInstance(wsUri, wsHeaders);
+
         // Sidebar
         Sidebar sidebar = new Sidebar(contentPanel, cardLayout);
         mainPanel.add(sidebar, BorderLayout.WEST);
 
         // Main screen
-        ChatScreen mainScreen = new ChatScreen();
+        ChatScreen mainScreen = new ChatScreen(this.chatContext);
         contentPanel.add(mainScreen, "CHAT");
 
         // Friend screen

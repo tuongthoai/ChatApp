@@ -144,7 +144,7 @@ public class Login extends JFrame {
                     return;
                 }
 
-                JOptionPane.showMessageDialog(null, "Login success!");
+//                JOptionPane.showMessageDialog(null, "Login success!");
 
                 // set current user
                 try {

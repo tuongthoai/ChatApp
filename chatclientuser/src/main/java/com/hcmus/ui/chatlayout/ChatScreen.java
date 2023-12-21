@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
 import com.hcmus.ui.searchbar.SearchBar;
@@ -10,8 +11,11 @@ import java.net.URISyntaxException;
 
 public class ChatScreen extends JPanel {
     JPanel chatBoxContainer;
+    ChatBox nullChatBox;
+    ChatContext context;
 
-    public ChatScreen() throws URISyntaxException {
+    public ChatScreen(ChatContext context) throws URISyntaxException {
+        this.context = context;
         setLayout(new BorderLayout());
 
         // Main panel with BorderLayout
@@ -27,9 +31,10 @@ public class ChatScreen extends JPanel {
         chatListPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
         // Message box
+        nullChatBox = new ChatBox();
         chatBoxContainer = new JPanel();
         chatBoxContainer.setLayout(new BorderLayout());
-        chatBoxContainer.add(new ChatBox(), BorderLayout.CENTER);
+        chatBoxContainer.add(nullChatBox, BorderLayout.CENTER);
 
         // Add components to main panel
         mainPanel.add(chatListPanel, BorderLayout.WEST);
@@ -44,5 +49,13 @@ public class ChatScreen extends JPanel {
         chatBoxContainer.add(newChatBox, BorderLayout.CENTER);
         chatBoxContainer.revalidate();
         chatBoxContainer.repaint();
+    }
+
+    public ChatContext getContext() {
+        return context;
+    }
+
+    public void setContext(ChatContext context) {
+        this.context = context;
     }
 }
