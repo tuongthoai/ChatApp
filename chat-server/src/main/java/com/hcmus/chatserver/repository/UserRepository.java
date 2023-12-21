@@ -232,4 +232,9 @@ public class UserRepository implements InitializingBean {
             }
         });
     }
+
+    public void updateUserOnlineStatus(int userId, boolean isOnline) throws Exception {
+        String query  = "update user_metadata set isonline = ? where user_metadata.user_id = ?";
+        jdbcTemplate.update(query, isOnline, userId);
+    }
 }

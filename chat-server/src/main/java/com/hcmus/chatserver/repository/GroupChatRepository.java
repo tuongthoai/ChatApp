@@ -1,8 +1,11 @@
 package com.hcmus.chatserver.repository;
 
+import com.hcmus.chatserver.entities.groupchat.ChatContentDTO;
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
+import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.entities.user.User;
+import com.hcmus.chatserver.repository.helpers.ChatContentDTORowMapper;
 import com.hcmus.chatserver.repository.helpers.GroupChatEachMapper;
 import com.hcmus.chatserver.repository.helpers.GroupChatRowMapper;
 import com.hcmus.chatserver.repository.helpers.UserRowMapper;
@@ -96,5 +99,24 @@ public class GroupChatRepository implements InitializingBean {
                 return 0L;
             }
         });
+    }
+
+
+    public List<ChatContentDTO> getAllMsg(int groupChatId) throws Exception {
+        String query = "select tb1.*, um.username " +
+                "from ( " +
+                "select * " +
+                "from gchat_content gc " +
+                "where gc.group_id = ? " +
+                ") as tb1 " +
+                "join user_metadata um on um.user_id = tb1.usersent ";
+
+        return jdbcTemplate.query(query, new Object[]{groupChatId}, new int[]{Types.INTEGER}, new ChatContentDTORowMapper());
+    }
+
+    public void persistChatMsg(ClientChatMessage msg) throws Exception {
+        String query = "insert into gchat_content(group_id, usersent, msg, msg_offset , senttime) " +
+                "values (?, ?, ?, (select MAX(gc.msg_offset) + 1 from gchat_content gc where gc.group_id = ?), ?)";
+        jdbcTemplate.update(query, msg.getGroupChatId(), msg.getUserSentId(), msg.getMsgContent(), msg.getGroupChatId(), System.currentTimeMillis());
     }
 }

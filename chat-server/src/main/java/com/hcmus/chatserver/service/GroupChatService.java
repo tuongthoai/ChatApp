@@ -1,7 +1,9 @@
 package com.hcmus.chatserver.service;
 
+import com.hcmus.chatserver.entities.groupchat.ChatContentDTO;
 import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
+import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.GroupChatRepository;
 import org.springframework.stereotype.Service;
@@ -50,5 +52,13 @@ public class GroupChatService {
 
     public long countNoGroupChatOf(int userId) throws Exception {
         return repository.countNoGroupChatOf(userId);
+    }
+
+    public void persistMsg(ClientChatMessage msg) throws Exception {
+        repository.persistChatMsg(msg);
+    }
+
+    public List<ChatContentDTO> getAllMsg(int gChatId) throws Exception {
+        return repository.getAllMsg(gChatId);
     }
 }

@@ -1,14 +1,13 @@
 package com.hcmus.models;
 
-public class ChatMessage {
+public class ClientChatMessage {
     private int userSentId;
     private int groupChatId;
     private String username;
     private String msgType;
     private String msgContent;
-    private long sentTime;
 
-    public ChatMessage() {
+    public ClientChatMessage() {
     }
 
     public int getUserSentId() {
@@ -49,13 +48,5 @@ public class ChatMessage {
 
     public void setGroupChatId(int groupChatId) {
         this.groupChatId = groupChatId;
-    }
-
-    public long getSentTime() {
-        return sentTime;
-    }
-
-    public void setSentTime(long sentTime) {
-        this.sentTime = sentTime;
     }
 }

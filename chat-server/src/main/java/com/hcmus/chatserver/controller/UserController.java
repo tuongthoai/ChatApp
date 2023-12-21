@@ -187,4 +187,17 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/{userId}/status/{status}", method = RequestMethod.POST)
+    public @ResponseBody String updateStatus(@PathVariable Integer userId, @PathVariable boolean status) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.updateUserStatus(userId, status);
+            response.setData(true);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't update user status");
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

@@ -53,7 +53,7 @@ public class UserService {
     }
 
     public long countFriends(int userId) throws Exception {
-        Long result = Long.valueOf(0);
+        Long result = 0L;
         Request request = new Request.Builder().url("http://localhost:8080/users/" + userId + "/countFriends").method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {

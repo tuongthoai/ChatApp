@@ -19,13 +19,13 @@ public class DetailList<T> extends JDialog {
         setLayout(new BorderLayout());
         JPanel title = new JPanel();
         JLabel titleLabel = new JLabel(listTitle);
+        System.out.println(listTitle);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
         title.add(titleLabel);
 
         add(title, BorderLayout.NORTH);
-        add(contentPanel, BorderLayout.CENTER);
+        add(content, BorderLayout.CENTER);
 
-        setContentPane(contentPanel);
         pack();
         setLocationRelativeTo(tablePanel);
     }

@@ -26,4 +26,10 @@ public class LoginHistoryService {
     public long getLastLoginOf(int userId) throws Exception {
         return loginHistoryRepository.getLastLogin(userId);
     }
+
+    public void persistLoginInfo(int userId) throws Exception {}
+
+    public List<LoginHistoryEntry> findAllBy(int userId) throws Exception {
+        return loginHistoryRepository.findAllBy(userId);
+    }
 }

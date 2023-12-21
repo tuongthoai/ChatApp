@@ -6,10 +6,7 @@ import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.service.GroupChatService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/gchats")
@@ -60,6 +57,19 @@ public class GroupChatController {
     public @ResponseBody String countGroupChatOf(@PathVariable Integer userId) throws Exception {
         ApiResponse response = new ApiResponse();
         response.setData(service.countNoGroupChatOf(userId));
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/{groupId}/messages", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody String getGroupChatContent(@PathVariable Integer groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            response.setData(service.getAllMsg(groupId));
+        } catch (Exception err) {
+            response.setError(true);
+            response.setErrorReason(err.getMessage());
+            err.printStackTrace();
+        }
         return mapper.writeValueAsString(response);
     }
 }

@@ -56,4 +56,18 @@ public class LoginHistoryController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public @ResponseBody String findAllBy(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<LoginHistoryEntry> userLoginTime = loginHistoryService.findAllBy(userId);
+            response.setData(userLoginTime);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user login history time");
+            e.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

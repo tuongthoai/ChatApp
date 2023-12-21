@@ -20,7 +20,6 @@ public class ChatList extends JPanel {
     private JScrollPane mainPanel;
     private JButton addButton;
     private ChatScreen chatScreen;
-    private List<String> friendNames;
     private List<GroupChat> groupChats;
 
     public ChatList(ChatScreen chatScreen) throws URISyntaxException {
@@ -39,6 +38,7 @@ public class ChatList extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weighty = 0.0;
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // init websocket
@@ -51,12 +51,18 @@ public class ChatList extends JPanel {
         ChatHashMap chatHashMap = ChatHashMap.getInstance();
         chatHashMap.setContext(context);
 
+        // init service for get history msg
+        GChatService service = GChatService.getInstance();
+
         int gchatSize = groupChats.size();
         for (int i = 0; i < gchatSize; i++) {
             gbc.gridy = i * 2;
             GroupChat groupChat = groupChats.get(i);
+
+            gbc.anchor = GridBagConstraints.NORTH;
+
             ChatListItem chatListItem = new ChatListItem("avatar.png", groupChat.getGroupName(), chatList.get(0));
-            chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName());
+            chatHashMap.addChat(chatListItem, groupChat.getGroupId(), groupChat.getGroupName(), service.getAllHistory(groupChat.getGroupId()));
             chatListItem.addActionListener(new SwitchChatAction(chatScreen));
             panel.add(chatListItem, gbc);
 
@@ -69,13 +75,14 @@ public class ChatList extends JPanel {
         }
 
         addButton = new JButton("Create a new conversation");
-        addButton.addActionListener(new AddConvoAction());
+        addButton.addActionListener(new CreateConvoAction());
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 0, 5, 0);
         gbc.gridwidth = 10;
         add(addButton, gbc);
+
 
         mainPanel = new JScrollPane(panel);
         mainPanel.setPreferredSize(new Dimension(200, 400));

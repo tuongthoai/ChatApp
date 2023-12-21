@@ -53,7 +53,7 @@ public class AuthService {
     }
 
     public long lastLogin(int userId) throws Exception {
-        Long result = Long.valueOf(0);
+        Long result = 0L;
         Request request = new Request.Builder().url("http://localhost:8080/loginhistory/" + userId + "/last").method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {

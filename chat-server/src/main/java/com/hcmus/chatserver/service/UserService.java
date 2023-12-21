@@ -79,4 +79,7 @@ public class UserService implements InitializingBean {
     public long countUserFriends(int userId) throws Exception {
         return userRepository.countFriends(userId);
     }
+    public void updateUserStatus(int userId, boolean isOnline) throws Exception {
+        userRepository.updateUserOnlineStatus(userId, isOnline);
+    }
 }

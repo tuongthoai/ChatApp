@@ -1,6 +1,6 @@
-package com.hcmus.models;
+package com.hcmus.chatserver.entities.messages;
 
-public class ChatMessage {
+public class ClientChatMessage {
     private int userSentId;
     private int groupChatId;
     private String username;
@@ -8,7 +8,7 @@ public class ChatMessage {
     private String msgContent;
     private long sentTime;
 
-    public ChatMessage() {
+    public ClientChatMessage() {
     }
 
     public int getUserSentId() {

@@ -31,7 +31,7 @@ public class LoginHistoryRepository implements InitializingBean {
     }
 
     public List<LoginHistoryEntry> findAllBy(int userId) throws Exception {
-        String query = "select * from login_history lh where lh.userid = ?";
+        String query = "select * from login_history lh where lh.user_id = ?";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new LoginHistoryRowMapper());
     }
 

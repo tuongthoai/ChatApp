@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private LoginHistoryService loginHistoryService;
 
     public int authenticateUser(String userName, String passWord) throws Exception {
         int user_id = -1;
