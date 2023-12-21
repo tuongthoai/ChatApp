@@ -53,6 +53,7 @@ public class SpamList extends JPanel {
             blockItem.addActionListener(new BlockAction(table));
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 

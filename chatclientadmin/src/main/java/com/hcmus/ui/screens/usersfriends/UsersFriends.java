@@ -32,6 +32,7 @@ public class UsersFriends extends JPanel {
             searchBar = new SearchBar(table.getSorter());
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace(System.err);
         }
 
