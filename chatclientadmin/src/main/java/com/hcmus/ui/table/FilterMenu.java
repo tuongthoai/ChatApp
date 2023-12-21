@@ -66,9 +66,6 @@ public class FilterMenu extends JMenu {
     }
 
     protected void showFilterDialog() {
-        if (components == null || labels == null)
-            throw new IllegalStateException("Filter components and labels must be set");
-
         if (panel == null) throw new IllegalStateException("Filter dialog must be initialized");
 
         int result = JOptionPane.showConfirmDialog(null, panel, "Filter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

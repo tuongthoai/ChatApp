@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class OnlineUsers extends JPanel {
     private Table<UserActivity> table;
@@ -45,6 +46,12 @@ public class OnlineUsers extends JPanel {
             contextMenu.add(loginCountFilterMenu);
             contextMenu.add(filterMenu);
 
+            // Add sort keys
+            ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>();
+            sortKeys.add(new RowSorter.SortKey(3, SortOrder.UNSORTED));
+            sortKeys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
+            sortKeys.add(new RowSorter.SortKey(8, SortOrder.ASCENDING));
+            table.getSorter().setSortKeys(sortKeys);
             table.getTable().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

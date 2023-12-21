@@ -45,4 +45,7 @@ public class FilterMenuBuilder {
     public NumberFilterMenu createNumberFilterMenu() {
         return new NumberFilterMenu(sorter, model, filterName, components, labels);
     }
+    public DateFilterMenu createDateFilterMenu() {
+        return new DateFilterMenu(sorter, model, filterName, labels);
+    }
 }
