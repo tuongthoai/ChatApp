@@ -3,6 +3,7 @@ package com.hcmus.socket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;
+import com.hcmus.ui.chatlist.ChatListItem;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -15,7 +16,7 @@ public class ChatContext extends WebSocketClient {
     private static URI webSocketUri;
     private final ObjectMapper mapper = new ObjectMapper();
     private static Map<String, String> headers;
-    private final Map<Integer, Subscriber> subscribersMap = new HashMap<>();
+    private final Map<Integer, Subscriber> chatBoxMap = new HashMap<>();
 
     private ChatContext(URI serverUri, Map<String, String> httpHeaders) {
         super(serverUri, httpHeaders);
@@ -51,15 +52,15 @@ public class ChatContext extends WebSocketClient {
     }
 
     public void addObserver(Subscriber subscriber) {
-        subscribersMap.put(subscriber.getObserverId(), subscriber);
+        chatBoxMap.put(subscriber.getObserverId(), subscriber);
     }
 
     public void removeObserver(Subscriber subscriber) {
-        subscribersMap.remove(subscriber.getObserverId());
+        chatBoxMap.remove(subscriber.getObserverId());
     }
 
     public void notify(Integer id, Object obj) {
-        (subscribersMap.get(id)).update(obj);
+        (chatBoxMap.get(id)).update(obj);
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatBoxSearchAction implements ActionListener {
     private ChatBox chatBox;
@@ -49,7 +50,9 @@ public class ChatBoxSearchAction implements ActionListener {
                 // iterate through all message to search
                 List<ChatMessage> messages = chatBox.getChatMessages();
                 for(ChatMessage msg : messages) {
-                    listModel.addElement(formatChatMessage(msg));
+                    if(msg.getMsgContent().toLowerCase().contains(searchKey.toLowerCase())) {
+                        listModel.addElement(formatChatMessage(msg));
+                    }
                 }
 
                 JScrollPane searchRsScrollPanel = new JScrollPane(messageJList);

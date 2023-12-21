@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.service.ChatSocketSessionContext;
 import com.hcmus.chatserver.service.GroupChatService;
+import com.hcmus.chatserver.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,20 +20,30 @@ import java.util.List;
 @Service
 public class SocketSessionContext extends TextWebSocketHandler implements InitializingBean {
     private final ChatSocketSessionContext context;
-    @Autowired
-    private GroupChatService groupChatService;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final GroupChatService groupChatService;
+    private final UserService userService;
+    private final ObjectMapper mapper;
 
-    public SocketSessionContext(ChatSocketSessionContext context) {
+    public SocketSessionContext(ChatSocketSessionContext context, GroupChatService groupChatService, UserService userService) {
         this.context = context;
+        this.groupChatService = groupChatService;
+        this.userService = userService;
+        mapper = new ObjectMapper();
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         HttpHeaders headers = session.getHandshakeHeaders();
         List<String> ids = headers.get("user_send_id");
+        int userId = 0;
         if (ids != null) {
-            context.addSession(Integer.valueOf(ids.get(0)), session);
+            userId = Integer.valueOf(ids.get(0));
+            context.addSession(userId, session);
+            try {
+                userService.updateUserStatus(userId, true);
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
         }
     }
 
@@ -49,6 +60,18 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
         System.out.println("A user has terminated");
         context.removeSession(session.getId());
+        HttpHeaders headers = session.getHandshakeHeaders();
+        List<String> ids = headers.get("user_send_id");
+        int userId = 0;
+        if (ids != null) {
+            userId = Integer.valueOf(ids.get(0));
+            context.addSession(userId, session);
+            try {
+                userService.updateUserStatus(userId, false);
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
+        }
     }
 
     @Override

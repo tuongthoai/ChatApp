@@ -20,7 +20,6 @@ public class ChatList extends JPanel {
     private JScrollPane mainPanel;
     private JButton addButton;
     private ChatScreen chatScreen;
-    private List<String> friendNames;
     private List<GroupChat> groupChats;
 
     public ChatList(ChatScreen chatScreen) throws URISyntaxException {
@@ -83,6 +82,7 @@ public class ChatList extends JPanel {
         gbc.insets = new Insets(5, 0, 5, 0);
         gbc.gridwidth = 10;
         add(addButton, gbc);
+
 
         mainPanel = new JScrollPane(panel);
         mainPanel.setPreferredSize(new Dimension(200, 400));
