@@ -103,7 +103,7 @@ public class AddMemberListAction implements ActionListener {
 
                 // Add this member to group
 
-                // send reload msg to 
+                // send reload msg to
             }
         });
 
