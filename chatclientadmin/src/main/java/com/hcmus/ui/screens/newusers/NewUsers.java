@@ -2,10 +2,7 @@ package com.hcmus.ui.screens.newusers;
 
 import com.hcmus.entities.user.User;
 import com.hcmus.services.UserService;
-import com.hcmus.ui.table.DateRangeSelector;
-import com.hcmus.ui.table.FilterMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,9 +32,7 @@ public class NewUsers extends JPanel {
             JTextField name = new JTextField(10);
             name.setName("Name");
 
-            filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter by Name");
-            filterMenu.setFilterComponents(new JComponent[]{name});
-            filterMenu.setFilterLabels(new JLabel[]{new JLabel("Name")});
+            filterMenu = new FilterMenuBuilder().setSorter(table.getSorter()).setModel(table.getModel()).setFilterName("Filter by Name").setFilterLabels(new JLabel[]{new JLabel("Name")}).setFilterComponents(new JComponent[]{name}).createFilterMenu();
             contextMenu = new JPopupMenu();
             contextMenu.add(filterMenu);
 

@@ -7,10 +7,7 @@ import com.hcmus.ui.screens.userlist.delete.DeleteAction;
 import com.hcmus.ui.screens.userlist.edit.EditAction;
 import com.hcmus.ui.screens.userlist.friendlist.FriendListAction;
 import com.hcmus.ui.screens.userlist.loginhistory.LoginHistoryAction;
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.FilterMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
+import com.hcmus.ui.table.*;
 import com.hcmus.entities.user.User;
 
 import javax.swing.*;
@@ -33,7 +30,6 @@ public class UserList extends JPanel {
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List", "Login History"));
-            filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter");
             searchBar = new SearchBar(table.getSorter());
 
             JTextField username = new JTextField(10);
@@ -46,9 +42,13 @@ public class UserList extends JPanel {
             name.setName("name");
             email.setName("email");
             sex.setName("sex");
-            filterMenu.setFilterComponents(new JComponent[]{username, password, name, email, sex});
-            filterMenu.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
-
+            FilterMenuBuilder filterMenuBuilder = new FilterMenuBuilder();
+            filterMenuBuilder.setSorter(table.getSorter());
+            filterMenuBuilder.setModel(table.getModel());
+            filterMenuBuilder.setFilterName("Filter");
+            filterMenuBuilder.setFilterComponents(new JComponent[]{username, password, name, email, sex});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
+            filterMenu = filterMenuBuilder.createFilterMenu();
 
             // Add action listener for each menu item
             JMenuItem addItem = contextMenu.getAddItem();

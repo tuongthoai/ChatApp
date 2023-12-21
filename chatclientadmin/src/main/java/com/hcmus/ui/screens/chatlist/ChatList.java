@@ -4,10 +4,7 @@ import com.hcmus.entities.groupchat.GroupChat;
 import com.hcmus.services.GChatService;
 import com.hcmus.ui.screens.chatlist.adminlist.AdminListAction;
 import com.hcmus.ui.screens.chatlist.memberlist.MemberListAction;
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.FilterMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,13 +25,17 @@ public class ChatList extends JPanel {
 
             table = new Table<GroupChat>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Detail", "Member List", "Admin List"));
-            filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter by Group Name");
             searchBar = new SearchBar(table.getSorter());
 
             JTextField groupName = new JTextField(10);
             groupName.setName("Group Name");
-            filterMenu.setFilterComponents(new JComponent[]{groupName});
-            filterMenu.setFilterLabels(new JLabel[]{new JLabel("Group Name")});
+            FilterMenuBuilder filterMenuBuilder = new FilterMenuBuilder();
+            filterMenuBuilder.setSorter(table.getSorter());
+            filterMenuBuilder.setModel(table.getModel());
+            filterMenuBuilder.setFilterName("Filter");
+            filterMenuBuilder.setFilterComponents(new JComponent[]{groupName});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Group Name")});
+            filterMenu = filterMenuBuilder.createFilterMenu();
 
             // Add action listener for each menu item
             JMenuItem memberListItem = contextMenu.getMemListItem();
