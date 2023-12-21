@@ -2,6 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
+import com.hcmus.chatserver.entities.spam.CreateSpamRequest;
 import com.hcmus.chatserver.entities.spam.SpamReport;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.service.FriendService;
@@ -27,6 +28,20 @@ public class SpamController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get spam reports");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes ="application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String create(@RequestBody CreateSpamRequest request) throws Exception {
+        System.out.println(mapper.writeValueAsString(request));
+        ApiResponse response = new ApiResponse();
+        try {
+            spamService.insert(request.getUserIdSent(), request.getUserIdReported(), request.getContent());
+            response.setData(true);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason(e.getMessage());
         }
         return mapper.writeValueAsString(response);
     }

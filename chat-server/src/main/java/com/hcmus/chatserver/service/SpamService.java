@@ -19,4 +19,8 @@ public class SpamService {
         System.out.println(data);
         return data;
     }
+
+    public void insert(int userIdSent, int userIdReported, String content) throws Exception {
+        repository.insertReport(userIdSent, userIdReported, content);
+    }
 }
