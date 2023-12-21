@@ -1,5 +1,7 @@
 package com.hcmus.ui.sidebar;
 
+import com.hcmus.Link;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Sidebar extends JPanel {
-    private final String currentDir = System.getProperty("user.dir") + "/chatclientadmin/src/main/java/com/hcmus/ui/images/";
     private JPanel contentPanel;
     private CardLayout cardLayout;
     private JButton selectedButton, button1, button2, button3, button4;
@@ -49,7 +50,7 @@ public class Sidebar extends JPanel {
 //        button.setText(text);
 
         // Load the icon
-        ImageIcon icon = new ImageIcon(currentDir + iconFilename);
+        ImageIcon icon = new ImageIcon(Link.getLink("image") + iconFilename);
         button.setIcon(icon);
 
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

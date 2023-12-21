@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.loginhistory.LoginHistory;
 import com.hcmus.entities.loginhistory.UserLoginTime;
@@ -24,7 +25,7 @@ public class LoginHistoryService {
     public List<LoginHistory> getUserLoginHistory(int userId) {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/loginhistory/" + userId)
+                .url(Link.getLink("service") + "loginhistory/" + userId)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -50,7 +51,7 @@ public class LoginHistoryService {
     public List<UserLoginTime> getUserLoginTime() {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/loginhistory/users")
+                .url(Link.getLink("service") + "loginhistory/users")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

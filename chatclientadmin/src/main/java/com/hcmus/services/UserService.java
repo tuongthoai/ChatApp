@@ -3,6 +3,7 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.user.User;
 import com.hcmus.entities.user.UserActivity;
@@ -25,7 +26,7 @@ public class UserService {
     public List<User> getAllUsers() {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/all")
+                .url(Link.getLink("service") + "users/all")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -51,7 +52,7 @@ public class UserService {
     public List<User> getNewUser(Date startDate, Date endDate) {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/new?startDate=" + startDate.toInstant().getEpochSecond() + "&endDate=" + endDate.toInstant().getEpochSecond())
+                .url(Link.getLink("service") + "users/new?startDate=" + startDate.toInstant().getEpochSecond() + "&endDate=" + endDate.toInstant().getEpochSecond())
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -75,7 +76,7 @@ public class UserService {
     public List<UserActivity> getAllUserActivity() throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/activity?startDate=0&endDate=" + new Date().toInstant().getEpochSecond())
+                .url(Link.getLink("service") + "users/activity?startDate=0&endDate=" + new Date().toInstant().getEpochSecond())
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -99,7 +100,7 @@ public class UserService {
     public List<UserActivity> getUserActivity(Date startDate, Date endDate) throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/activity?startDate=" + startDate.toInstant().getEpochSecond() + "&endDate=" + endDate.toInstant().getEpochSecond())
+                .url(Link.getLink("service") + "users/activity?startDate=" + startDate.toInstant().getEpochSecond() + "&endDate=" + endDate.toInstant().getEpochSecond())
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -124,7 +125,7 @@ public class UserService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(user));
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/add")
+                .url(Link.getLink("service") + "users/add")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -148,7 +149,7 @@ public class UserService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(userId));
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/remove")
+                .url(Link.getLink("service") + "users/remove")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -172,7 +173,7 @@ public class UserService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(user));
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/update")
+                .url(Link.getLink("service") + "users/update")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -191,7 +192,7 @@ public class UserService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/adminBlock/" + userId)
+                .url(Link.getLink("service") + "users/adminBlock/" + userId)
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();

@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.user.UserDTO;
 import okhttp3.MediaType;
@@ -27,7 +28,7 @@ public class UserFriendService {
     public List<UserDTO> getDirInDirFriend(){
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/dirInDirFriend")
+                .url(Link.getLink("service") + "users/dirInDirFriend")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

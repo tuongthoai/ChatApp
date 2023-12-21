@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.groupchat.GroupChat;
 import com.hcmus.entities.user.User;
@@ -24,7 +25,7 @@ public class GChatService {
     public List<GroupChat> getAllGChats() {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/gchats/all")
+                .url(Link.getLink("service") + "gchats/all")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -47,7 +48,7 @@ public class GChatService {
     public List<User> getAllMembers(Integer groupId) {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/gchats/members/" + groupId)
+                .url(Link.getLink("service") + "gchats/members/" + groupId)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -69,7 +70,7 @@ public class GChatService {
     public List<User> getAllAdmins(Integer groupId) {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/gchats/admins/" + groupId)
+                .url(Link.getLink("service") + "gchats/admins/" + groupId)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();
