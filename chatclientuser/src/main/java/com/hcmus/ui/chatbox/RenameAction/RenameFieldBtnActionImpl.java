@@ -1,16 +1,15 @@
 package com.hcmus.ui.chatbox;
 
-import com.hcmus.models.GroupChat;
 import com.hcmus.services.GChatService;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URISyntaxException;
 
 public class RenameFieldBtnActionImpl implements ActionListener {
-    private ChatBox parent;
-    private RenameField input;
+    private final ChatBox parent;
+    private final RenameField input;
+
     public RenameFieldBtnActionImpl(ChatBox parent, RenameField renameField) {
         this.parent = parent;
         this.input = renameField;
