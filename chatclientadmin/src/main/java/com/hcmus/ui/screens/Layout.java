@@ -43,7 +43,7 @@ public class Layout extends JFrame {
         );
         ContextMenu contextMenu = new ContextMenu(table.getTable(), options);
         SearchBar searchBar = new SearchBar(table.getSorter());
-        FilterMenu filterMenu = new FilterMenu(table.getSorter(), table.getModel(), "Filter");
+        FilterMenu filterMenu = new FilterMenuBuilder().setSorter(table.getSorter()).setModel(table.getModel()).setFilterName("Filter").createFilterMenu();
 
 
         JTextField username = new JTextField(10);
