@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.loginhistory.LoginHistory;
+import com.hcmus.entities.loginhistory.UserLoginTime;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,6 +40,31 @@ public class LoginHistoryService {
                 return data;
             }
             else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<UserLoginTime> getUserLoginTime() {
+        MediaType mediaType = MediaType.parse("application/json");
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/loginhistory/users")
+                .method("GET", null)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute();) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                List<UserLoginTime> data = new ArrayList<>();
+                if (!apiResponse.isError()) {
+                    data = mapper.readValue(mapper.writeValueAsString(apiResponse.getData()), new TypeReference<List<UserLoginTime>>() {
+                    });
+                }
+                return data;
+            } else {
                 throw new IOException("Request failed: " + response.code());
             }
         } catch (IOException e) {

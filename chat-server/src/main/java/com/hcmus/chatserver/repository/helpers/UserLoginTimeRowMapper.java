@@ -9,7 +9,6 @@ public class UserLoginTimeRowMapper implements RowMapper<UserLoginTimeEntry> {
     @Override
     public UserLoginTimeEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
         UserLoginTimeEntry result = new UserLoginTimeEntry();
-        result.setUserId(rs.getLong("user_id"));
         result.setLoginTime(rs.getLong("logintime"));
         result.setUsername(rs.getString("username"));
         result.setFullname(rs.getString("fullname"));

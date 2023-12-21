@@ -51,7 +51,7 @@ public class LoginHistoryRepository implements InitializingBean {
     }
 
     public List<UserLoginTimeEntry> getAllUserLoginTime() {
-        String query = "SELECT usr.user_id, usr.username, usr.fullname, l.logintime" + " FROM user_metadata usr " + " INNER JOIN (" + "     SELECT user_id, MAX(logintime) AS logintime" + "     FROM login_history" + "     GROUP BY user_id " + ") l ON usr.user_id = l.user_id" + " ORDER BY usr.user_id";
+        String query = "SELECT usr.user_id, usr.username, usr.fullname, l.logintime" + " FROM user_metadata usr " + " INNER JOIN (" + "     SELECT user_id, MAX(logintime) AS logintime" + "     FROM login_history" + "     GROUP BY user_id " + ") l ON usr.user_id = l.user_id" + " ORDER BY l.logintime DESC";
         try {
             return jdbcTemplate.query(query, new UserLoginTimeRowMapper());
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class LoginHistoryRepository implements InitializingBean {
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Long>() {
             @Override
             public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if(rs.isBeforeFirst()) {
+                if (rs.isBeforeFirst()) {
                     rs.next();
                     return rs.getLong(1);
                 }
