@@ -8,6 +8,8 @@ import com.hcmus.models.User;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
     private static UserService instance;
@@ -87,5 +89,24 @@ public class UserService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<User> findAllFriends(int userId) throws Exception {
+        List<User> result = new ArrayList<>();
+        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new IOException("Request failed: " + response.code());
+            }
+
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

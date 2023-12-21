@@ -1,11 +1,9 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
-import com.hcmus.ui.chatbox.MemberListAction.MemberListActionimpl;
-import com.hcmus.ui.chatlist.ChatList;
+import com.hcmus.ui.chatbox.MemberListAction.AddMemberListAction;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +36,7 @@ public class MemberList extends JPanel {
         JButton addNewMemberBtn = new JButton("Add new member");
         addNewMemberBtn.setPreferredSize(new Dimension(50, 30));
         addNewMemberBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        addNewMemberBtn.addActionListener(new MemberListActionimpl(this));
+        addNewMemberBtn.addActionListener(new AddMemberListAction(this));
         add(addNewMemberBtn, gbc);
 
         gbc.gridy = 1;

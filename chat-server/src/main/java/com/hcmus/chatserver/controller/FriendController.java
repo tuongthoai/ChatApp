@@ -16,7 +16,7 @@ public class FriendController {
     @Autowired
     FriendService friendService;
 
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody String finalAllFriend(@PathVariable Integer userId) throws Exception {
         ApiResponse response = new ApiResponse();
         try {
