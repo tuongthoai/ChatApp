@@ -26,6 +26,7 @@ public class LoginHistory extends JPanel {
             searchBar = new SearchBar(table.getSorter());
         } catch (Exception e) {
             e.printStackTrace(System.err);
+            JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         setLayout(new BorderLayout());

@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.user.User;
 import okhttp3.MediaType;
@@ -23,7 +24,7 @@ public class FriendService {
     public List<User> getAllFriends(int userId) {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/friends/" + userId)
+                .url(Link.getLink("service") + "friends/" + userId)
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

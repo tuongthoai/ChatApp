@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.ui.table.UnixTimestampConverter;
 import okhttp3.MediaType;
@@ -25,7 +26,7 @@ public class OnlineChartService {
 
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/loginhistory/logintime")
+                .url(Link.getLink("service") + "loginhistory/logintime")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

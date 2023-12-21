@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.spam.SpamReport;
 import com.hcmus.entities.user.User;
@@ -25,7 +26,7 @@ public class SpamService {
     public List<SpamReport> getAllSpamReports() {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/spam/all")
+                .url(Link.getLink("service") + "spam/all")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

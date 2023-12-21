@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.entities.api.ApiResponse;
 import com.hcmus.entities.user.User;
 import com.hcmus.ui.table.UnixTimestampConverter;
@@ -26,7 +27,7 @@ public class RegChartService {
 
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/createdTime")
+                .url(Link.getLink("service") + "users/createdTime")
                 .method("GET", null)
                 .addHeader("Content-Type", "application/json")
                 .build();

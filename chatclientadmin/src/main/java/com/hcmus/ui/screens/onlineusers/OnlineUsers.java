@@ -81,6 +81,7 @@ public class OnlineUsers extends JPanel {
             });
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace(System.err);
         }
 

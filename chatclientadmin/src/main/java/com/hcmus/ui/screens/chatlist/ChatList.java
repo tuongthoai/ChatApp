@@ -47,6 +47,7 @@ public class ChatList extends JPanel {
             contextMenu.setFilterMenu(filterMenu);
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         setLayout(new BorderLayout());
