@@ -61,4 +61,8 @@ public class GroupChatService {
     public List<ChatContentDTO> getAllMsg(int gChatId) throws Exception {
         return repository.getAllMsg(gChatId);
     }
+
+    public void updateGroupChatName(int gchatid, String newName) throws Exception {
+        repository.updateGroupChatName(gchatid, newName);
+    }
 }

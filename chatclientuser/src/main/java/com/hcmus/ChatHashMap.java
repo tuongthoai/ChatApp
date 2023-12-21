@@ -4,6 +4,7 @@ import com.hcmus.models.ChatContentDTO;
 import com.hcmus.models.User;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
+import com.hcmus.ui.chatlayout.ChatScreen;
 import com.hcmus.ui.chatlist.ChatListItem;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class ChatHashMap {
     private static ChatHashMap instance = null;
     private ChatContext context;
     private HashMap<ChatListItem, ChatBox> chatHashMap;
+    private ChatScreen chatScreen;
 
     private ChatHashMap() {
         chatHashMap = new HashMap<>();
@@ -29,7 +31,7 @@ public class ChatHashMap {
         if (chatHashMap == null) {
             chatHashMap = new HashMap<>();
         }
-        ChatBox chatBox = new ChatBox(chatName, chatId, context, history);
+        ChatBox chatBox = new ChatBox(chatName, chatId, context, history, this.chatScreen);
         chatHashMap.put(chatListItem, chatBox);
     }
 
@@ -48,5 +50,17 @@ public class ChatHashMap {
 
     public void setContext(ChatContext context) {
         this.context = context;
+    }
+
+    public void clear() {
+        chatHashMap.clear();
+    }
+
+    public ChatScreen getChatScreen() {
+        return chatScreen;
+    }
+
+    public void setChatScreen(ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
     }
 }

@@ -64,17 +64,14 @@ public class GroupChatRepository implements InitializingBean {
         String query = "select u.* from gchat_member gm join user_metadata u on u.user_id = gm.member_id where gm.groupchat_id = ?";
         return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
+
     public List<User> findAllAdmins(int groupId) throws Exception {
         String query = "select u.* from gchat_admins ga join user_metadata u on u.user_id = ga.admin_id where ga.group_id = ?";
         return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
 
     public List<GroupChatMember> findMembersOf(int groupChatId) throws Exception {
-        String query = "select * " +
-                "from gchat_member gm " +
-                "join user_metadata um ON gm.member_id = um.user_id " +
-                "join roles r on r.role_id = um.user_role " +
-                "where gm.groupchat_id = ?";
+        String query = "select * " + "from gchat_member gm " + "join user_metadata um ON gm.member_id = um.user_id " + "join roles r on r.role_id = um.user_role " + "where gm.groupchat_id = ?";
         return jdbcTemplate.query(query, new Object[]{groupChatId}, new int[]{Types.INTEGER}, new RowMapper<GroupChatMember>() {
             @Override
             public GroupChatMember mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -92,7 +89,7 @@ public class GroupChatRepository implements InitializingBean {
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Long>() {
             @Override
             public Long extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if(rs.isBeforeFirst()) {
+                if (rs.isBeforeFirst()) {
                     rs.next();
                     return rs.getLong(1);
                 }
@@ -103,20 +100,18 @@ public class GroupChatRepository implements InitializingBean {
 
 
     public List<ChatContentDTO> getAllMsg(int groupChatId) throws Exception {
-        String query = "select tb1.*, um.username " +
-                "from ( " +
-                "select * " +
-                "from gchat_content gc " +
-                "where gc.group_id = ? " +
-                ") as tb1 " +
-                "join user_metadata um on um.user_id = tb1.usersent ";
+        String query = "select tb1.*, um.username " + "from ( " + "select * " + "from gchat_content gc " + "where gc.group_id = ? " + ") as tb1 " + "join user_metadata um on um.user_id = tb1.usersent ";
 
         return jdbcTemplate.query(query, new Object[]{groupChatId}, new int[]{Types.INTEGER}, new ChatContentDTORowMapper());
     }
 
     public void persistChatMsg(ClientChatMessage msg) throws Exception {
-        String query = "insert into gchat_content(group_id, usersent, msg, msg_offset , senttime) " +
-                "values (?, ?, ?, (select MAX(gc.msg_offset) + 1 from gchat_content gc where gc.group_id = ?), ?)";
+        String query = "insert into gchat_content(group_id, usersent, msg, msg_offset , senttime) " + "values (?, ?, ?, (select MAX(gc.msg_offset) + 1 from gchat_content gc where gc.group_id = ?), ?)";
         jdbcTemplate.update(query, msg.getGroupChatId(), msg.getUserSentId(), msg.getMsgContent(), msg.getGroupChatId(), System.currentTimeMillis());
+    }
+
+    public void updateGroupChatName(int groupId, String newName) throws Exception {
+        String query = "update gchat_metadata \n" + "set groupname = ?\n" + "where group_id = ?";
+        jdbcTemplate.update(query, newName, groupId);
     }
 }
