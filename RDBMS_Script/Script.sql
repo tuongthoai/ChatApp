@@ -38,7 +38,7 @@ CREATE TABLE GCHAT_METADATA (
                                 GROUP_ID SERIAL PRIMARY KEY,
                                 GROUPNAME VARCHAR,
                                 CREATEDTIME BIGINT DEFAULT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP) * 1000,
-                                ISGROUP BOOLEAN
+                                ISGROUP BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE USER_GCHAT_LIST (

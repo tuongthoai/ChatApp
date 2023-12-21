@@ -60,17 +60,6 @@ public class DateRangeSelector extends JPanel {
         add(searchButton, gbc);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Date Range Selector");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new DateRangeSelector());
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-    }
-
     private static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
         private final String pattern = "dd/MM/yyyy";
         private final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
