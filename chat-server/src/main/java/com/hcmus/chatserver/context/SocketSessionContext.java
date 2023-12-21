@@ -51,8 +51,12 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         ClientChatMessage msg = mapper.readValue(payload, ClientChatMessage.class);
-        context.send2Group(msg.getGroupChatId(), message);
-        groupChatService.persistMsg(msg);
+        if(msg.getMsgType() == null) {
+            context.send2Group(msg.getGroupChatId(), message);
+            groupChatService.persistMsg(msg);
+        } else {
+            
+        }
         System.out.println(payload);
     }
 
