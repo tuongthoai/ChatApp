@@ -4,13 +4,17 @@ import com.hcmus.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.AuthService;
 import com.hcmus.services.UserService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatlayout.ChatLayout;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends JFrame {
     private JPanel panel;
@@ -151,6 +155,12 @@ public class Login extends JFrame {
                     UserService service = UserService.getInstance();
                     User user = service.getUserById(userId);
                     UserProfile.setUserProfile(user);
+
+                    // init websocket
+                    Map<String, String> wsHeaders = new HashMap<>();
+                    URI wsUri = new URI("ws://localhost:8080/chat");
+                    wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
+                    ChatContext.getInstance(wsUri, wsHeaders);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Failed to get user info!");
                     return;

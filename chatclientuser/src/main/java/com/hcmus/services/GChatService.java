@@ -1,11 +1,9 @@
 package com.hcmus.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.models.ApiResponse;
-import com.hcmus.models.ChatContentDTO;
-import com.hcmus.models.GroupChat;
-import com.hcmus.models.GroupChatMember;
+import com.hcmus.models.*;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -108,5 +106,27 @@ public class GChatService {
         }
 
         return result;
+    }
+
+    public boolean renameGroupChat(int groupId, String newName) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        RenameGroupRequest renameGroupRequest = new RenameGroupRequest(groupId, newName);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(renameGroupRequest));
+        Request request = new Request.Builder().url("http://localhost:8080/gchats/rename").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if(response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (Boolean) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 }

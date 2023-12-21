@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.ChatHashMap;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
@@ -13,13 +14,20 @@ public class ChatScreen extends JPanel {
     JPanel chatBoxContainer;
     ChatBox nullChatBox;
     ChatContext context;
+    JPanel mainPanel;
 
     public ChatScreen(ChatContext context) throws URISyntaxException {
         this.context = context;
         setLayout(new BorderLayout());
+        initChatScreen();
+        // Add main panel to the frame
+        add(mainPanel, BorderLayout.CENTER);
+    }
 
+    public void initChatScreen() throws URISyntaxException {
+        ChatHashMap.getInstance().setChatScreen(this);
         // Main panel with BorderLayout
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
 
         // List of conversations (you can use JList or other components)
         JPanel chatListPanel = new JPanel();
@@ -39,14 +47,19 @@ public class ChatScreen extends JPanel {
         // Add components to main panel
         mainPanel.add(chatListPanel, BorderLayout.WEST);
         mainPanel.add(chatBoxContainer, BorderLayout.CENTER);
-
-        // Add main panel to the frame
-        add(mainPanel, BorderLayout.CENTER);
     }
 
     public void updateChatBox(ChatBox newChatBox) {
         chatBoxContainer.removeAll();
         chatBoxContainer.add(newChatBox, BorderLayout.CENTER);
+        chatBoxContainer.revalidate();
+        chatBoxContainer.repaint();
+    }
+    public void reloadChatScreen() throws URISyntaxException {
+        removeAll();
+        ChatHashMap.getInstance().clear();
+        initChatScreen();
+        add(mainPanel, BorderLayout.CENTER);
         chatBoxContainer.revalidate();
         chatBoxContainer.repaint();
     }

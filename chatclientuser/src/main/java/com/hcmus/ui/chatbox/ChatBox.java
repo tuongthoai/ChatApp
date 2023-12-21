@@ -6,6 +6,7 @@ import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction.*;
+import com.hcmus.ui.chatlayout.ChatScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class ChatBox extends JPanel implements Subscriber {
     private JTextArea chatContent;
     private ArrayList<ChatMessage> chatMessages;
     private String chatName;
+    private ChatScreen chatScreen;
 
     public ChatBox() {
         chatName = "";
@@ -27,7 +29,8 @@ public class ChatBox extends JPanel implements Subscriber {
         initComponent();
     }
 
-    public ChatBox(String chatName, Integer chatId, ChatContext context, List<ChatContentDTO> history) {
+    public ChatBox(String chatName, Integer chatId, ChatContext context, List<ChatContentDTO> history, ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
         this.chatName = chatName;
         this.chatId = chatId;
         this.context = context;
@@ -260,5 +263,18 @@ public class ChatBox extends JPanel implements Subscriber {
         ChatMessage msg = (ChatMessage) obj;
         this.chatMessages.add(msg);
         displayChatMessage();
+    }
+
+    public void reloadAllChatBox() {
+        removeAll();
+
+    }
+
+    public ChatScreen getChatScreen() {
+        return chatScreen;
+    }
+
+    public void setChatScreen(ChatScreen chatScreen) {
+        this.chatScreen = chatScreen;
     }
 }

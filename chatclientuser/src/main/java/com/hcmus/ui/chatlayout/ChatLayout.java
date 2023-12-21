@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.ChatHashMap;
 import com.hcmus.UserProfile;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
@@ -30,11 +31,7 @@ public class ChatLayout extends JFrame {
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
 
-        // init websocket
-        Map<String, String> wsHeaders = new HashMap<>();
-        URI wsUri = new URI("ws://localhost:8080/chat");
-        wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
-        this.chatContext = ChatContext.getInstance(wsUri, wsHeaders);
+        this.chatContext = ChatContext.getInstance();
 
         // Sidebar
         Sidebar sidebar = new Sidebar(contentPanel, cardLayout);
@@ -83,6 +80,10 @@ public class ChatLayout extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
+    }
+
+    public void reloadChatScreen() {
+
     }
 }
 

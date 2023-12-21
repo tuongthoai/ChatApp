@@ -3,6 +3,7 @@ package com.hcmus.chatserver.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
+import com.hcmus.chatserver.entities.api.RenameGroupRequest;
 import com.hcmus.chatserver.service.GroupChatService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -65,6 +66,20 @@ public class GroupChatController {
         ApiResponse response = new ApiResponse();
         try {
             response.setData(service.getAllMsg(groupId));
+        } catch (Exception err) {
+            response.setError(true);
+            response.setErrorReason(err.getMessage());
+            err.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/rename", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String updateGChatName(@RequestBody RenameGroupRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            service.updateGroupChatName(request.getGroupId(), request.getNewName());
+            response.setData(true);
         } catch (Exception err) {
             response.setError(true);
             response.setErrorReason(err.getMessage());

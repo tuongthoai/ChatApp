@@ -1,20 +1,25 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.ui.chatbox.MemberListAction.MemberListActionimpl;
 import com.hcmus.ui.chatlist.ChatList;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class MemberList extends JPanel {
     private JScrollPane mainPanel;
+    private List<GroupChatMember> members;
 
     public MemberList(List<GroupChatMember> members) {
+        this.members = members;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        add(createMemberScrollPanel(members, gbc), gbc);
+        add(createMemberScrollPanel(this.members, gbc), gbc);
     }
 
     public JScrollPane createMemberScrollPanel(List<GroupChatMember> members, GridBagConstraints gbc) {
@@ -33,13 +38,14 @@ public class MemberList extends JPanel {
         JButton addNewMemberBtn = new JButton("Add new member");
         addNewMemberBtn.setPreferredSize(new Dimension(50, 30));
         addNewMemberBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        addNewMemberBtn.addActionListener(new MemberListActionimpl(this));
         add(addNewMemberBtn, gbc);
 
         gbc.gridy = 1;
         int n = members.size();
         for (int i = 0; i < n; i++) {
             gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
-            panel.add(new MemberCard(members.get(i).getUsername(), members.get(i).getRole()), gbc);
+            panel.add(new MemberCard(members.get(i).getUsername(), members.get(i).getRole(), i,this), gbc);
 
             if (i < n - 1) {
                 gbc.gridy = i * 2 + 1;
@@ -62,12 +68,20 @@ public class MemberList extends JPanel {
 
     public void updateMemberList() {
         removeAll();
+        GridBagConstraints constraints = new GridBagConstraints();
+        add(createMemberScrollPanel(this.members, constraints), constraints);
+        revalidate();
+        repaint();
     }
 
     private class MemberCard extends JPanel {
+        private MemberList parent;
+        private int order;
         private final Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 12);
 
-        public MemberCard(String name, String role) {
+        public MemberCard(String name, String role, int order, MemberList par) {
+            this.order = order;
+            this.parent = par;
             setBackground(Color.WHITE);
             setLayout(new GridBagLayout());
 
@@ -91,6 +105,13 @@ public class MemberList extends JPanel {
 
             // Remove button
             JButton removeBtn = createButton("Remove");
+            removeBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    parent.getMembers().remove(order);
+                    parent.updateMemberList();
+                }
+            });
             buttonPanel.add(removeBtn);
 
             // Change role button
@@ -127,5 +148,13 @@ public class MemberList extends JPanel {
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             return button;
         }
+    }
+
+    public List<GroupChatMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<GroupChatMember> members) {
+        this.members = members;
     }
 }

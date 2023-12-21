@@ -16,6 +16,7 @@ public class RenameField extends JPanel {
         JButton renameBtn = new JButton("Rename");
         renameBtn.setPreferredSize(new Dimension(80, 30));
         renameBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        renameBtn.addActionListener(new RenameFieldBtnActionImpl(parent, this));
 
         add(textField, BorderLayout.CENTER);
         add(renameBtn, BorderLayout.EAST);
