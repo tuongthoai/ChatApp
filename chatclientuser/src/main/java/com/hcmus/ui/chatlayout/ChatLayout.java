@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,10 +22,10 @@ public class ChatLayout extends JFrame {
     private CardLayout cardLayout;
     private ChatContext chatContext;
 
-    public ChatLayout() throws URISyntaxException {
+    public ChatLayout() throws URISyntaxException, SQLException {
         setTitle("Chat UI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(1000, 600));
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());

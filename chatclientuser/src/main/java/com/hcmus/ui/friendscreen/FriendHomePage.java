@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class FriendHomePage extends JPanel {
     private CardLayout cardLayout;
@@ -13,7 +14,7 @@ public class FriendHomePage extends JPanel {
     private DataTest data;
     private CardLayout mainCard;
     private JPanel mainContentPanel;
-    public FriendHomePage(DataTest data, CardLayout mainCard, JPanel mainContentPanel){
+    public FriendHomePage(DataTest data, CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
         this.data = data;
         cardLayout = new CardLayout();
         cardContainPanel = new JPanel();
@@ -43,7 +44,7 @@ public class FriendHomePage extends JPanel {
         cardContainPanel.setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
         cardContainPanel.setBackground(Color.WHITE);
 
-        ListFriend listFriendCard = new ListFriend(this.data, mainCard, mainContentPanel);
+        ListFriend listFriendCard = new ListFriend(mainCard, mainContentPanel);
         cardContainPanel.add(listFriendCard, "LIST_FRIEND");
 
         NewFriend newFriendCard = new NewFriend(this.data, mainCard, mainContentPanel);
@@ -52,7 +53,6 @@ public class FriendHomePage extends JPanel {
         cardLayout.show(cardContainPanel, "LIST_FRIEND");
 
         mainPanel.add(cardContainPanel, BorderLayout.CENTER);
-
 
         add(mainPanel, BorderLayout.CENTER);
     }

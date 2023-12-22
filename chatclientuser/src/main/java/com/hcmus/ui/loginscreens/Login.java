@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -172,7 +173,7 @@ public class Login extends JFrame {
                     chatLayout.setVisible(true);
                     // close current frame
                     dispose();
-                } catch (URISyntaxException ex) {
+                } catch (URISyntaxException | SQLException ex) {
                     throw new RuntimeException(ex);
                 }
             }
