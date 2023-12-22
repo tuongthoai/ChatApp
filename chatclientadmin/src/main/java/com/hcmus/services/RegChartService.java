@@ -12,7 +12,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +48,7 @@ public class RegChartService {
     public List<Integer> getYears(){
         List<Integer> res = new ArrayList<>();
         for(long time : this.createdTime){
-            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(time);
+            LocalDate convertedTime = UnixTimestampConverter.unix2DateTime(time);
             if(!res.contains(convertedTime.getYear()))
                 res.add(convertedTime.getYear());
         }
@@ -59,7 +59,7 @@ public class RegChartService {
         Arrays.fill(numberOfUser, 0, 12, 0);
 
         for(long createdTime : this.createdTime){
-            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(createdTime);
+            LocalDate convertedTime = UnixTimestampConverter.unix2DateTime(createdTime);
             if(convertedTime.getYear() == year){
                 int month = convertedTime.getMonthValue();
                 numberOfUser[month - 1]++;
