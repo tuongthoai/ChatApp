@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import com.hcmus.services.AuthService;
 
 public class Register extends JFrame {
     private JPanel panel;
@@ -21,7 +22,7 @@ public class Register extends JFrame {
     }
 
     private void init(){
-        setTitle("Login");
+        setTitle("Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -140,7 +141,18 @@ public class Register extends JFrame {
                 } else if (!password.equals(confirmPassword)) {
                     JOptionPane.showMessageDialog(null, "Password and confirm password are not matched", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Register successfully");
+                    AuthService authService = AuthService.getInstance();
+                    int userId = -1;
+                    try {
+                        userId = authService.register(username, password, email);
+                        if (userId == -1) {
+                            JOptionPane.showMessageDialog(null, "Username is already existed", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        JOptionPane.showMessageDialog(null, "Register successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Error! Please try a gain!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                     dispose();
                     new Login().setVisible(true);
                 }

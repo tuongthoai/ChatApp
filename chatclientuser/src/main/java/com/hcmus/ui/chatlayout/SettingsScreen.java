@@ -187,6 +187,7 @@ public class SettingsScreen extends JPanel {
             User curUser = null;
             try {
                 curUser = service.getUserById(UserProfile.getUserProfile().getId());
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -23,8 +23,13 @@ public class AccountService {
         return user_id;
     }
 
-    public int registerUser(LogginRequest request) throws Exception {
+    public int registerUser(String username, String password, String email) throws Exception {
         User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setCreatedTime(new java.util.Date().toInstant().getEpochSecond());
+        user.setRole("user");
         int usrId = -1;
         try {
             usrId = repository.addUser(user);

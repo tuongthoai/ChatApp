@@ -45,7 +45,6 @@ public class UserService {
             if (apiResponse.isError()) {
                 throw new IOException("Request failed: " + response.code());
             }
-
             user = mapper.convertValue(apiResponse.getData(), new TypeReference<User>() {
             });
         } catch (IOException e) {

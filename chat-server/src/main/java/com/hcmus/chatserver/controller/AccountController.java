@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.api.LogginRequest;
+import com.hcmus.chatserver.entities.api.RegisterRequest;
 import com.hcmus.chatserver.service.AccountService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,12 @@ public class AccountController implements InitializingBean {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
-    public String registerUser(LogginRequest request) throws JsonProcessingException {
+    public String registerUser(@RequestBody RegisterRequest request) throws JsonProcessingException {
         ApiResponse response = new ApiResponse();
         int userId = -1;
         try {
-            userId = service.registerUser(request);
+            userId = service.registerUser(request.getUsername(), request.getPassword(), request.getEmail());
+            response.setData(userId);
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Error! Please try a gain!!!");
