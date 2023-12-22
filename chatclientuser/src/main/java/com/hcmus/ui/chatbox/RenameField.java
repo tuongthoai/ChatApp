@@ -11,7 +11,7 @@ public class RenameField extends JPanel {
 
     public RenameField(ChatBox parent) {
         setLayout(new BorderLayout());
-        JTextField textField = new JTextField(parent.getChatName());
+        textField = new JTextField(parent.getChatName());
         textField.setPreferredSize(new Dimension(150, 30));
         textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
