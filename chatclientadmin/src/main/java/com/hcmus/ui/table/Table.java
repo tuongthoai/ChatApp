@@ -7,8 +7,11 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Vector;
+import java.util.Date;
 
 public class Table<T> extends JScrollPane {
     private final List<String> columnNames;
@@ -43,7 +46,7 @@ public class Table<T> extends JScrollPane {
                         field.setAccessible(true);
                         Object value = field.get(item);
                         if (value instanceof Long) {
-                            value = UnixTimestampConverter.unix2DateTime((long) value).toString();
+                            value = UnixTimestampConverter.unix2DateTime((long) value);
                         }
                         row.add(value);
                     } catch (IllegalAccessException e) {

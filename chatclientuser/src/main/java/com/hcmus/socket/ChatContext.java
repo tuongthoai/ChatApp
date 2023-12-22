@@ -3,6 +3,8 @@ package com.hcmus.socket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;
+import com.hcmus.services.ComponentIdContext;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.ui.chatlist.ChatListItem;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -14,8 +16,8 @@ import java.util.Map;
 public class ChatContext extends WebSocketClient {
     private static ChatContext INSTANCE = null;
     private static URI webSocketUri;
-    private final ObjectMapper mapper = new ObjectMapper();
     private static Map<String, String> headers;
+    private final ObjectMapper mapper = new ObjectMapper();
     private final Map<Integer, Subscriber> chatBoxMap = new HashMap<>();
 
     private ChatContext(URI serverUri, Map<String, String> httpHeaders) {
@@ -78,7 +80,22 @@ public class ChatContext extends WebSocketClient {
         }
 
         if (msg != null) {
-            this.notify(msg.getGroupChatId(), msg);
+            if (msg.getMsgType() == null) {
+                this.notify(msg.getGroupChatId(), msg);
+            } else {
+                if (msg.getMsgType().equals("SYS")) {
+                    String ctx = msg.getMsgContent();
+                    String[] opt = ctx.split("->");
+                    if(opt.length == 2) {
+                        if(opt[1].equals("MEMBER_LIST")) {
+                            EventHandlerService.getInstance().notify(ComponentIdContext.MEMBER_LIST_ID, null);
+                        }
+                        if(opt[1].equals("CHAT_SCREEN")) {
+                            EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, null);
+                        }
+                    }
+                }
+            }
         }
     }
 

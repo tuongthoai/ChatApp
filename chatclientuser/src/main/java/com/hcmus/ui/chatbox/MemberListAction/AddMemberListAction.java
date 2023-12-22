@@ -1,9 +1,14 @@
 package com.hcmus.ui.chatbox.MemberListAction;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.UserProfile;
+import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.models.User;
+import com.hcmus.services.GChatService;
 import com.hcmus.services.UserService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.MemberList;
 
 import javax.swing.*;
@@ -43,8 +48,8 @@ public class AddMemberListAction implements ActionListener {
         List<String> usernames = friends.stream()
                 .filter(user -> {
                     boolean res = true;
-                    for(GroupChatMember member : parent.getMembers()) {
-                        if(member.getUserId() == user.getId()) {
+                    for (GroupChatMember member : parent.getMembers()) {
+                        if (member.getUserId() == user.getId()) {
                             res = false;
                             break;
                         }
@@ -96,14 +101,38 @@ public class AddMemberListAction implements ActionListener {
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
-                if(finalFriends == null || finalFriends.isEmpty()) {
+                if (finalFriends == null || finalFriends.isEmpty()) {
                     return;
                 }
                 User selectedUser = finalFriends.get(selectedIndice);
 
                 // Add this member to group
+                GChatService gChatService = GChatService.getInstance();
+                try {
+                    gChatService.addMember2Group(parent.getChatId(), selectedUser.getId());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(
+                            selectMemberAddDlg,
+                            "Network error",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
 
                 // send reload msg to
+
+                ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                sysUpdateMsg.setMsgType("SYS");
+                sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
+                sysUpdateMsg.setGroupChatId(parent.getChatId());
+
+                try {
+                    ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+
+                selectMemberAddDlg.dispose();
             }
         });
 

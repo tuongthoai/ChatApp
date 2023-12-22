@@ -11,6 +11,10 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DateFilterMenu extends FilterMenu{
@@ -60,7 +64,7 @@ public class DateFilterMenu extends FilterMenu{
         panel.revalidate();
     }
     private static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-        private final String pattern = "dd/MM/yyyy";
+        private final String pattern = "yyyy/MM/dd";
         private final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 
         @Override
@@ -100,32 +104,33 @@ public class DateFilterMenu extends FilterMenu{
         List<RowFilter<TableModel, Integer>> filters = new ArrayList<>();
         for (int i = 0; i < labels.length; i++) {
             String name = labels[i].getText();
-            String startDate = startDatePickers.get(i).getJFormattedTextField().getText();
-            String endDate = endDatePickers.get(i).getJFormattedTextField().getText();
-            if (startDate.isEmpty() && endDate.isEmpty()) {
+            String startDateString = startDatePickers.get(i).getJFormattedTextField().getText();
+            String endDateString = endDatePickers.get(i).getJFormattedTextField().getText();
+            if (startDateString.isEmpty() && endDateString.isEmpty()) {
                 continue;
             }
-            System.out.println(name + " " + startDate + " " + endDate);
+
+            System.out.println(name + " " + startDateString + " " + endDateString);
 
             int columnIndex = super.getColumnIndex(name);
-            if (!startDate.isEmpty()) {
-                try {
-                    Date date = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-                    filters.add(RowFilter.dateFilter(RowFilter.ComparisonType.AFTER, date, columnIndex));
-                } catch (ParseException e) {
-                    e.printStackTrace(System.err);
+            RowFilter<TableModel, Integer> localDateFilter = new RowFilter<TableModel, Integer>() {
+                @Override
+                public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                    TableModel model = entry.getModel();
+                    LocalDate date = (LocalDate) model.getValueAt(entry.getIdentifier(), columnIndex);
+                    LocalDate startDate = null;
+                    LocalDate endDate = null;
+                    if (!startDateString.isEmpty()) {
+                        startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                    }
+                    if (!endDateString.isEmpty()) {
+                        endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                    }
+                    return date.isAfter(startDate) && date.isBefore(endDate);
                 }
-            }
-            if (!endDate.isEmpty()) {
-                try {
-                    Date date = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-                    filters.add(RowFilter.dateFilter(RowFilter.ComparisonType.BEFORE, date, columnIndex));
-                } catch (ParseException e) {
-                    e.printStackTrace(System.err);
-                }
-            }
+            };
 
+            sorter.setRowFilter(localDateFilter);
         }
-        sorter.setRowFilter(RowFilter.andFilter(filters));
     }
 }
