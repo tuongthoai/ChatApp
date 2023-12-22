@@ -69,4 +69,19 @@ public class GroupChatService {
     public void addMember(int groupId, int userId) throws Exception {
         repository.addMember(groupId, userId);
     }
+
+    public void removeMember(int groupId, int userId) throws Exception {
+        int adminId = repository.findGroupAdminById(groupId, userId);
+        if (adminId == -1) {
+            repository.removeMember(groupId, userId);
+        } else {
+            adminId = repository.findFirstNotAdmin(groupId);
+            if (adminId == -1) {
+                return;
+            }
+
+            repository.addAdmin(groupId, adminId);
+            repository.removeMember(groupId, userId);
+        }
+    }
 }

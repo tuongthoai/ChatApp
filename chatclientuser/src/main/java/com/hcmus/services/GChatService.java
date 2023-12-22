@@ -150,4 +150,43 @@ public class GChatService {
         }
         return false;
     }
+
+    public boolean removeMemberFromGroup(int groupId, int userId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        AddMemberRequest requestBody = new AddMemberRequest(groupId, userId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url("http://localhost:8080/gchats/removeMember").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if(response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (Boolean) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public List<User> findAllAdmins(int groupId) throws Exception {
+        List<User> result = new ArrayList<>();
+        Request request = new Request.Builder().url("http://localhost:8080/gchats/admins/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new IOException("Request failed: " + response.code());
+            }
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 }

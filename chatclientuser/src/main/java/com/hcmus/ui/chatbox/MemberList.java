@@ -1,9 +1,14 @@
 package com.hcmus.ui.chatbox;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.UserProfile;
+import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.models.User;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.GChatService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.MemberListAction.AddMemberListAction;
 
 import javax.swing.*;
@@ -138,8 +143,46 @@ public class MemberList extends JPanel implements Subscriber {
             removeBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    parent.getMembers().remove(order);
-                    parent.updateMemberList();
+                    // check author
+                    try {
+                        List<User> admins = GChatService.getInstance().findAllAdmins(parent.getChatId());
+                        boolean isAdmin = false;
+                        for (User user : admins) {
+                            if (user.getId() == UserProfile.getUserProfile().getId()) {
+                                isAdmin = true;
+                                break;
+                            }
+                        }
+                        if (!isAdmin) {
+                            JOptionPane.showMessageDialog(mainPanel, "You are not authorized", "Infomation", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    // if is admin then be able to remove member
+                    boolean result = true;
+                    try {
+                        result = GChatService.getInstance().removeMemberFromGroup(parent.getChatId(), parent.getMembers().get(order).getUserId());
+                        // else show dialog
+//                        parent.getMembers().remove(order);
+//                        parent.updateMemberList();
+                        ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                        sysUpdateMsg.setMsgType("SYS");
+                        sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
+                        sysUpdateMsg.setGroupChatId(parent.getChatId());
+                        ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                                mainPanel,
+                                "Network Error",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        ex.printStackTrace();
+                    }
+
                 }
             });
             buttonPanel.add(removeBtn);

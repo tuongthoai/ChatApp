@@ -102,4 +102,18 @@ public class GroupChatController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @PostMapping(value = "/removeMember", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String removeMember(@RequestBody AddMemberRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            service.removeMember(request.getGroupId(), request.getNewMemberId());
+            response.setData(true);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

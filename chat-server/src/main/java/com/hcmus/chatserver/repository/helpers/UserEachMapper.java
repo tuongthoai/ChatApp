@@ -25,7 +25,7 @@ public class UserEachMapper implements ResultSetExtractor<User> {
             user.setCreatedTime(rs.getLong("createdtime"));
             user.setOnline(rs.getBoolean("isonline"));
             user.setBlocked(rs.getBoolean("isblocked"));
-
+            user.setRole(rs.getInt("user_role") == 1 ? "ROLE_ADMIN" : "ROLE_USER");
         }
         return user;
     }

@@ -119,4 +119,43 @@ public class GroupChatRepository implements InitializingBean {
         String query = "insert into gchat_member values (?, ?)";
         jdbcTemplate.update(query, groupId, userId);
     }
+
+    public void removeMember(int groupId, int userId) throws Exception {
+        String query = "delete from gchat_member \n" +
+                "where gchat_member.member_id = ? and groupchat_id = ?";
+        jdbcTemplate.update(query, userId, groupId);
+    }
+
+    public Integer findGroupAdminById(int groupId, int userId) throws Exception {
+        String query = "select * from gchat_admins ga where ga.group_id = ? and ga.admin_id = ?";
+        return jdbcTemplate.query(query, new Object[]{groupId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if(rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getInt(1);
+                }
+                return -1;
+            }
+        });
+    }
+
+    public Integer findFirstNotAdmin(int groupId) throws Exception {
+        String query = "select * from gchat_member gm where gm.member_id not in (select ga.admin_id from gchat_admins ga where ga.group_id = ?) and gm.groupchat_id = ?";
+        return jdbcTemplate.query(query, new Object[]{groupId, groupId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getInt(2);
+                }
+                return null;
+            }
+        });
+    }
+
+    public void addAdmin(int groupId, int userId) throws Exception {
+        String query = "insert into gchat_admins(group_id, admin_id) values (?, ?)";
+        jdbcTemplate.update(query, groupId, userId);
+    }
 }
