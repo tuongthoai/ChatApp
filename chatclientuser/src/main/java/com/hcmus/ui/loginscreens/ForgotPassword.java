@@ -1,5 +1,8 @@
 package com.hcmus.ui.loginscreens;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hcmus.services.AuthService;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -11,7 +14,6 @@ public class ForgotPassword extends JFrame {
     private JTextField txtEmail;
     private JButton btnSend;
     private JLabel lblForgotPassword;
-
     public ForgotPassword() {
         init();
         addListener();
@@ -77,10 +79,17 @@ public class ForgotPassword extends JFrame {
         btnSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                AuthService authService = AuthService.getInstance();
+
                 String email = txtEmail.getText();
                 if (email.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Email is empty");
                 } else {
+                    try {
+                        authService.forgotPassword(email);
+                    } catch (JsonProcessingException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     JOptionPane.showMessageDialog(null, "Send email to " + email);
                     dispose();
                     new Login().setVisible(true);

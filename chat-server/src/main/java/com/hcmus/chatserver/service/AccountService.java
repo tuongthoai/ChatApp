@@ -38,4 +38,12 @@ public class AccountService {
         }
         return usrId;
     }
+
+    public String forgotPassword(String email) throws Exception {
+        try {
+            return repository.resetPassword(email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Repository
 public class UserRepository implements InitializingBean {
@@ -236,5 +237,20 @@ public class UserRepository implements InitializingBean {
     public void updateUserOnlineStatus(int userId, boolean isOnline) throws Exception {
         String query  = "update user_metadata set isonline = ? where user_metadata.user_id = ?";
         jdbcTemplate.update(query, isOnline, userId);
+    }
+
+    public String resetPassword(String email) {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        String newPassword = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        String query = "update user_metadata set user_password = '" + newPassword + "' where email = '" + email + "'";
+        jdbcTemplate.update(query);
+        return newPassword;
     }
 }

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.api.LogginRequest;
 import com.hcmus.chatserver.entities.api.RegisterRequest;
+import com.hcmus.chatserver.entities.email.EmailDetails;
 import com.hcmus.chatserver.service.AccountService;
+import com.hcmus.chatserver.service.EmailService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController implements InitializingBean {
     @Autowired
     private AccountService service;
+    @Autowired
+    private EmailService emailService;
     private ObjectMapper mapper;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
@@ -40,6 +44,29 @@ public class AccountController implements InitializingBean {
             userId = service.registerUser(request.getUsername(), request.getPassword(), request.getEmail());
             response.setData(userId);
         } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Error! Please try a gain!!!");
+
+            return mapper.writeValueAsString(response);
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/forgot", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+    public String forgotPassword(@RequestBody String email) throws JsonProcessingException {
+        ApiResponse response = new ApiResponse();
+        System.out.println(email);
+        try {
+            String newPassword = service.forgotPassword(email);
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(email);
+            emailDetails.setSubject("Reset password");
+            emailDetails.setMsgBody("Your new password is: " + newPassword);
+            String status = emailService.sendSimpleEmail(emailDetails);
+            System.out.println(status);
+            response.setData(status);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             response.setError(true);
             response.setErrorReason("Error! Please try a gain!!!");
 

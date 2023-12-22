@@ -8,6 +8,7 @@ import com.hcmus.models.RegisterRequest;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 public class AuthService {
     private static AuthService instance;
@@ -84,6 +85,28 @@ public class AuthService {
                     throw new IOException("Request failed: " + response.code());
                 }
                 return (int) apiResponse.getData();
+            }
+            else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void forgotPassword(String email) throws JsonProcessingException {
+        MediaType mediaType = MediaType.parse("application/json");
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/account/forgot")
+                .method("POST", RequestBody.create(mediaType, email))
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
             }
             else {
                 throw new IOException("Request failed: " + response.code());
