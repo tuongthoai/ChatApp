@@ -11,7 +11,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +47,7 @@ public class OnlineChartService {
     public List<Integer> getYears(){
         List<Integer> res = new ArrayList<>();
         for(long time : this.loginTime){
-            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(time);
+            LocalDate convertedTime = UnixTimestampConverter.unix2DateTime(time);
             if(!res.contains(convertedTime.getYear()))
                 res.add(convertedTime.getYear());
         }
@@ -58,7 +58,7 @@ public class OnlineChartService {
         Arrays.fill(numberOfUser, 0, 12, 0);
 
         for(long loginTime : this.loginTime){
-            LocalDateTime convertedTime = UnixTimestampConverter.unix2DateTime(loginTime);
+            LocalDate convertedTime = UnixTimestampConverter.unix2DateTime(loginTime);
             if(convertedTime.getYear() == year){
                 int month = convertedTime.getMonthValue();
                 numberOfUser[month - 1]++;
