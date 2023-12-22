@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatlayout;
 
 import com.hcmus.ChatHashMap;
+import com.hcmus.observer.Subscriber;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
@@ -10,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URISyntaxException;
 
-public class ChatScreen extends JPanel {
+public class ChatScreen extends JPanel implements Subscriber {
     JPanel chatBoxContainer;
     ChatBox nullChatBox;
     ChatContext context;
@@ -70,5 +71,19 @@ public class ChatScreen extends JPanel {
 
     public void setContext(ChatContext context) {
         this.context = context;
+    }
+
+    @Override
+    public int getObserverId() {
+        return Integer.MAX_VALUE; // indicate ChatScreen
+    }
+
+    @Override
+    public void update(Object obj) {
+        try {
+            reloadChatScreen();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

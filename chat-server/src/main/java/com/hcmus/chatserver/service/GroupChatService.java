@@ -65,4 +65,9 @@ public class GroupChatService {
     public void updateGroupChatName(int gchatid, String newName) throws Exception {
         repository.updateGroupChatName(gchatid, newName);
     }
+
+    public void addMember(int groupId, int userId) throws Exception {
+        repository.addMember(groupId, userId);
+        // notify other members
+    }
 }

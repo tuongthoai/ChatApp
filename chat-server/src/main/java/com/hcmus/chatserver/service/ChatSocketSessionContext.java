@@ -8,9 +8,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,6 +82,20 @@ public class ChatSocketSessionContext implements InitializingBean {
 
     public void addGroupChat(int gChatId, List<Integer> membersId) {
         groupChatMembers.put(gChatId, membersId);
+    }
+
+    public void updateGroupChatMember(int gChatId) {
+        List<Integer> usersId = groupChatMembers.getOrDefault(gChatId, new ArrayList<>());
+        try {
+            List<User> groupChatIdsOfUser = service.findAllMembers(gChatId);
+            usersId = new ArrayList<>(groupChatIdsOfUser.size());
+            for(User usr : groupChatIdsOfUser) {
+                usersId.add(usr.getId());
+            }
+            groupChatMembers.put(gChatId, usersId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

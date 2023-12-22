@@ -114,4 +114,9 @@ public class GroupChatRepository implements InitializingBean {
         String query = "update gchat_metadata \n" + "set groupname = ?\n" + "where group_id = ?";
         jdbcTemplate.update(query, newName, groupId);
     }
+
+    public void addMember(int groupId, int userId) throws Exception {
+        String query = "insert into gchat_member values (?, ?)";
+        jdbcTemplate.update(query, groupId, userId);
+    }
 }
