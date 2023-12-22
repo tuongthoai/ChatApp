@@ -2,6 +2,7 @@ package com.hcmus.ui.chatlayout;
 
 import com.hcmus.ChatHashMap;
 import com.hcmus.observer.Subscriber;
+import com.hcmus.services.ComponentIdContext;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlist.ChatList;
@@ -75,7 +76,7 @@ public class ChatScreen extends JPanel implements Subscriber {
 
     @Override
     public int getObserverId() {
-        return Integer.MAX_VALUE; // indicate ChatScreen
+        return ComponentIdContext.CHAT_SCREEN_ID; // indicate ChatScreen
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.hcmus.ui.chatlayout;
 
 import com.hcmus.ChatHashMap;
 import com.hcmus.UserProfile;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.friendscreen.FriendHomePage;
@@ -39,6 +40,7 @@ public class ChatLayout extends JFrame {
 
         // Main screen
         ChatScreen mainScreen = new ChatScreen(this.chatContext);
+        EventHandlerService.getInstance().addObserver(mainScreen);
         contentPanel.add(mainScreen, "CHAT");
 
         // Friend screen

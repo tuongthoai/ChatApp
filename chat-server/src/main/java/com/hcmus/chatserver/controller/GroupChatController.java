@@ -2,6 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.chatserver.entities.api.AddMemberRequest;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.api.RenameGroupRequest;
 import com.hcmus.chatserver.service.GroupChatService;
@@ -84,6 +85,20 @@ public class GroupChatController {
             response.setError(true);
             response.setErrorReason(err.getMessage());
             err.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @PostMapping(value = "/addMember", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String addMember(@RequestBody AddMemberRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            service.addMember(request.getGroupId(), request.getNewMemberId());
+            response.setData(true);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
         }
         return mapper.writeValueAsString(response);
     }

@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 
 import javax.swing.*;
@@ -17,7 +18,9 @@ public class GroupInfoDialog extends JDialog {
         this.parent = parent;
         GChatService service = GChatService.getInstance();
         List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
-        MemberList memberList = new MemberList(members);
+        EventHandlerService eventHandlerService = EventHandlerService.getInstance();
+        MemberList memberList = new MemberList(members, parent.getChatId());
+        eventHandlerService.addObserver(memberList);
 
         setSize(300, 400);
         setLocationRelativeTo(parent);

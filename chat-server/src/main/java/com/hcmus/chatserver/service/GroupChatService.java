@@ -68,6 +68,5 @@ public class GroupChatService {
 
     public void addMember(int groupId, int userId) throws Exception {
         repository.addMember(groupId, userId);
-        // notify other members
     }
 }

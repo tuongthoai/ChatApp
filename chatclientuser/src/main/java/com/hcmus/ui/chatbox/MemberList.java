@@ -1,6 +1,8 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.observer.Subscriber;
+import com.hcmus.services.ComponentIdContext;
 import com.hcmus.ui.chatbox.MemberListAction.AddMemberListAction;
 
 import javax.swing.*;
@@ -9,12 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MemberList extends JPanel {
+public class MemberList extends JPanel implements Subscriber {
     private JScrollPane mainPanel;
     private List<GroupChatMember> members;
+    private int chatId;
 
-    public MemberList(List<GroupChatMember> members) {
+    public MemberList(List<GroupChatMember> members, Integer chatId) {
         this.members = members;
+        this.chatId = chatId;
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         add(createMemberScrollPanel(this.members, gbc), gbc);
@@ -43,7 +47,7 @@ public class MemberList extends JPanel {
         int n = members.size();
         for (int i = 0; i < n; i++) {
             gbc.gridy = i * 2; // Adjusting gridy to skip a row for JSeparator
-            panel.add(new MemberCard(members.get(i).getUsername(), members.get(i).getRole(), i,this), gbc);
+            panel.add(new MemberCard(members.get(i).getUsername(), members.get(i).getRole(), i, this), gbc);
 
             if (i < n - 1) {
                 gbc.gridy = i * 2 + 1;
@@ -72,10 +76,36 @@ public class MemberList extends JPanel {
         repaint();
     }
 
+    @Override
+    public int getObserverId() {
+        return ComponentIdContext.MEMBER_LIST_ID;
+    }
+
+    @Override
+    public void update(Object obj) {
+        updateMemberList();
+    }
+
+    public List<GroupChatMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<GroupChatMember> members) {
+        this.members = members;
+    }
+
+    public int getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(int chatId) {
+        this.chatId = chatId;
+    }
+
     private class MemberCard extends JPanel {
-        private MemberList parent;
-        private int order;
         private final Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 12);
+        private final MemberList parent;
+        private final int order;
 
         public MemberCard(String name, String role, int order, MemberList par) {
             this.order = order;
@@ -146,13 +176,5 @@ public class MemberList extends JPanel {
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             return button;
         }
-    }
-
-    public List<GroupChatMember> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<GroupChatMember> members) {
-        this.members = members;
     }
 }

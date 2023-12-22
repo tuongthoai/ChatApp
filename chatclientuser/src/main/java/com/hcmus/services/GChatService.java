@@ -129,4 +129,25 @@ public class GChatService {
 
         return false;
     }
+
+    public boolean addMember2Group(int groupId, int userId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        AddMemberRequest requestBody = new AddMemberRequest(groupId, userId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url("http://localhost:8080/gchats/addMember").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if(response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (Boolean) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }
