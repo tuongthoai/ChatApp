@@ -41,21 +41,11 @@ public class AddMemberListAction implements ActionListener {
         UserService service = UserService.getInstance();
         List<User> friends = null;
         try {
-            friends = service.findAllFriends(UserProfile.getUserProfile().getId());
+            friends = service.getAllFriendNotInGroup(UserProfile.getUserProfile().getId(), parent.getChatId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         List<String> usernames = friends.stream()
-                .filter(user -> {
-                    boolean res = true;
-                    for (GroupChatMember member : parent.getMembers()) {
-                        if (member.getUserId() == user.getId()) {
-                            res = false;
-                            break;
-                        }
-                    }
-                    return res;
-                })
                 .map(User::getUsername)
                 .collect(Collectors.toList());
 

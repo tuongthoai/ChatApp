@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
+
 @Repository
 public class FriendRepository implements InitializingBean {
     private JdbcTemplate jdbcTemplate;
@@ -54,8 +55,19 @@ public class FriendRepository implements InitializingBean {
             }
         });
     }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public List<User> getFriendNotInGroup(int userId, int groupId) {
+        String query = "select um.*\n" +
+                "from user_friend uf \n" +
+                "join user_metadata um on um.user_id = uf.friend_id\n" +
+                "where uf.user_id = ? and not exists (\n" +
+                "\tselect * from gchat_member gm where gm.groupchat_id = ? and gm.member_id = uf.friend_id\n" +
+                ");";
+        return jdbcTemplate.query(query, new Object[]{userId, groupId}, new int[]{Types.INTEGER, Types.INTEGER}, new UserRowMapper());
     }
 }

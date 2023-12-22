@@ -54,4 +54,18 @@ public class FriendController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @GetMapping(value = "/{userId}/exceptGroup/{groupId}")
+    public @ResponseBody String getFriendNotInGroup(@PathVariable int userId, @PathVariable int groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<User> users = friendService.getFriendNotInGroup(userId, groupId);
+            response.setData(users);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user's friends");
+            e.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

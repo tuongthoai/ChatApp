@@ -3,6 +3,7 @@ package com.hcmus.ui.chatbox;
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
+import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatbox.MemberListAction.AddMemberListAction;
 
 import javax.swing.*;
@@ -83,6 +84,7 @@ public class MemberList extends JPanel implements Subscriber {
 
     @Override
     public void update(Object obj) {
+        this.members = GChatService.getInstance().getGroupChatMembers(chatId);
         updateMemberList();
     }
 

@@ -34,4 +34,8 @@ public class FriendService {
     public long countFriendsOf(int userId) throws Exception {
         return repository.countFriendOf(userId);
     }
+
+    public List<User> getFriendNotInGroup(int userId, int groupId) throws Exception {
+        return repository.getFriendNotInGroup(userId, groupId);
+    }
 }

@@ -109,4 +109,22 @@ public class UserService {
         }
         return result;
     }
+
+    public List<User> getAllFriendNotInGroup(int userId, int groupId) throws Exception {
+        List<User> result = new ArrayList<>();
+        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userId + "/exceptGroup/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new Exception(apiResponse.getErrorReason());
+            }
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 }
