@@ -2,34 +2,56 @@ package com.hcmus.ui.screens.usersfriends;
 
 import com.hcmus.entities.user.UserDTO;
 import com.hcmus.services.UserFriendService;
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.FilterMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class UsersFriends extends JPanel {
     private Table<UserDTO> table;
     private SearchBar searchBar;
     private UserFriendService service;
+    private JPopupMenu contextMenu;
+    private FilterMenu filterMenu;
     public UsersFriends() {
         try{
             service = new UserFriendService();
             List<UserDTO> userList = service.getDirInDirFriend();
-            List<String> columnHead = service.getColumns();
-
-//            for(UserDTO u : userList){
-//                System.out.println(u.getName());
-//                System.out.println(u.getDirectFriend());
-//                System.out.println(u.getIndirectFriend());
-//                System.out.println("==============");
+//            for(UserDTO user: userList){
+//                System.out.println(user.getFriends());
 //            }
+            List<String> columnHead = service.getColumns();
 
             table = new Table<>(userList, columnHead);
             searchBar = new SearchBar(table.getSorter());
+
+            JTextField friends = new JTextField(10);
+            friends.setName("Friends");
+            FilterMenuBuilder filterBuilder = new FilterMenuBuilder().setSorter(table.getSorter()).setModel(table.getModel()).setFilterName("Filter by direct friends");
+            filterBuilder.setFilterComponents(new JComponent[]{friends});
+            filterBuilder.setFilterLabels(new JLabel[]{new JLabel("Friends")});
+            NumberFilterMenu loginCountFilterMenu = filterBuilder.createNumberFilterMenu();
+
+            contextMenu = new JPopupMenu();
+            contextMenu.add(loginCountFilterMenu);
+
+            table.getTable().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.isPopupTrigger()) {
+                        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if (e.isPopupTrigger()) {
+                        contextMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                }
+            });
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);
