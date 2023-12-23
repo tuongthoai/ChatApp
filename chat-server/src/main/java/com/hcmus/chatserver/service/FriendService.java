@@ -22,13 +22,8 @@ public class FriendService {
         return repository.findAllFriendOnline(userId);
     }
 
-    public boolean addFriend(int userId, int friendId) throws Exception {
-        if (userId == friendId) {
-            return false;
-        }
-
-        // check if block
-        return true;
+    public void addFriend(int userId, int friendId) throws Exception {
+        repository.addFriend(userId, friendId);
     }
 
     public long countFriendsOf(int userId) throws Exception {

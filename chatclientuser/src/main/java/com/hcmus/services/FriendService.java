@@ -68,4 +68,24 @@ public class FriendService {
         }
     }
 
+    public void addfriend(int userID, int friendID) throws IOException {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "");
+
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/friends/" + userID + "/addfriend/" + friendID)
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() != 200) {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

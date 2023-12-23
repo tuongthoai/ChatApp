@@ -97,4 +97,18 @@ public class FriendController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @PostMapping(value = "/{userId}/addfriend/{friendId}")
+    public @ResponseBody String addFriend(@PathVariable int userId, @PathVariable int friendId) throws JsonProcessingException {
+        ApiResponse response = new ApiResponse();
+        try {
+            friendService.addFriend(userId, friendId);
+            response.setData("Friend added successfully");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Unable to add friend");
+            e.printStackTrace(System.err);
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

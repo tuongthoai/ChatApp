@@ -56,8 +56,8 @@ public class NewFriend extends JPanel {
         gbc.gridy = 1;
         header.add(searchBar, gbc);
 
-//        JMenuItem unfriend = contextMenu.getUnfriend();
-//        unfriend.addActionListener(new UnfriendAction(table));
+        JMenuItem addfriend = contextMenu.getAddfriend();
+        addfriend.addActionListener(new AddfriendAction(table));
 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
