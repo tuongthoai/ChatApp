@@ -1,11 +1,8 @@
 package com.hcmus.chatserver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.entities.user.UserDTO;
-import com.hcmus.chatserver.entities.user.UserStatisticSummary;
+import com.hcmus.chatserver.entities.user.*;
 import com.hcmus.chatserver.repository.UserRepository;
-import com.hcmus.chatserver.entities.user.UserActivity;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,5 +78,13 @@ public class UserService implements InitializingBean {
     }
     public void updateUserStatus(int userId, boolean isOnline) throws Exception {
         userRepository.updateUserOnlineStatus(userId, isOnline);
+    }
+
+    public List<Friend> findAllFriends(int userId) throws Exception {
+        return userRepository.findAllFriends(userId);
+    }
+
+    public List<Friend> findAllStranger(int userId) {
+        return userRepository.findAllStranger(userId);
     }
 }

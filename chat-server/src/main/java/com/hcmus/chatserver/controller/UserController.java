@@ -2,6 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
+import com.hcmus.chatserver.entities.user.Friend;
 import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.entities.user.UserActivity;
 import com.hcmus.chatserver.service.UserService;
@@ -197,6 +198,31 @@ public class UserController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't update user status");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/friends", method = RequestMethod.GET, params = {"userId"})
+    public @ResponseBody String findAllFriends(@RequestParam("userId") int userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<Friend> users = userService.findAllFriends(userId);
+            response.setData(users);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get users");
+        }
+        return mapper.writeValueAsString(response);
+    }
+    @RequestMapping(value = "/stranger", method = RequestMethod.GET, params = {"userId"})
+    public @ResponseBody String findAllStranger(@RequestParam("userId") int userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<Friend> users = userService.findAllStranger(userId);
+            response.setData(users);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get users");
         }
         return mapper.writeValueAsString(response);
     }

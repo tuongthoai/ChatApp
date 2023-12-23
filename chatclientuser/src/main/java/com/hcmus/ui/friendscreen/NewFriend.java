@@ -79,6 +79,10 @@ public class NewFriend extends JPanel {
                 res.add(user);
             }
         }
+        for (User user : res){
+            System.out.println(user.getFullname());
+        }
+
         return res;
     }
     private JButton createButton(String user_id){
