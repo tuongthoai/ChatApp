@@ -8,20 +8,29 @@ import com.hcmus.services.AuthService;
 import com.hcmus.services.GChatService;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.loginscreens.Login;
+import org.jdatepicker.DateModel;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 public class SettingsScreen extends JPanel {
     private JButton button;
     private JButton button1;
     private ChangePasswordScreen changePasswordScreen;
     private User user = null;
+
+    private UserService userService = UserService.getInstance();
 
     public SettingsScreen() {
         setLayout(new BorderLayout());
@@ -66,6 +75,18 @@ public class SettingsScreen extends JPanel {
 
         accountPanel.add(infoPanel, BorderLayout.EAST);
         northPanel.add(accountPanel, BorderLayout.WEST);
+
+        JButton editButton = new JButton("Edit Profile");
+        editButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showEditDialog();
+            }
+        });
+
+        northPanel.add(editButton, BorderLayout.EAST);
+
         return northPanel;
     }
 
@@ -81,12 +102,43 @@ public class SettingsScreen extends JPanel {
         JPanel infoPanel = new JPanel();
         infoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 180, 10, 180));
-        infoPanel.setLayout(new GridLayout(5, 1, 0, 5));
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
+        JPanel firstRow = new JPanel();
+        firstRow.setLayout(new BorderLayout(20, 0));
+
+        JLabel name = new JLabel("Name: " + getUser().getName());
+        name.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        name.setAlignmentX(Component.LEFT_ALIGNMENT);
+        firstRow.add(name, BorderLayout.WEST);
+
+        JLabel sex = new JLabel("Sex: " + getUser().getSex());
+        sex.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        sex.setAlignmentX(Component.LEFT_ALIGNMENT);
+        firstRow.add(sex, BorderLayout.EAST);
+        infoPanel.add(firstRow);
+
+        JPanel secondRow = new JPanel();
+        secondRow.setLayout(new BorderLayout(20, 0));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        JLabel birthday = new JLabel("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+        birthday.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        birthday.setAlignmentX(Component.LEFT_ALIGNMENT);
+        secondRow.add(birthday, BorderLayout.WEST);
+
+        JLabel address = new JLabel("Address: " + getUser().getAddress());
+        address.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        address.setAlignmentX(Component.LEFT_ALIGNMENT);
+        secondRow.add(address, BorderLayout.EAST);
+        infoPanel.add(secondRow);
+
+        JPanel thirdRow = new JPanel();
+        thirdRow.setLayout(new BorderLayout(20, 0));
         JLabel email = new JLabel("Email: " + getUser().getEmail());
         email.setFont(new Font("Tahoma", Font.PLAIN, 15));
         email.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(email);
+        thirdRow.add(email, BorderLayout.WEST);
+        infoPanel.add(thirdRow);
 
         UserService service = UserService.getInstance();
         long friendCnt = 0;
@@ -95,10 +147,16 @@ public class SettingsScreen extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        JPanel fourthRow = new JPanel();
+        fourthRow.setLayout(new BorderLayout(20, 0));
+
+
         JLabel friendsNumber = new JLabel("Friends: " + friendCnt);
         friendsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         friendsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(friendsNumber);
+        fourthRow.add(friendsNumber, BorderLayout.WEST);
+
 
         GChatService gChatService = GChatService.getInstance();
         long gChatCnt = 0;
@@ -110,13 +168,8 @@ public class SettingsScreen extends JPanel {
         JLabel groupsNumber = new JLabel("Groups: " + gChatCnt);
         groupsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         groupsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(groupsNumber);
-
-//        JLabel messagesNumber = new JLabel("Messages: " + "100");
-//        messagesNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
-//        messagesNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        infoPanel.add(messagesNumber);
-
+        fourthRow.add(groupsNumber, BorderLayout.EAST);
+        infoPanel.add(fourthRow);
         AuthService authService = AuthService.getInstance();
         long lastLoginTimeStamp = 0;
         try {
@@ -124,10 +177,17 @@ public class SettingsScreen extends JPanel {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        JLabel lastLogin = new JLabel("Last login: " + LocalDateTime.ofInstant(Instant.ofEpochMilli(lastLoginTimeStamp), ZoneId.systemDefault()));
+
+        JPanel fifthRow = new JPanel();
+        fifthRow.setLayout(new BorderLayout(20, 0));
+
+        formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        JLabel lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
         lastLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lastLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(lastLogin);
+        fifthRow.add(lastLogin, BorderLayout.WEST);
+        infoPanel.add(fifthRow);
 
         centerPanel.add(infoPanel);
         return centerPanel;
@@ -198,5 +258,134 @@ public class SettingsScreen extends JPanel {
             this.user = curUser;
         }
         return this.user;
+    }
+
+    private void showEditDialog(){
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Edit Profile");
+        dialog.setSize(400, 400);
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel label = new JLabel("Edit Profile");
+        JLabel nameLabel = new JLabel("Name");
+        JLabel sexLabel = new JLabel("Sex");
+        JLabel birthdayLabel = new JLabel("Birthday");
+        JLabel addressLabel = new JLabel("Address");
+
+        JTextField nameField = new JTextField(20);
+        nameField.setText(getUser().getName());
+        JComboBox<String> sexBox = new JComboBox<>( new String[] {"Male", "Female", "Other"});
+        sexBox.setSelectedItem(getUser().getSex());
+        JDatePickerImpl birthdayPicker = initDatePickers();
+        // set date
+        DateModel<?> dateModel = birthdayPicker.getModel();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getUser().getBirthday() * 1000);
+        dateModel.setDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        JTextField addressField = new JTextField(20);
+        addressField.setText(getUser().getAddress() == null ? "" : getUser().getAddress());
+
+        JButton saveButton = new JButton("Save");
+
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
+        namePanel.add(nameLabel);
+        namePanel.add(Box.createHorizontalStrut(20));
+        namePanel.add(nameField);
+
+        JPanel sexPanel = new JPanel();
+        sexPanel.setLayout(new BoxLayout(sexPanel, BoxLayout.X_AXIS));
+        sexPanel.add(sexLabel);
+        sexPanel.add(Box.createHorizontalStrut(20));
+        sexPanel.add(sexBox);
+
+        JPanel birthdayPanel = new JPanel();
+        birthdayPanel.setLayout(new BoxLayout(birthdayPanel, BoxLayout.X_AXIS));
+        birthdayPanel.add(birthdayLabel);
+        birthdayPanel.add(Box.createHorizontalStrut(20));
+        birthdayPanel.add(birthdayPicker);
+
+        JPanel addressPanel = new JPanel();
+        addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.X_AXIS));
+        addressPanel.add(addressLabel);
+        addressPanel.add(Box.createHorizontalStrut(20));
+        addressPanel.add(addressField);
+
+        panel.add(label);
+        panel.add(namePanel);
+        panel.add(sexPanel);
+        panel.add(birthdayPanel);
+        panel.add(addressPanel);
+        panel.add(saveButton);
+
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setVisible(true);
+
+        saveButton.addActionListener(e->{
+            User user = UserProfile.getUserProfile();
+            if (!nameField.getText().isEmpty()) {
+                user.setName(nameField.getText());
+            }
+            if (sexBox.getSelectedIndex() != -1) {
+                user.setSex((String) sexBox.getSelectedItem());
+            }
+            if (birthdayPicker.getModel().getValue() != null) {
+                // convert to epoch time
+                Date date = (Date) birthdayPicker.getModel().getValue();
+                user.setBirthday(date.toInstant().getEpochSecond());
+            }
+            if (!addressField.getText().isEmpty()) {
+                user.setAddress(addressField.getText());
+            }
+
+            try {
+                userService.updateUser(user);
+                JOptionPane.showMessageDialog(null, "Your profile has been updated!");
+                dialog.dispose();
+            } catch (Exception err) {
+                err.printStackTrace(System.err);
+            }
+        });
+    }
+
+    private static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+        private final String pattern = "yyyy/MM/dd";
+        private final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+
+        @Override
+        public Object stringToValue(String text) throws ParseException {
+            try {
+                return dateFormat.parseObject(text);
+            } catch (ParseException e) {
+                // Handle the exception or return null if parsing fails
+                e.printStackTrace(System.err);
+                return null;
+            }
+        }
+
+        @Override
+        public String valueToString(Object value) throws ParseException {
+            if (value instanceof Date) {
+                return dateFormat.format((Date) value);
+            } else if (value instanceof Calendar) {
+                return dateFormat.format(((Calendar) value).getTime());
+            }
+            return "";
+        }
+    }
+    private JDatePickerImpl initDatePickers(){
+        UtilDateModel dateModel = new UtilDateModel();
+        Properties properties = new Properties();
+        properties.put("text.today", "Today");
+        properties.put("text.month", "Month");
+        properties.put("text.year", "Year");
+
+        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, properties);
+        return new JDatePickerImpl(datePanel, new DateLabelFormatter());
     }
 }
