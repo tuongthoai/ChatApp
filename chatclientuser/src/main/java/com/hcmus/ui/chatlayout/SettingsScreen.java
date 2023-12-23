@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.Link;
 import com.hcmus.UserProfile;
 import com.hcmus.models.GroupChat;
 import com.hcmus.models.User;
@@ -17,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class SettingsScreen extends JPanel {
-    private static final String currentDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private JButton button;
     private JButton button1;
     private ChangePasswordScreen changePasswordScreen;
@@ -48,7 +48,7 @@ public class SettingsScreen extends JPanel {
         accountPanel.setBackground(new Color(0, 0, 0, 0));
 
         JLabel avatar = new JLabel();
-        avatar.setIcon(new ImageIcon(currentDir + "avatar.png"));
+        avatar.setIcon(new ImageIcon(Link.getLink("image") + "avatar.png"));
         accountPanel.add(avatar, BorderLayout.CENTER);
 
         JPanel infoPanel = new JPanel();

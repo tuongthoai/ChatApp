@@ -3,6 +3,7 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.models.*;
 import okhttp3.*;
 
@@ -33,7 +34,7 @@ public class GChatService {
     }
 
     public List<GroupChat> getGChatList(int userId) {
-        Request request = new Request.Builder().url("http://localhost:8080/gchats/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
@@ -52,7 +53,7 @@ public class GChatService {
     public List<GroupChatMember> getGroupChatMembers(int gchatId) {
         List<GroupChatMember> result = new ArrayList<>();
         try {
-            Request request = new Request.Builder().url("http://localhost:8080/gchats/members/show/" + gchatId).method("GET", null).build();
+            Request request = new Request.Builder().url(Link.getLink("service") + "gchats/members/show/" + gchatId).method("GET", null).build();
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
@@ -72,7 +73,7 @@ public class GChatService {
     public Long countNoGroupChat(int userId) throws Exception {
         Long result = 0L;
         try {
-            Request request = new Request.Builder().url("http://localhost:8080/gchats/" + userId + "/count").method("GET", null).build();
+            Request request = new Request.Builder().url(Link.getLink("service") + "gchats/" + userId + "/count").method("GET", null).build();
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
@@ -91,7 +92,7 @@ public class GChatService {
     public List<ChatContentDTO> getAllHistory(int groupId) {
         List<ChatContentDTO> result = new ArrayList<>();
         try {
-            Request request = new Request.Builder().url("http://localhost:8080/gchats/" + groupId + "/messages").method("GET", null).build();
+            Request request = new Request.Builder().url(Link.getLink("service") + "gchats/" + groupId + "/messages").method("GET", null).build();
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
@@ -112,7 +113,7 @@ public class GChatService {
         MediaType mediaType = MediaType.parse("application/json");
         RenameGroupRequest renameGroupRequest = new RenameGroupRequest(groupId, newName);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(renameGroupRequest));
-        Request request = new Request.Builder().url("http://localhost:8080/gchats/rename").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/rename").method("POST", body).addHeader("Content-Type", "application/json").build();
         try {
             Response response = client.newCall(request).execute();
 
@@ -134,7 +135,7 @@ public class GChatService {
         MediaType mediaType = MediaType.parse("application/json");
         AddMemberRequest requestBody = new AddMemberRequest(groupId, userId);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
-        Request request = new Request.Builder().url("http://localhost:8080/gchats/addMember").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/addMember").method("POST", body).addHeader("Content-Type", "application/json").build();
         try {
             Response response = client.newCall(request).execute();
 
@@ -155,7 +156,7 @@ public class GChatService {
         MediaType mediaType = MediaType.parse("application/json");
         AddMemberRequest requestBody = new AddMemberRequest(groupId, userId);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
-        Request request = new Request.Builder().url("http://localhost:8080/gchats/removeMember").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/removeMember").method("POST", body).addHeader("Content-Type", "application/json").build();
         try {
             Response response = client.newCall(request).execute();
 
@@ -174,7 +175,7 @@ public class GChatService {
 
     public List<User> findAllAdmins(int groupId) throws Exception {
         List<User> result = new ArrayList<>();
-        Request request = new Request.Builder().url("http://localhost:8080/gchats/admins/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/admins/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();

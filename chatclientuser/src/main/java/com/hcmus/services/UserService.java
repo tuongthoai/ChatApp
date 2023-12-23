@@ -3,6 +3,7 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.User;
 import com.hcmus.models.UserDTO;
@@ -38,7 +39,7 @@ public class UserService {
     public User getUserById(int userId) throws Exception {
         User user = null;
         MediaType mediaType = MediaType.parse("application/json");
-        Request request = new Request.Builder().url("http://localhost:8080/users/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -56,7 +57,7 @@ public class UserService {
 
     public long countFriends(int userId) throws Exception {
         Long result = 0L;
-        Request request = new Request.Builder().url("http://localhost:8080/users/" + userId + "/countFriends").method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + userId + "/countFriends").method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -76,7 +77,7 @@ public class UserService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(user));
         Request request = new Request.Builder()
-                .url("http://localhost:8080/users/update")
+                .url(Link.getLink("service") + "users/update")
                 .method("PUT", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -93,7 +94,7 @@ public class UserService {
 
     public List<User> findAllFriends(int userId) throws Exception {
         List<User> result = new ArrayList<>();
-        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "friends/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -112,7 +113,7 @@ public class UserService {
 
     public List<User> findAllStrangers(int userId) throws Exception {
         List<User> result = new ArrayList<>();
-        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userId + "/stranger").method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "friends/" + userId + "/stranger").method("GET", null).addHeader("Content-Type", "application/json").build();
         try (Response response = client.newCall(request).execute()) {
             ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
             if (apiResponse.isError()) {
@@ -127,7 +128,7 @@ public class UserService {
 
     public List<User> getAllFriendNotInGroup(int userId, int groupId) throws Exception {
         List<User> result = new ArrayList<>();
-        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userId + "/exceptGroup/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "friends/" + userId + "/exceptGroup/" + groupId).method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();

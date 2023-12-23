@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatbox;
 
+import com.hcmus.Link;
 import com.hcmus.UserProfile;
 import com.hcmus.models.ChatContentDTO;
 import com.hcmus.models.ChatMessage;
@@ -15,7 +16,6 @@ import java.util.List;
 
 
 public class ChatBox extends JPanel implements Subscriber {
-    private static final String imageDir = System.getProperty("user.dir") + "/chatclientuser/src/main/java/com/hcmus/ui/images/";
     private Integer chatId;
     private ChatContext context;
     private JTextArea chatContent;
@@ -76,7 +76,7 @@ public class ChatBox extends JPanel implements Subscriber {
         userPanel.setOpaque(true);
 
         // Create a rounded image icon
-        RoundImageIcon avatarImage = new RoundImageIcon(imageDir + "LogoHCMUS.jpg", 40, 40);
+        RoundImageIcon avatarImage = new RoundImageIcon(Link.getLink("image") + "LogoHCMUS.jpg", 40, 40);
         JLabel userAvatar = new JLabel(avatarImage);
         userAvatar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
@@ -180,7 +180,7 @@ public class ChatBox extends JPanel implements Subscriber {
         button.setHorizontalTextPosition(SwingConstants.CENTER);
 
         // Load the icon
-        ImageIcon icon = new ImageIcon(imageDir + iconFilename);
+        ImageIcon icon = new ImageIcon(Link.getLink("image") + iconFilename);
         button.setIcon(icon);
 
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

@@ -1,6 +1,7 @@
 package com.hcmus.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.LoginRequest;
 import com.hcmus.models.SpamReportRequest;
@@ -34,7 +35,7 @@ public class SpamReportService {
         MediaType mediaType = MediaType.parse("application/json");
         SpamReportRequest reportRequest = new SpamReportRequest(userId, reportedUserId, content);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(reportRequest));
-        Request request = new Request.Builder().url("http://localhost:8080/spam/create").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "spam/create").method("POST", body).addHeader("Content-Type", "application/json").build();
         try {
             Response response = client.newCall(request).execute();
 

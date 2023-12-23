@@ -2,6 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.LoginRequest;
 import com.hcmus.models.RegisterRequest;
@@ -36,7 +37,7 @@ public class AuthService {
         MediaType mediaType = MediaType.parse("application/json");
         LoginRequest loginRequest = new LoginRequest(username, password);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(loginRequest));
-        Request request = new Request.Builder().url("http://localhost:8080/account/login").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "account/login").method("POST", body).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -54,7 +55,7 @@ public class AuthService {
 
     public long lastLogin(int userId) throws Exception {
         Long result = 0L;
-        Request request = new Request.Builder().url("http://localhost:8080/loginhistory/" + userId + "/last").method("GET", null).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "loginhistory/" + userId + "/last").method("GET", null).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -74,7 +75,7 @@ public class AuthService {
         MediaType mediaType = MediaType.parse("application/json");
         RegisterRequest registerRequest = new RegisterRequest(username, password, email);
         Request request = new Request.Builder()
-                .url("http://localhost:8080/account/register")
+                .url(Link.getLink("service") + "account/register")
                 .method("POST", RequestBody.create(mediaType, mapper.writeValueAsString(registerRequest)))
                 .addHeader("Content-Type", "application/json")
                 .build();
@@ -97,7 +98,7 @@ public class AuthService {
     public void forgotPassword(String email) throws JsonProcessingException {
         MediaType mediaType = MediaType.parse("application/json");
         Request request = new Request.Builder()
-                .url("http://localhost:8080/account/forgot")
+                .url(Link.getLink("service") + "account/forgot")
                 .method("POST", RequestBody.create(mediaType, email))
                 .addHeader("Content-Type", "application/json")
                 .build();
