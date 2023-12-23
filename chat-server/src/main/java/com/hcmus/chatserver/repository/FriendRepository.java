@@ -23,7 +23,7 @@ public class FriendRepository implements InitializingBean {
 
     public List<User> findAll(int userId) throws Exception {
         List<User> result = null;
-        String query = "select um.* from user_friend uf join user_metadata um ON um.user_id = uf.friend_id where uf.user_id = ?";
+        String query = "select um.* from user_friend uf join user_metadata um ON um.user_id = uf.friend_id where uf.user_id = ? order by um.user_id asc";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
     }
 
