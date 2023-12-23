@@ -1,6 +1,9 @@
 package com.hcmus.chatserver.repository;
 
-import com.hcmus.chatserver.entities.user.*;
+import com.hcmus.chatserver.entities.user.User;
+import com.hcmus.chatserver.entities.user.UserActivity;
+import com.hcmus.chatserver.entities.user.UserDTO;
+import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.helpers.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
@@ -249,25 +252,5 @@ public class UserRepository implements InitializingBean {
         String query = "update user_metadata set user_password = '" + newPassword + "' where email = '" + email + "'";
         jdbcTemplate.update(query);
         return newPassword;
-    }
-
-    public List<Friend> findAllFriends(int userId) {
-        String query = "select * from user_metadata where user_id in (select friend_id from user_friend where user_id = ?)";
-        try {
-            return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new FriendRowMapper());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            throw new RuntimeException("Failed to retrieve friends");
-        }
-    }
-
-    public List<Friend> findAllStranger(int userId) {
-        String query = "select * from user_metadata where user_id not in (select friend_id from user_friend where user_id = ?) and user_id != ? and username != 'admin'";
-        try {
-            return jdbcTemplate.query(query, new Object[]{userId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new FriendRowMapper());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            throw new RuntimeException("Failed to retrieve strangers");
-        }
     }
 }
