@@ -72,7 +72,7 @@ public class EditDialog extends JDialog {
         email.setText(selectedUser.getEmail());
         address = new JTextField(50);
         address.setText(selectedUser.getAddress());
-        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nữ", "Khác"});
+        sexComboBox = new JComboBox<>(new String[] {"Male", "Female", "Others"});
         sexComboBox.setSelectedItem(selectedUser.getSex());
 
         int day = UnixTimestampConverter.unix2DateTime(selectedUser.getBirthday()).getDayOfMonth();
@@ -235,7 +235,7 @@ public class EditDialog extends JDialog {
         // add new user to database
         LocalDateTime localDate = LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), 0, 0, 0);
         long unixBirthday = UnixTimestampConverter.dateTime2Unix(localDate);
-        User newUser = new User(1, username, password, name, email, sex, address, unixBirthday, System.currentTimeMillis(), false, false);
+        User newUser = new User(selectedUser.getId(), username, password, name, email, sex, address, unixBirthday, System.currentTimeMillis(), false, false);
         try {
             UserService service = new UserService();
             service.updateUser(newUser);

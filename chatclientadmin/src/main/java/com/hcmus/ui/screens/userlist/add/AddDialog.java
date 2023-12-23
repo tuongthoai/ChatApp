@@ -64,7 +64,7 @@ public class AddDialog extends JDialog {
         password = new JTextField(50);
         name = new JTextField(50);
         email = new JTextField(50);
-        sexComboBox = new JComboBox<>(new String[] {"Nam", "Nữ", "Khác"});
+        sexComboBox = new JComboBox<>(new String[] {"Male", "Female", "Others"});
         dayComboBox = new JComboBox<>(createStringArray(1, 31));
         monthComboBox = new JComboBox<>(createStringArray(1, 12));
         yearComboBox = new JComboBox<>(createStringArray(1971, 2023));
@@ -212,6 +212,9 @@ public class AddDialog extends JDialog {
         String email = this.email.getText();
         String address = this.address.getText();
         String sex = (String) this.sexComboBox.getSelectedItem();
+        System.out.println("Add dialog: " + sex.getClass());
+        System.out.println("Add dialog: " + name.getClass());
+
         String day = (String) dayComboBox.getSelectedItem();
         String month = (String) monthComboBox.getSelectedItem();
         String year = (String) yearComboBox.getSelectedItem();
@@ -222,7 +225,7 @@ public class AddDialog extends JDialog {
             return;
         }
         if (day.isEmpty() || month.isEmpty() || year.isEmpty() || !isValidDate(Integer.parseInt(day), Integer.parseInt(month), Integer.parseInt(year))) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid date!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
