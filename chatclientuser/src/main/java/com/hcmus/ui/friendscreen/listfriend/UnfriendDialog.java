@@ -1,10 +1,11 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.listfriend;
 
 import com.hcmus.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.models.UserDTO;
 import com.hcmus.services.FriendService;
 import com.hcmus.services.UserService;
+import com.hcmus.ui.table.ReloadTable;
 import com.hcmus.ui.table.Table;
 import com.hcmus.ui.table.UnixTimestampConverter;
 
@@ -69,13 +70,22 @@ public class UnfriendDialog extends JDialog {
     }
     private void onOK(ActionEvent ev) throws IOException {
         int userID = UserProfile.getUserProfile().getId();
-        int friendID = tablePanel.getSelectedData().getId();
+        int friendID;
+
+        if(tablePanel.getSelectedData() == null){
+            JOptionPane.showMessageDialog(this, "No selected friend", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+
+        friendID = tablePanel.getSelectedData().getId();
 
         try {
             FriendService service = new FriendService();
             service.unfriend(userID, friendID);
             JOptionPane.showMessageDialog(this, "Unfriend successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            updateTable();
+//            updateTable();
+            ReloadTable.reloadFriendTable(tablePanel);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Unfriend failed", "Error", JOptionPane.ERROR_MESSAGE);

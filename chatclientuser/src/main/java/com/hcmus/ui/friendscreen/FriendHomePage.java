@@ -1,11 +1,11 @@
 package com.hcmus.ui.friendscreen;
 
 import com.hcmus.ui.datatest.DataTest;
+import com.hcmus.ui.friendscreen.listfriend.ListFriend;
+import com.hcmus.ui.friendscreen.newfriend.NewFriend;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class FriendHomePage extends JPanel {

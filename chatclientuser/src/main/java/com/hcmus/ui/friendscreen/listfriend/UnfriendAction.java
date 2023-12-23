@@ -1,4 +1,4 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.listfriend;
 
 import com.hcmus.models.UserDTO;
 import com.hcmus.ui.table.Table;
