@@ -68,4 +68,18 @@ public class FriendController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @GetMapping(value = "/{userId}/stranger")
+    public @ResponseBody String getStranger(@PathVariable int userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<User> users = friendService.findAllStranger(userId);
+            response.setData(users);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get user's friends");
+            e.printStackTrace(System.err);
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

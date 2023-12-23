@@ -38,4 +38,8 @@ public class FriendService {
     public List<User> getFriendNotInGroup(int userId, int groupId) throws Exception {
         return repository.getFriendNotInGroup(userId, groupId);
     }
+
+    public List<User> findAllStranger(int userId) throws Exception {
+        return repository.findAllStranger(userId);
+    }
 }

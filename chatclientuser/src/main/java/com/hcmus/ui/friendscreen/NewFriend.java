@@ -1,14 +1,17 @@
 package com.hcmus.ui.friendscreen;
 
+import com.hcmus.UserProfile;
+import com.hcmus.models.UserDTO;
+import com.hcmus.services.UserService;
 import com.hcmus.ui.datatest.DataTest;
-import com.hcmus.ui.datatest.User;
-import com.hcmus.ui.datatest.UserFriend;
+import com.hcmus.models.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewFriend extends JPanel {
     private DataTest data;
@@ -21,11 +24,11 @@ public class NewFriend extends JPanel {
         this.user_id = "1";
         this.mainContentPanel = mainContentPanel;
 
-        ArrayList<User> listNotFriend = getListNotFriend(data.getFriendList(), data.getUserList());
+        List<UserDTO> listNotFriend = getListNotFriend();
 
         init(listNotFriend);
     }
-    public void init(ArrayList<User> listNotFriend){
+    public void init(List<UserDTO> listNotFriend){
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
 
@@ -48,7 +51,7 @@ public class NewFriend extends JPanel {
 
         Font fontText = new Font("Serif", Font.PLAIN, 18);
 
-        for(User notFriend : listNotFriend){
+        for(UserDTO notFriend : listNotFriend){
             JLabel nameLabel = new JLabel(notFriend.getFullname());
             nameLabel.setFont(fontText);
             gbc.gridx = 0;
@@ -56,7 +59,7 @@ public class NewFriend extends JPanel {
             gbc.weightx = 100;
             listPanel.add(nameLabel, gbc);
 
-            JButton addButton = createButton(notFriend.getUserId());
+            JButton addButton = createButton(String.valueOf(notFriend.getId()));
             gbc.gridx++;
             gbc.weightx = 1;
             listPanel.add(addButton, gbc);
@@ -64,22 +67,21 @@ public class NewFriend extends JPanel {
         JScrollPane scrollPane = new JScrollPane(listPanel);
         add(scrollPane, BorderLayout.CENTER);
     }
-    private ArrayList<User> getListNotFriend(ArrayList<UserFriend> userFriends, ArrayList<User> users){
-        ArrayList<User> res = new ArrayList<>();
-        ArrayList<String> friend_id = new ArrayList<>();
+    private List<UserDTO> getListNotFriend(){
+        UserService service = UserService.getInstance();
+        List<User> listNotFriend = new ArrayList<>();
+        try {
+            listNotFriend = service.findAllStrangers(UserProfile.getUserProfile().getId());
+            List<UserDTO> listNotFriendDTO = new ArrayList<>();
+            for (User user : listNotFriend) {
+                listNotFriendDTO.add(new UserDTO(user.getId(), user.getUsername(), user.getName(), user.isOnline() ? "Online" : "Offline"));
 
-        for(UserFriend userFriend : userFriends){
-            if(userFriend.getUserId().equals(this.user_id)){
-                friend_id.add(userFriend.getFriendId());
             }
+            return listNotFriendDTO;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return null;
         }
-
-        for(User user : users){
-            if(!friend_id.contains(user.getUserId())){
-                res.add(user);
-            }
-        }
-        return res;
     }
     private JButton createButton(String user_id){
         JButton button = new JButton("ADD");
