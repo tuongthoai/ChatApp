@@ -42,4 +42,7 @@ public class FriendService {
     public List<User> findAllStranger(int userId) throws Exception {
         return repository.findAllStranger(userId);
     }
+    public void removeFriend(int userId, int friendId) throws Exception {
+        repository.removeFriend(userId, friendId);
+    }
 }

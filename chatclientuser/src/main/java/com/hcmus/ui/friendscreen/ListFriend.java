@@ -4,6 +4,7 @@ import com.hcmus.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.datatest.DataTest;
+import com.hcmus.ui.table.ContextMenu;
 import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;
 import com.hcmus.models.UserDTO;
@@ -20,7 +21,7 @@ public class ListFriend extends JPanel {
     private JPanel mainContentPanel;
     private Table<UserDTO> table;
     private SearchBar searchBar;
-    private JPopupMenu contextMenu;
+    private ContextMenu contextMenu;
     private List<UserDTO> listfriend = new ArrayList<>();
     public ListFriend(CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
         this.mainCard = mainCard;
@@ -31,6 +32,7 @@ public class ListFriend extends JPanel {
 
         table = new Table<>(this.listfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
+        contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend"));
 
         JPanel header = new JPanel(new GridBagLayout());
         header.setBackground(Color.WHITE);
@@ -47,6 +49,9 @@ public class ListFriend extends JPanel {
 
         gbc.gridy = 1;
         header.add(searchBar, gbc);
+
+        JMenuItem unfriend = contextMenu.getUnfriend();
+        unfriend.addActionListener(new UnfriendAction(table));
 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

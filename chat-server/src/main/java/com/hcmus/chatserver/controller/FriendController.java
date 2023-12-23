@@ -1,5 +1,6 @@
 package com.hcmus.chatserver.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.entities.user.User;
@@ -78,6 +79,20 @@ public class FriendController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't get user's friends");
+            e.printStackTrace(System.err);
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @DeleteMapping(value = "/{userId}/unfriend/{friendId}")
+    public @ResponseBody String removeFriend(@PathVariable int userId, @PathVariable int friendId) throws JsonProcessingException {
+        ApiResponse response = new ApiResponse();
+        try {
+            friendService.removeFriend(userId, friendId);
+            response.setData("Friend removed successfully");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Unable to remove friend");
             e.printStackTrace(System.err);
         }
         return mapper.writeValueAsString(response);
