@@ -2,18 +2,18 @@ package com.hcmus.ui.screens.spamlist;
 
 import com.hcmus.entities.groupchat.GroupChat;
 import com.hcmus.entities.spam.SpamReport;
+import com.hcmus.entities.user.User;
 import com.hcmus.services.GChatService;
 import com.hcmus.services.SpamService;
 import com.hcmus.ui.screens.chatlist.adminlist.AdminListAction;
 import com.hcmus.ui.screens.chatlist.memberlist.MemberListAction;
 import com.hcmus.ui.screens.spamlist.block.BlockAction;
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.DateFilterMenu;
-import com.hcmus.ui.table.FilterMenuBuilder;
-import com.hcmus.ui.table.Table;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +51,14 @@ public class SpamList extends JPanel {
             // Add action listener for each menu item
             JMenuItem blockItem = contextMenu.getBlockItem();
             blockItem.addActionListener(new BlockAction(table));
+
+            JMenuItem refreshItem = contextMenu.getRefreshItem();
+            refreshItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new ReloadTable<SpamReport>().reloadTable(table, service, SpamReport.class);
+                }
+            });
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);

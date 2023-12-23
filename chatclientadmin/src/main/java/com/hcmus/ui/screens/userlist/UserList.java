@@ -12,6 +12,8 @@ import com.hcmus.entities.user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class UserList extends JPanel {
@@ -68,6 +70,14 @@ public class UserList extends JPanel {
 
             JMenuItem loginHistoryItem = contextMenu.getLoginHisItem();
             loginHistoryItem.addActionListener(new LoginHistoryAction(table));
+
+            JMenuItem refreshItem = contextMenu.getRefreshItem();
+            refreshItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new ReloadTable<User>().reloadTable(table, service, User.class);
+                }
+            });
 
             contextMenu.setFilterMenu(filterMenu);
         } catch (Exception e) {

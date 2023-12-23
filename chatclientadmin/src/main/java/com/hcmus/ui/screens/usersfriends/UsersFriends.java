@@ -1,11 +1,14 @@
 package com.hcmus.ui.screens.usersfriends;
 
+import com.hcmus.entities.user.User;
 import com.hcmus.entities.user.UserDTO;
 import com.hcmus.services.UserFriendService;
 import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -37,6 +40,15 @@ public class UsersFriends extends JPanel {
 
             contextMenu = new JPopupMenu();
             contextMenu.add(loginCountFilterMenu);
+
+            JMenuItem refreshItem = new JMenuItem("Refresh");
+            refreshItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new ReloadTable<UserDTO>().reloadTable(table, service, UserDTO.class);
+                }
+            });
+            contextMenu.add(refreshItem);
 
             table.getTable().addMouseListener(new MouseAdapter() {
                 @Override

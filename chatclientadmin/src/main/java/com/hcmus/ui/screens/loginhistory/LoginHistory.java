@@ -8,6 +8,7 @@ import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginHistory extends JPanel {
@@ -24,6 +25,9 @@ public class LoginHistory extends JPanel {
 
             table = new Table<>(data, columnNames);
             searchBar = new SearchBar(table.getSorter());
+            ContextMenu contextMenu = new ContextMenu(table.getTable(), new ArrayList<>());
+            JMenuItem refreshItem = contextMenu.getRefreshItem();
+            refreshItem.addActionListener(e -> new ReloadTable<UserLoginTime>().reloadTable(table, service, UserLoginTime.class));
         } catch (Exception e) {
             e.printStackTrace(System.err);
             JOptionPane.showMessageDialog(this, "Something went wrong!", "Error", JOptionPane.ERROR_MESSAGE);

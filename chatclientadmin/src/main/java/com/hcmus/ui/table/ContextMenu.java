@@ -1,6 +1,7 @@
 package com.hcmus.ui.table;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +17,7 @@ public class ContextMenu extends JPopupMenu {
     private JMenuItem friendListItem;
     private JMenuItem memListItem;
     private JMenuItem adminListItem;
+    private JMenuItem refreshItem;
     private JTable table;
     private List<String> options;
     private JMenuItem filterMenu;
@@ -59,6 +61,10 @@ public class ContextMenu extends JPopupMenu {
             }
             add(detailItem);
         }
+
+        refreshItem = new JMenuItem("Refresh");
+        add(refreshItem);
+
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -137,6 +143,10 @@ public class ContextMenu extends JPopupMenu {
 
     public JTable getTable() {
         return table;
+    }
+
+    public JMenuItem getRefreshItem() {
+        return refreshItem;
     }
 
     public void setFilterMenu(JMenuItem filterMenu) {

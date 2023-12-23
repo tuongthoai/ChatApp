@@ -44,6 +44,9 @@ public class ChatList extends JPanel {
             JMenuItem adminListItem = contextMenu.getAdminListItem();
             adminListItem.addActionListener(new AdminListAction(table));
 
+            JMenuItem refreshItem = contextMenu.getRefreshItem();
+            refreshItem.addActionListener(e -> new ReloadTable<GroupChat>().reloadTable(table, service, GroupChat.class));
+
             contextMenu.setFilterMenu(filterMenu);
         } catch (Exception e) {
             e.printStackTrace();

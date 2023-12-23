@@ -45,6 +45,9 @@ public class OnlineUsers extends JPanel {
             contextMenu = new JPopupMenu();
             contextMenu.add(loginCountFilterMenu);
             contextMenu.add(filterMenu);
+            JMenuItem refreshItem = new JMenuItem("Refresh");
+            refreshItem.addActionListener(e -> new ReloadTable<UserActivity>().reloadTable(table, service, UserActivity.class));
+            contextMenu.add(refreshItem);
 
             // Add sort keys
             ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<>();

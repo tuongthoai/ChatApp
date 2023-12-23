@@ -35,6 +35,9 @@ public class NewUsers extends JPanel {
             filterMenu = new FilterMenuBuilder().setSorter(table.getSorter()).setModel(table.getModel()).setFilterName("Filter by Name").setFilterLabels(new JLabel[]{new JLabel("Name")}).setFilterComponents(new JComponent[]{name}).createFilterMenu();
             contextMenu = new JPopupMenu();
             contextMenu.add(filterMenu);
+            JMenuItem refreshItem = new JMenuItem("Refresh");
+            refreshItem.addActionListener(e -> new ReloadTable<User>().reloadTable(table, service, User.class));
+            contextMenu.add(refreshItem);
 
 
             // Add sort keys
