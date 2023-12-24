@@ -37,6 +37,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
         List<String> ids = headers.get("user_send_id");
         int userId = 0;
         if (ids != null) {
+            System.out.printf("user %d has logged in\n", userId);
             userId = Integer.valueOf(ids.get(0));
             context.addSession(userId, session);
             try {
@@ -60,17 +61,16 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
                 context.updateGroupChatMember(msg.getGroupChatId());
             }
         }
-//        System.out.println(payload);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
-        System.out.println("A user has terminated");
         context.removeSession(session.getId());
         HttpHeaders headers = session.getHandshakeHeaders();
         List<String> ids = headers.get("user_send_id");
         int userId = 0;
         if (ids != null) {
+            System.out.printf("user %d has terminated\n", userId);
             userId = Integer.valueOf(ids.get(0));
             context.addSession(userId, session);
             try {

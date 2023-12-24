@@ -87,4 +87,12 @@ public class GroupChatService {
     public int create(String chatName, int admin, List<User> members) throws Exception {
         return repository.create(chatName, admin, members);
     }
+
+    public int remove(int chatId) throws Exception {
+        return repository.remove(chatId);
+    }
+
+    public int isAdminOf(int chatId, int userId) {
+        return repository.isAdminOf(chatId, userId);
+    }
 }

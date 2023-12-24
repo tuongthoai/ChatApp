@@ -210,4 +210,46 @@ public class GChatService {
         }
         return -1;
     }
+
+    public int removeGroupChat(int chatId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        RemoveChatRequest requestBody = new RemoveChatRequest(chatId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/remove").method("DELETE", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+
+    public boolean isGroupAdmin(int chatId, int userId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        CheckingAdminRequest requestBody = new CheckingAdminRequest(chatId, userId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/checkingAdmin").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return ((int) apiResponse.getData()) > 0;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

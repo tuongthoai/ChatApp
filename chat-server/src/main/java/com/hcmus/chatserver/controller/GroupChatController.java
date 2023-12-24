@@ -2,10 +2,7 @@ package com.hcmus.chatserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.chatserver.entities.api.AddMemberRequest;
-import com.hcmus.chatserver.entities.api.ApiResponse;
-import com.hcmus.chatserver.entities.api.CreateChatRequest;
-import com.hcmus.chatserver.entities.api.RenameGroupRequest;
+import com.hcmus.chatserver.entities.api.*;
 import com.hcmus.chatserver.service.GroupChatService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -124,6 +121,34 @@ public class GroupChatController {
         try {
 //            service.removeMember(request.getGroupId(), request.getNewMemberId());
             int result = service.create(request.getChatName(), request.getAdminId(), request.getMembers());
+            response.setData(result);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @DeleteMapping(value = "/remove", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String remove(@RequestBody RemoveChatRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            int result = service.remove(request.getChatId());
+            response.setData(result);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @PostMapping(value = "/checkingAdmin", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String isAdminOf(@RequestBody CheckingAdminRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            int result = service.isAdminOf(request.getChatId(), request.getUserId());
             response.setData(result);
         } catch (Exception ex) {
             response.setError(true);

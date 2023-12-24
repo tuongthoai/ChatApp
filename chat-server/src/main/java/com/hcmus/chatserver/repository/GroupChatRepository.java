@@ -160,58 +160,28 @@ public class GroupChatRepository implements InitializingBean {
         jdbcTemplate.update(query, groupId, userId);
     }
 
-    public int create(String chatName, int admin, List<User> members) {
-//        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-//            @Override
-//            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-//                try {
-//                    // Your database operations using JdbcTemplate
-//
-//                    // insert gchat_metadata
-//                    String createChatMetadata = "insert into gchat_metadata(groupname, createdtime) values (?, ?);";
-//                    jdbcTemplate.update(createChatMetadata, chatName, System.currentTimeMillis());
-//
-//                    // insert gchat_admins
-//                    // get gchatid;
-//                    Integer chatId = jdbcTemplate.query("select gm.group_id  from gchat_metadata gm where gm.groupname = ?", new Object[]{chatName}, new int[]{Types.VARCHAR}, new ResultSetExtractor<Integer>() {
-//                        @Override
-//                        public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-//                            if (rs.isBeforeFirst()) {
-//                                rs.next();
-//                                return rs.getInt(1);
-//                            }
-//                            return -1;
-//                        }
-//                    });
-//
-//                    // insert gchat_members
-//                    String sql = "insert into gchat_member(groupchat_id, member_id) values (?,?)";
-//                    jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-//                        @Override
-//                        public void setValues(PreparedStatement ps, int i) throws SQLException {
-//                            User user = members.get(i);
-//                            ps.setInt(1, chatId);
-//                            ps.setInt(2, user.getId());
-//                        }
-//
-//                        @Override
-//                        public int getBatchSize() {
-//                            return members.size();
-//                        }
-//                    });
-//
-//                    jdbcTemplate.update("insert into gchat_admins(group_id, admin_id) values(?, ?)", chatId, admin);
-//                    // If something goes wrong, you can manually trigger a rollback
-//                    // transactionStatus.setRollbackOnly();
-//                } catch (Exception e) {
-//                    // Handle exception and optionally mark the transaction for rollback
-//                    transactionStatus.setRollbackOnly();
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
+    public int create(String chatName, int admin, List<User> members) throws Exception {
         CreateGroupChatTransaction createGroupChatTransaction = new CreateGroupChatTransaction(chatName, admin, members, jdbcTemplate);
         transactionTemplate.execute(createGroupChatTransaction);
         return createGroupChatTransaction.getChatId();
+    }
+
+    public int remove(int chatId) throws Exception {
+        RemoveGroupChatTransaction removeGroupChatTransaction = new RemoveGroupChatTransaction(chatId, jdbcTemplate);
+        transactionTemplate.execute(removeGroupChatTransaction);
+        return 1;
+    }
+
+    public int isAdminOf(int chatId, int userId) {
+        String query = "select * from gchat_admins ga where ga.group_id = ? and ga.admin_id = ?";
+        return jdbcTemplate.query(query, new Object[]{chatId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
     }
 }
