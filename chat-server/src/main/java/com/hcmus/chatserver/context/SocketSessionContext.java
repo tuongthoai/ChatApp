@@ -37,8 +37,8 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
         List<String> ids = headers.get("user_send_id");
         int userId = 0;
         if (ids != null) {
-            System.out.printf("user %d has logged in\n", userId);
             userId = Integer.valueOf(ids.get(0));
+            System.out.printf("user %d has logged in\n", userId);
             context.addSession(userId, session);
             try {
                 userService.updateUserStatus(userId, true);
@@ -70,8 +70,8 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
         List<String> ids = headers.get("user_send_id");
         int userId = 0;
         if (ids != null) {
-            System.out.printf("user %d has terminated\n", userId);
             userId = Integer.valueOf(ids.get(0));
+            System.out.printf("user %d has terminated\n", userId);
             context.addSession(userId, session);
             try {
                 userService.updateUserStatus(userId, false);

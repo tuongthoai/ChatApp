@@ -95,4 +95,8 @@ public class GroupChatService {
     public int isAdminOf(int chatId, int userId) {
         return repository.isAdminOf(chatId, userId);
     }
+
+    public int updateMemberRole(int groupId, int userId, int role) {
+        return repository.updateMemberRole(groupId, userId, role);
+    }
 }

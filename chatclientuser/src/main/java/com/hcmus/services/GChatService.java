@@ -1,5 +1,6 @@
 package com.hcmus.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.utils.Link;
@@ -237,6 +238,32 @@ public class GChatService {
         CheckingAdminRequest requestBody = new CheckingAdminRequest(chatId, userId);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
         Request request = new Request.Builder().url(Link.getLink("service") + "gchats/checkingAdmin").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return ((int) apiResponse.getData()) > 0;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public boolean updateGroupMemberRole(int chatId, int userId, int _role) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        UpdateMemberRoleRequest requestBody = new UpdateMemberRoleRequest(chatId, userId, _role);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request
+                .Builder()
+                .url(Link.getLink("service") + "gchats/updateMemberRole")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
         try {
             Response response = client.newCall(request).execute();
 

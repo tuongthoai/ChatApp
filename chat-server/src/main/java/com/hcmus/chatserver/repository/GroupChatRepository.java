@@ -14,6 +14,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
@@ -183,5 +185,35 @@ public class GroupChatRepository implements InitializingBean {
                 return 0;
             }
         });
+    }
+
+    public int updateMemberRole(int groupId, int userId, int role) {
+        if (role == 2) {
+            // admins
+            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    try {
+                        jdbcTemplate.update("delete from gchat_admins where group_id = ? and admin_id = ?", groupId, userId);
+                    } catch (Exception e) {
+                        status.setRollbackOnly();
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        } else {
+            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    try {
+                        jdbcTemplate.update("insert into gchat_admins(group_id, admin_id) values (?, ?)", groupId, userId);
+                    } catch (Exception e) {
+                        status.setRollbackOnly();
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+        return 1;
     }
 }

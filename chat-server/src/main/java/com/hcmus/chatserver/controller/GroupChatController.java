@@ -157,4 +157,18 @@ public class GroupChatController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @PostMapping(value = "/updateMemberRole", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String updateMemberRole(@RequestBody UpdateMemberRoleRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            int result = service.updateMemberRole(request.getGroupId(), request.getUserId(), request.getRole());
+            response.setData(result);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }
