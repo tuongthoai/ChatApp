@@ -1,9 +1,8 @@
 package com.hcmus.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.ApiResponse;
-import com.hcmus.models.LoginRequest;
 import com.hcmus.models.SpamReportRequest;
 import okhttp3.*;
 
@@ -39,7 +38,7 @@ public class SpamReportService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());

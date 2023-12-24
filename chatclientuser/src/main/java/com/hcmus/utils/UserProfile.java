@@ -1,4 +1,4 @@
-package com.hcmus;
+package com.hcmus.utils;
 
 import com.hcmus.models.User;
 

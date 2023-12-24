@@ -1,7 +1,7 @@
 package com.hcmus.ui.chatbox;
 
-import com.hcmus.Link;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.Link;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ChatContentDTO;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.observer.Subscriber;

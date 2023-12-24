@@ -1,6 +1,4 @@
-package com.hcmus.chatserver.entities.api;
-
-import com.hcmus.chatserver.entities.user.User;
+package com.hcmus.models;
 
 import java.util.List;
 
@@ -10,6 +8,12 @@ public class CreateChatRequest {
     private List<User> members;
 
     public CreateChatRequest() {
+    }
+
+    public CreateChatRequest(String chatName, int adminId, List<User> members) {
+        this.chatName = chatName;
+        this.adminId = adminId;
+        this.members = members;
     }
 
     public String getChatName() {

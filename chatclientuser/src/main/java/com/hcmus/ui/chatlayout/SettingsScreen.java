@@ -1,8 +1,7 @@
 package com.hcmus.ui.chatlayout;
 
-import com.hcmus.Link;
-import com.hcmus.UserProfile;
-import com.hcmus.models.GroupChat;
+import com.hcmus.utils.Link;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.AuthService;
 import com.hcmus.services.GChatService;
@@ -17,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -260,7 +258,7 @@ public class SettingsScreen extends JPanel {
         return this.user;
     }
 
-    private void showEditDialog(){
+    private void showEditDialog() {
         JDialog dialog = new JDialog();
         dialog.setTitle("Edit Profile");
         dialog.setSize(400, 400);
@@ -278,7 +276,7 @@ public class SettingsScreen extends JPanel {
 
         JTextField nameField = new JTextField(20);
         nameField.setText(getUser().getName());
-        JComboBox<String> sexBox = new JComboBox<>( new String[] {"Male", "Female", "Other"});
+        JComboBox<String> sexBox = new JComboBox<>(new String[]{"Male", "Female", "Other"});
         sexBox.setSelectedItem(getUser().getSex());
         JDatePickerImpl birthdayPicker = initDatePickers();
         // set date
@@ -326,7 +324,7 @@ public class SettingsScreen extends JPanel {
         dialog.pack();
         dialog.setVisible(true);
 
-        saveButton.addActionListener(e->{
+        saveButton.addActionListener(e -> {
             User user = UserProfile.getUserProfile();
             if (!nameField.getText().isEmpty()) {
                 user.setName(nameField.getText());
@@ -353,6 +351,17 @@ public class SettingsScreen extends JPanel {
         });
     }
 
+    private JDatePickerImpl initDatePickers() {
+        UtilDateModel dateModel = new UtilDateModel();
+        Properties properties = new Properties();
+        properties.put("text.today", "Today");
+        properties.put("text.month", "Month");
+        properties.put("text.year", "Year");
+
+        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, properties);
+        return new JDatePickerImpl(datePanel, new DateLabelFormatter());
+    }
+
     private static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
         private final String pattern = "yyyy/MM/dd";
         private final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
@@ -377,15 +386,5 @@ public class SettingsScreen extends JPanel {
             }
             return "";
         }
-    }
-    private JDatePickerImpl initDatePickers(){
-        UtilDateModel dateModel = new UtilDateModel();
-        Properties properties = new Properties();
-        properties.put("text.today", "Today");
-        properties.put("text.month", "Month");
-        properties.put("text.year", "Year");
-
-        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, properties);
-        return new JDatePickerImpl(datePanel, new DateLabelFormatter());
     }
 }

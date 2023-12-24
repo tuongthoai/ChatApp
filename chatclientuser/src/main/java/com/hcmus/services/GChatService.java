@@ -1,9 +1,8 @@
 package com.hcmus.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.*;
 import okhttp3.*;
 
@@ -117,7 +116,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -139,7 +138,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -160,7 +159,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -189,5 +188,26 @@ public class GChatService {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public int creatAGroupChat(String chatName, int adminId, List<User> members) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        CreateChatRequest requestBody = new CreateChatRequest(chatName, adminId, members);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/create").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 }

@@ -1,9 +1,8 @@
 package com.hcmus.ui.friendscreen;
 
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.models.User;
-import com.hcmus.models.UserDTO;
 import com.hcmus.services.FriendService;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.table.Table;
@@ -14,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

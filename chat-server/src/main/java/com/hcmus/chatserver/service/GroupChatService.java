@@ -9,7 +9,6 @@ import com.hcmus.chatserver.repository.GroupChatRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -83,5 +82,9 @@ public class GroupChatService {
             repository.addAdmin(groupId, adminId);
             repository.removeMember(groupId, userId);
         }
+    }
+
+    public int create(String chatName, int admin, List<User> members) throws Exception {
+        return repository.create(chatName, admin, members);
     }
 }

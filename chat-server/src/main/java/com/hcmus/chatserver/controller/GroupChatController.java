@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.api.AddMemberRequest;
 import com.hcmus.chatserver.entities.api.ApiResponse;
+import com.hcmus.chatserver.entities.api.CreateChatRequest;
 import com.hcmus.chatserver.entities.api.RenameGroupRequest;
 import com.hcmus.chatserver.service.GroupChatService;
 import org.springframework.context.annotation.Configuration;
@@ -109,6 +110,21 @@ public class GroupChatController {
         try {
             service.removeMember(request.getGroupId(), request.getNewMemberId());
             response.setData(true);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @PostMapping(value = "create", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String create(@RequestBody CreateChatRequest request) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+//            service.removeMember(request.getGroupId(), request.getNewMemberId());
+            int result = service.create(request.getChatName(), request.getAdminId(), request.getMembers());
+            response.setData(result);
         } catch (Exception ex) {
             response.setError(true);
             response.setErrorReason(ex.getMessage());

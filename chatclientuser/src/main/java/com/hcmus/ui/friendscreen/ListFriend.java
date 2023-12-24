@@ -1,9 +1,8 @@
 package com.hcmus.ui.friendscreen;
 
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.UserService;
-import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.table.ContextMenu;
 import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;

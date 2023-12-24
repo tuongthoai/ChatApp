@@ -1,20 +1,16 @@
 package com.hcmus.ui.chatlist;
 
-import com.hcmus.ChatHashMap;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.ChatHashMap;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.GroupChat;
 import com.hcmus.services.GChatService;
-import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatlayout.ChatScreen;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ChatList extends JPanel {
     private JScrollPane mainPanel;
@@ -69,7 +65,7 @@ public class ChatList extends JPanel {
         }
 
         addButton = new JButton("Create a new conversation");
-        addButton.addActionListener(new CreateConvoAction());
+        addButton.addActionListener(new CreateConvoAction(this));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;

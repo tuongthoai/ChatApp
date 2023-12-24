@@ -2,9 +2,8 @@ package com.hcmus.ui.chatbox.MemberListAction;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ClientChatMessage;
-import com.hcmus.models.GroupChatMember;
 import com.hcmus.models.User;
 import com.hcmus.services.GChatService;
 import com.hcmus.services.UserService;

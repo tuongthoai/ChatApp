@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,20 +14,18 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
-public class CreateGropChatTransaction extends TransactionCallbackWithoutResult {
+public class CreateGroupChatTransaction extends TransactionCallbackWithoutResult {
     private int chatId;
     private String chatName;
     private int admin;
     private List<User> members;
-    private JdbcTemplate jdbcTemplate;
-    private TransactionTemplate transactionTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public CreateGropChatTransaction(String chatName, int admin, List<User> members, JdbcTemplate jdbcTemplate, TransactionTemplate transactionTemplate) {
+    public CreateGroupChatTransaction(String chatName, int admin, List<User> members, JdbcTemplate jdbcTemplate) {
         this.chatName = chatName;
         this.admin = admin;
         this.members = members;
         this.jdbcTemplate = jdbcTemplate;
-        this.transactionTemplate = transactionTemplate;
     }
 
     public int getChatId() {
@@ -104,6 +101,7 @@ public class CreateGropChatTransaction extends TransactionCallbackWithoutResult 
             jdbcTemplate.update("insert into gchat_admins(group_id, admin_id) values(?, ?)", chatId, admin);
             // If something goes wrong, you can manually trigger a rollback
             // transactionStatus.setRollbackOnly();
+            this.chatId = chatId;
         } catch (Exception e) {
             // Handle exception and optionally mark the transaction for rollback
             status.setRollbackOnly();

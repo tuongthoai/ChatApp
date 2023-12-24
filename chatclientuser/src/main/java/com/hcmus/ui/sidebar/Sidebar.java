@@ -1,6 +1,6 @@
 package com.hcmus.ui.sidebar;
 
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 
 import javax.swing.*;
 import java.awt.*;

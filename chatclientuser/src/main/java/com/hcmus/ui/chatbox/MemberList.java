@@ -1,7 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.models.User;

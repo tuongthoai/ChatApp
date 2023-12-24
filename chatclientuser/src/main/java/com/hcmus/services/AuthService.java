@@ -2,14 +2,13 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.LoginRequest;
 import com.hcmus.models.RegisterRequest;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 public class AuthService {
     private static AuthService instance;
@@ -41,7 +40,6 @@ public class AuthService {
 
         try {
             Response response = client.newCall(request).execute();
-//            System.out.println("Auth service: " + response.body().string());
             ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
             if (apiResponse.isError()) {
                 throw new IOException("Request failed: " + response.code());
@@ -74,11 +72,7 @@ public class AuthService {
     public int register(String username, String password, String email) throws JsonProcessingException {
         MediaType mediaType = MediaType.parse("application/json");
         RegisterRequest registerRequest = new RegisterRequest(username, password, email);
-        Request request = new Request.Builder()
-                .url(Link.getLink("service") + "account/register")
-                .method("POST", RequestBody.create(mediaType, mapper.writeValueAsString(registerRequest)))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "account/register").method("POST", RequestBody.create(mediaType, mapper.writeValueAsString(registerRequest))).addHeader("Content-Type", "application/json").build();
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
@@ -86,8 +80,7 @@ public class AuthService {
                     throw new IOException("Request failed: " + response.code());
                 }
                 return (int) apiResponse.getData();
-            }
-            else {
+            } else {
                 throw new IOException("Request failed: " + response.code());
             }
         } catch (IOException e) {
@@ -97,19 +90,14 @@ public class AuthService {
 
     public void forgotPassword(String email) throws JsonProcessingException {
         MediaType mediaType = MediaType.parse("application/json");
-        Request request = new Request.Builder()
-                .url(Link.getLink("service") + "account/forgot")
-                .method("POST", RequestBody.create(mediaType, email))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "account/forgot").method("POST", RequestBody.create(mediaType, email)).addHeader("Content-Type", "application/json").build();
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
                 }
-            }
-            else {
+            } else {
                 throw new IOException("Request failed: " + response.code());
             }
         } catch (IOException e) {

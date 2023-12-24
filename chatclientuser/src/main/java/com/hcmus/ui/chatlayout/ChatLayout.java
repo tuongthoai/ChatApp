@@ -1,7 +1,5 @@
 package com.hcmus.ui.chatlayout;
 
-import com.hcmus.ChatHashMap;
-import com.hcmus.UserProfile;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
@@ -10,17 +8,14 @@ import com.hcmus.ui.sidebar.Sidebar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChatLayout extends JFrame {
-    private JPanel mainPanel;
-    private JPanel contentPanel;
-    private CardLayout cardLayout;
-    private ChatContext chatContext;
+    private final JPanel mainPanel;
+    private final JPanel contentPanel;
+    private final CardLayout cardLayout;
+    private final ChatContext chatContext;
 
     public ChatLayout() throws URISyntaxException, SQLException {
         setTitle("Chat UI");
@@ -55,38 +50,12 @@ public class ChatLayout extends JFrame {
 
         cardLayout.show(contentPanel, "CHAT");
 
-//        // Main panel with BorderLayout
-//        JPanel mainPanel = new JPanel(new BorderLayout());
-//
-//        // Sidebar with GridBagLayout
-//        JPanel sidebarPanel = new Sidebar();
-//
-//        // List of conversations (you can use JList or other components)
-//        JPanel chatList = new JPanel();
-//        chatList.setLayout(new BorderLayout());
-//        JScrollPane conversationScrollPane = new ChatList();
-//        conversationScrollPane.setPreferredSize(new Dimension(200, 400));
-//        chatList.add(new SearchBar(), BorderLayout.NORTH);
-//        chatList.add(conversationScrollPane, BorderLayout.CENTER);
-//
-//        // Message box
-//        JPanel chatBox = new ChatBox();
-//
-//        // Add components to main panel
-//        mainPanel.add(sidebarPanel, BorderLayout.WEST);
-//        mainPanel.add(chatList, BorderLayout.CENTER);
-//        mainPanel.add(chatBox, BorderLayout.EAST);
-
         // Add main panel to the frame
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         add(mainPanel);
 
         pack();
         setLocationRelativeTo(null);
-    }
-
-    public void reloadChatScreen() {
-
     }
 }
 

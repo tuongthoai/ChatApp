@@ -1,6 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.AuthService;
 import com.hcmus.services.UserService;

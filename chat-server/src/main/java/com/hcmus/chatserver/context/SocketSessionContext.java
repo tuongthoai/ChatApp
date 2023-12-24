@@ -60,7 +60,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
                 context.updateGroupChatMember(msg.getGroupChatId());
             }
         }
-        System.out.println(payload);
+//        System.out.println(payload);
     }
 
     @Override

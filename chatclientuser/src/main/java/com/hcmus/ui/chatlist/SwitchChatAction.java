@@ -1,6 +1,6 @@
 package com.hcmus.ui.chatlist;
 
-import com.hcmus.ChatHashMap;
+import com.hcmus.utils.ChatHashMap;
 import com.hcmus.ui.chatlayout.ChatScreen;
 
 import java.awt.event.ActionEvent;

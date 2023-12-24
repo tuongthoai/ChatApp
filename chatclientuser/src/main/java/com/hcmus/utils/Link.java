@@ -1,4 +1,4 @@
-package com.hcmus;
+package com.hcmus.utils;
 
 public class Link {
     public final static String getLink(String type) {

@@ -1,6 +1,6 @@
 package com.hcmus.ui.friendscreen;
 
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.services.FriendService;
 import com.hcmus.models.User;
@@ -11,14 +11,8 @@ import com.hcmus.ui.table.UnixTimestampConverter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
