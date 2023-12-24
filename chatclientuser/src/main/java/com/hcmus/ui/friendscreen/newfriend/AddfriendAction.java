@@ -1,7 +1,6 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.newfriend;
 
 import com.hcmus.models.Friend;
-import com.hcmus.models.UserDTO;
 import com.hcmus.ui.table.Table;
 
 import java.awt.event.ActionEvent;

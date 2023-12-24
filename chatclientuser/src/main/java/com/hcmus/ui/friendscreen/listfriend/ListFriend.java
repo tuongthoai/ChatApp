@@ -1,15 +1,18 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.listfriend;
 
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.table.ContextMenu;
+import com.hcmus.ui.table.ReloadTable;
 import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;
 import com.hcmus.models.UserDTO;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ public class ListFriend extends JPanel {
 
         table = new Table<>(this.listfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
-        contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend"));
+        contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend", "Refresh"));
 
         JPanel header = new JPanel(new GridBagLayout());
         header.setBackground(Color.WHITE);
@@ -51,6 +54,14 @@ public class ListFriend extends JPanel {
 
         JMenuItem unfriend = contextMenu.getUnfriend();
         unfriend.addActionListener(new UnfriendAction(table));
+
+        JMenuItem refresh = contextMenu.getRefresh();
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReloadTable.reloadFriendTable(table);
+            }
+        });
 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

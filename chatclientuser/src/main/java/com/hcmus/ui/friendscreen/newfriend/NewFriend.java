@@ -1,13 +1,10 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.newfriend;
 
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.services.FriendService;
 import com.hcmus.models.User;
-import com.hcmus.ui.table.ContextMenu;
-import com.hcmus.ui.table.SearchBar;
-import com.hcmus.ui.table.Table;
-import com.hcmus.ui.table.UnixTimestampConverter;
+import com.hcmus.ui.table.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +29,7 @@ public class NewFriend extends JPanel {
 //
         table = new Table<>(this.listNotfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
-        contextMenu = new ContextMenu(table.getTable(), List.of("Add Friend"));
+        contextMenu = new ContextMenu(table.getTable(), List.of("Add Friend", "Refresh"));
 //
         JPanel header = new JPanel(new GridBagLayout());
         header.setBackground(Color.WHITE);
@@ -52,6 +49,14 @@ public class NewFriend extends JPanel {
 
         JMenuItem addfriend = contextMenu.getAddfriend();
         addfriend.addActionListener(new AddfriendAction(table));
+
+        JMenuItem refresh = contextMenu.getRefresh();
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReloadTable.reloadStrangerTable(table);
+            }
+        });
 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

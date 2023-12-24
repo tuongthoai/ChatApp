@@ -1,10 +1,11 @@
-package com.hcmus.ui.friendscreen;
+package com.hcmus.ui.friendscreen.newfriend;
 
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.models.User;
 import com.hcmus.services.FriendService;
 import com.hcmus.services.UserService;
+import com.hcmus.ui.table.ReloadTable;
 import com.hcmus.ui.table.Table;
 import com.hcmus.ui.table.UnixTimestampConverter;
 
@@ -49,7 +50,7 @@ public class AddfriendDialog extends JDialog {
     private JPanel createContentPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.setPreferredSize(new Dimension(370, 100));
+        panel.setPreferredSize(new Dimension(390, 100));
         panel.setLayout(new BorderLayout());
         return panel;
     }
@@ -69,16 +70,22 @@ public class AddfriendDialog extends JDialog {
     }
     private void onOK(ActionEvent ev) throws IOException {
         int userID = UserProfile.getUserProfile().getId();
-        int friendID = tablePanel.getSelectedData().getId();
+        int friendID;
 
-        System.out.println(userID);
-        System.out.println(friendID);
+        if(tablePanel.getSelectedData() == null){
+            JOptionPane.showMessageDialog(this, "No selected friend", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+
+        friendID = tablePanel.getSelectedData().getId();
 
         try {
             FriendService service = new FriendService();
             service.addfriend(userID, friendID);
             JOptionPane.showMessageDialog(this, "Add Friend successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            updateTable();
+//            updateTable();
+            ReloadTable.reloadStrangerTable(tablePanel);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Add Friend failed", "Error", JOptionPane.ERROR_MESSAGE);
