@@ -162,6 +162,9 @@ public class Login extends JFrame {
                     URI wsUri = new URI("ws://localhost:8080/chat");
                     wsHeaders.put("USER_SEND_ID", String.valueOf(UserProfile.getUserProfile().getId()));
                     ChatContext.getInstance(wsUri, wsHeaders);
+
+                    // set login time
+                    authService.setLoginTime(userId);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Failed to get user info!");
                     return;

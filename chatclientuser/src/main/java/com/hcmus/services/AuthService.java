@@ -104,5 +104,39 @@ public class AuthService {
             throw new RuntimeException(e);
         }
     }
+
+    public void setLoginTime(int userId) throws JsonProcessingException {
+        MediaType mediaType = MediaType.parse("application/json");
+        Request request = new Request.Builder().url(Link.getLink("service") + "loginhistory/setLoginTime/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+            } else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setDCTime(int userId) throws JsonProcessingException {
+        MediaType mediaType = MediaType.parse("application/json");
+        Request request = new Request.Builder().url(Link.getLink("service") + "loginhistory/setDCTime/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+            } else {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

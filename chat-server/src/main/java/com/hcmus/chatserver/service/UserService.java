@@ -82,12 +82,4 @@ public class UserService implements InitializingBean {
     public void updateUserStatus(int userId, boolean isOnline) throws Exception {
         userRepository.updateUserOnlineStatus(userId, isOnline);
     }
-
-    public void setLoginTime(int userId) throws Exception {
-        userRepository.setLoginTime(userId);
-    }
-
-    public void setDisconnectTime(int userId) throws Exception {
-        userRepository.setDisconnectTime(userId);
-    }
 }

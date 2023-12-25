@@ -73,4 +73,14 @@ public class LoginHistoryRepository implements InitializingBean {
             }
         });
     }
+
+    public void setLoginTime(int userId) {
+        String query = "insert into login_history values (?, extract(epoch from current_timestamp), null)";
+        jdbcTemplate.update(query, userId);
+    }
+
+    public void setDisconnectTime(int userId) {
+        String query = "update login_history set dctime = extract(epoch from current_timestamp) where user_id = ? and dctime is null";
+        jdbcTemplate.update(query, userId);
+    }
 }

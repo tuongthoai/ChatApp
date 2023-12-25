@@ -47,6 +47,10 @@ public class Table<T> extends JScrollPane {
                         field.setAccessible(true);
                         Object value = field.get(item);
                         if (value instanceof Long) {
+                            if (value.equals(0L)) {
+                                row.add(null);
+                                continue;
+                            }
                             if (columnName.toLowerCase().trim().contains("time")) {
                                 value = UnixTimestampConverter.unix2DateTime((long) value);
                             }

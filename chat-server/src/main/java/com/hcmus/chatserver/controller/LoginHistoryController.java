@@ -70,4 +70,33 @@ public class LoginHistoryController {
         }
         return mapper.writeValueAsString(response);
     }
+
+
+    @RequestMapping(value = "/setLoginTime/{userId}", method = RequestMethod.GET)
+    public @ResponseBody String setLoginTime(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            loginHistoryService.setLoginTime(userId);
+            response.setData("Saved login time!");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't save login time!");
+            e.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/setDCTime/{userId}", method = RequestMethod.GET)
+    public @ResponseBody String setDCTime(@PathVariable Integer userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            loginHistoryService.setDisconnectTime(userId);
+            response.setData("Saved disconnect time!");
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't save disconnect time!");
+            e.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

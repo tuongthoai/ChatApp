@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hcmus.utils.Link;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
@@ -214,13 +215,17 @@ public class SettingsScreen extends JPanel {
         cardLayout.show(this.getParent(), "changePassword");
     }
 
-    private void logout() {
+    private void logout() throws JsonProcessingException {
+        AuthService authService = AuthService.getInstance();
         // dispose all frame
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.dispose();
         // open login frame
         Login login = new Login();
         login.setVisible(true);
+        // set disconnect time
+        authService.setDCTime(UserProfile.getUserProfile().getId());
+
         UserProfile.removeUserProfile();
     }
 
@@ -234,7 +239,11 @@ public class SettingsScreen extends JPanel {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logout();
+                try {
+                    logout();
+                } catch (JsonProcessingException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

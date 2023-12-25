@@ -32,4 +32,12 @@ public class LoginHistoryService {
     public List<LoginHistoryEntry> findAllBy(int userId) throws Exception {
         return loginHistoryRepository.findAllBy(userId);
     }
+
+    public void setLoginTime(int userId) throws Exception {
+        loginHistoryRepository.setLoginTime(userId);
+    }
+
+    public void setDisconnectTime(int userId) throws Exception {
+        loginHistoryRepository.setDisconnectTime(userId);
+    }
 }

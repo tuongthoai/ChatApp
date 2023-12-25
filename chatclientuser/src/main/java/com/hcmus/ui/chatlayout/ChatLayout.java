@@ -1,13 +1,18 @@
 package com.hcmus.ui.chatlayout;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hcmus.services.AuthService;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.friendscreen.FriendHomePage;
 import com.hcmus.ui.sidebar.Sidebar;
+import com.hcmus.utils.UserProfile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
@@ -19,7 +24,18 @@ public class ChatLayout extends JFrame {
 
     public ChatLayout() throws URISyntaxException, SQLException {
         setTitle("Chat UI");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    AuthService.getInstance().setDCTime(UserProfile.getUserProfile().getId());
+                } catch (JsonProcessingException ex) {
+                    throw new RuntimeException(ex);
+                }
+                dispose();
+            }
+        });
         setPreferredSize(new Dimension(1000, 600));
 
         mainPanel = new JPanel();
