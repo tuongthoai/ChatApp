@@ -27,8 +27,15 @@ public class SettingsScreen extends JPanel {
     private JButton button1;
     private ChangePasswordScreen changePasswordScreen;
     private User user = null;
-
     private UserService userService = UserService.getInstance();
+    private JLabel nameLabel;
+    private JLabel sexLabel;
+    private JLabel birthdayLabel;
+    private JLabel addressLabel;
+    private JLabel emailLabel;
+    private JLabel friendsNumber;
+    private JLabel groupsNumber;
+    private JLabel lastLogin;
 
     public SettingsScreen() {
         setLayout(new BorderLayout());
@@ -40,6 +47,59 @@ public class SettingsScreen extends JPanel {
         add(northPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
+
+        JMenuItem refresh = new JMenuItem("Refresh");
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    user = userService.getUserById(UserProfile.getUserProfile().getId());
+                } catch (Exception err) {
+                    err.printStackTrace(System.err);
+                }
+                if (user == null) {
+                    user = new User();
+                    user.setName("DEFAULT_NAME");
+                }
+
+                nameLabel.setText("Name: " + getUser().getName());
+                sexLabel.setText("Sex: " + getUser().getSex());
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                birthdayLabel.setText("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+                addressLabel.setText("Address: " + getUser().getAddress());
+                emailLabel.setText("Email: " + getUser().getEmail());
+                long friendCnt = 0;
+                try {
+                    friendCnt = userService.countFriends(getUser().getId());
+                } catch (Exception err) {
+                    err.printStackTrace(System.err);
+                }
+                friendsNumber.setText("Friends: " + friendCnt);
+                GChatService gChatService = GChatService.getInstance();
+                long gChatCnt = 0;
+                try {
+                    gChatCnt = gChatService.countNoGroupChat(getUser().getId());
+                } catch (Exception err) {
+                    err.printStackTrace(System.err);
+                }
+                groupsNumber.setText("Groups: " + gChatCnt);
+                AuthService authService = AuthService.getInstance();
+                long lastLoginTimeStamp = 0;
+                try {
+                    lastLoginTimeStamp = authService.lastLogin(getUser().getId());
+                } catch (Exception err) {
+                    err.printStackTrace(System.err);
+                }
+                formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                lastLogin.setText("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+
+            }
+        });
+
+        JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(refresh);
+        // add popup menu to right click
+        this.setComponentPopupMenu(popupMenu);
 
         addListener();
     }
@@ -105,37 +165,37 @@ public class SettingsScreen extends JPanel {
         JPanel firstRow = new JPanel();
         firstRow.setLayout(new BorderLayout(20, 0));
 
-        JLabel name = new JLabel("Name: " + getUser().getName());
-        name.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        name.setAlignmentX(Component.LEFT_ALIGNMENT);
-        firstRow.add(name, BorderLayout.WEST);
+        nameLabel = new JLabel("Name: " + getUser().getName());
+        nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        firstRow.add(nameLabel, BorderLayout.WEST);
 
-        JLabel sex = new JLabel("Sex: " + getUser().getSex());
-        sex.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        sex.setAlignmentX(Component.LEFT_ALIGNMENT);
-        firstRow.add(sex, BorderLayout.EAST);
+        sexLabel = new JLabel("Sex: " + getUser().getSex());
+        sexLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        sexLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        firstRow.add(sexLabel, BorderLayout.EAST);
         infoPanel.add(firstRow);
 
         JPanel secondRow = new JPanel();
         secondRow.setLayout(new BorderLayout(20, 0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        JLabel birthday = new JLabel("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
-        birthday.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        birthday.setAlignmentX(Component.LEFT_ALIGNMENT);
-        secondRow.add(birthday, BorderLayout.WEST);
+        birthdayLabel = new JLabel("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+        birthdayLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        birthdayLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        secondRow.add(birthdayLabel, BorderLayout.WEST);
 
-        JLabel address = new JLabel("Address: " + getUser().getAddress());
-        address.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        address.setAlignmentX(Component.LEFT_ALIGNMENT);
-        secondRow.add(address, BorderLayout.EAST);
+        addressLabel = new JLabel("Address: " + getUser().getAddress());
+        addressLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        addressLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        secondRow.add(addressLabel, BorderLayout.EAST);
         infoPanel.add(secondRow);
 
         JPanel thirdRow = new JPanel();
         thirdRow.setLayout(new BorderLayout(20, 0));
-        JLabel email = new JLabel("Email: " + getUser().getEmail());
-        email.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        email.setAlignmentX(Component.LEFT_ALIGNMENT);
-        thirdRow.add(email, BorderLayout.WEST);
+        emailLabel = new JLabel("Email: " + getUser().getEmail());
+        emailLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        emailLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        thirdRow.add(emailLabel, BorderLayout.WEST);
         infoPanel.add(thirdRow);
 
         UserService service = UserService.getInstance();
@@ -150,7 +210,7 @@ public class SettingsScreen extends JPanel {
         fourthRow.setLayout(new BorderLayout(20, 0));
 
 
-        JLabel friendsNumber = new JLabel("Friends: " + friendCnt);
+        friendsNumber = new JLabel("Friends: " + friendCnt);
         friendsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         friendsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
         fourthRow.add(friendsNumber, BorderLayout.WEST);
@@ -163,7 +223,7 @@ public class SettingsScreen extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JLabel groupsNumber = new JLabel("Groups: " + gChatCnt);
+        groupsNumber = new JLabel("Groups: " + gChatCnt);
         groupsNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
         groupsNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
         fourthRow.add(groupsNumber, BorderLayout.EAST);
@@ -181,7 +241,7 @@ public class SettingsScreen extends JPanel {
 
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        JLabel lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+        lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
         lastLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lastLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
         fifthRow.add(lastLogin, BorderLayout.WEST);
