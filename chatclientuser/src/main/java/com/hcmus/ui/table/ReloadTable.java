@@ -1,10 +1,10 @@
 package com.hcmus.ui.table;
 
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.models.User;
 import com.hcmus.models.UserDTO;
 import com.hcmus.services.UserService;
-import com.hcmus.utils.UserProfile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
