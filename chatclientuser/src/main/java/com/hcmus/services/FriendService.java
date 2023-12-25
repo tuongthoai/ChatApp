@@ -2,7 +2,7 @@ package com.hcmus.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.User;
 import okhttp3.*;
@@ -38,11 +38,7 @@ public class FriendService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "");
 
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/friends/" + userID + "/unfriend/" + friendID)
-                .method("DELETE", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userID + "/unfriend/" + friendID).method("DELETE", body).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -53,6 +49,7 @@ public class FriendService {
             throw new RuntimeException(e);
         }
     }
+
     public List<User> findAllStrangers(int userId) throws Exception {
         List<User> result = new ArrayList<>();
         Request request = new Request.Builder().url(Link.getLink("service") + "friends/" + userId + "/stranger").method("GET", null).addHeader("Content-Type", "application/json").build();
@@ -61,7 +58,8 @@ public class FriendService {
             if (apiResponse.isError()) {
                 throw new IOException("Request failed: " + response.code());
             }
-            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {});
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
             return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -72,11 +70,7 @@ public class FriendService {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "");
 
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/friends/" + userID + "/addfriend/" + friendID)
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url("http://localhost:8080/friends/" + userID + "/addfriend/" + friendID).method("POST", body).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();

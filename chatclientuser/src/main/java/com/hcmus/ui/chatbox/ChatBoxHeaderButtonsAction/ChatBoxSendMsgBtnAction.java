@@ -2,7 +2,7 @@ package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ChatMessage;
 import com.hcmus.ui.chatbox.ChatBox;
 

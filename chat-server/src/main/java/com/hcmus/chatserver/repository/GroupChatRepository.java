@@ -5,10 +5,7 @@ import com.hcmus.chatserver.entities.groupchat.GroupChat;
 import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
 import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.entities.user.User;
-import com.hcmus.chatserver.repository.helpers.ChatContentDTORowMapper;
-import com.hcmus.chatserver.repository.helpers.GroupChatEachMapper;
-import com.hcmus.chatserver.repository.helpers.GroupChatRowMapper;
-import com.hcmus.chatserver.repository.helpers.UserRowMapper;
+import com.hcmus.chatserver.repository.helpers.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,6 +13,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -26,13 +27,16 @@ import java.util.List;
 @Repository
 public class GroupChatRepository implements InitializingBean {
     private JdbcTemplate jdbcTemplate;
+    private TransactionTemplate transactionTemplate;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        System.out.println("Done GChat Repo");
+        transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
     public GroupChat findGroupChatById(int id) throws Exception {
@@ -121,8 +125,7 @@ public class GroupChatRepository implements InitializingBean {
     }
 
     public void removeMember(int groupId, int userId) throws Exception {
-        String query = "delete from gchat_member \n" +
-                "where gchat_member.member_id = ? and groupchat_id = ?";
+        String query = "delete from gchat_member \n" + "where gchat_member.member_id = ? and groupchat_id = ?";
         jdbcTemplate.update(query, userId, groupId);
     }
 
@@ -131,7 +134,7 @@ public class GroupChatRepository implements InitializingBean {
         return jdbcTemplate.query(query, new Object[]{groupId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
             @Override
             public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if(rs.isBeforeFirst()) {
+                if (rs.isBeforeFirst()) {
                     rs.next();
                     return rs.getInt(1);
                 }
@@ -157,5 +160,60 @@ public class GroupChatRepository implements InitializingBean {
     public void addAdmin(int groupId, int userId) throws Exception {
         String query = "insert into gchat_admins(group_id, admin_id) values (?, ?)";
         jdbcTemplate.update(query, groupId, userId);
+    }
+
+    public int create(String chatName, int admin, List<User> members) throws Exception {
+        CreateGroupChatTransaction createGroupChatTransaction = new CreateGroupChatTransaction(chatName, admin, members, jdbcTemplate);
+        transactionTemplate.execute(createGroupChatTransaction);
+        return createGroupChatTransaction.getChatId();
+    }
+
+    public int remove(int chatId) throws Exception {
+        RemoveGroupChatTransaction removeGroupChatTransaction = new RemoveGroupChatTransaction(chatId, jdbcTemplate);
+        transactionTemplate.execute(removeGroupChatTransaction);
+        return 1;
+    }
+
+    public int isAdminOf(int chatId, int userId) {
+        String query = "select * from gchat_admins ga where ga.group_id = ? and ga.admin_id = ?";
+        return jdbcTemplate.query(query, new Object[]{chatId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+    }
+
+    public int updateMemberRole(int groupId, int userId, int role) {
+        if (role == 2) {
+            // admins
+            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    try {
+                        jdbcTemplate.update("delete from gchat_admins where group_id = ? and admin_id = ?", groupId, userId);
+                    } catch (Exception e) {
+                        status.setRollbackOnly();
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        } else {
+            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    try {
+                        jdbcTemplate.update("insert into gchat_admins(group_id, admin_id) values (?, ?)", groupId, userId);
+                    } catch (Exception e) {
+                        status.setRollbackOnly();
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+        return 1;
     }
 }

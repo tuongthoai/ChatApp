@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.models.User;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 
@@ -18,6 +19,20 @@ public class GroupInfoDialog extends JDialog {
         this.parent = parent;
         GChatService service = GChatService.getInstance();
         List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
+        try {
+            List<User> admins = service.findAllAdmins(parent.getChatId());
+            for (GroupChatMember member : members) {
+                for (User user : admins) {
+                    if (user.getId() == member.getUserId()) {
+                        member.setRole("ADMIN");
+                    } else {
+                        member.setRole("USER");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         EventHandlerService eventHandlerService = EventHandlerService.getInstance();
         MemberList memberList = new MemberList(members, parent.getChatId());
         eventHandlerService.addObserver(memberList);

@@ -1,6 +1,6 @@
 package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.services.GChatService;
 import com.hcmus.services.SpamReportService;

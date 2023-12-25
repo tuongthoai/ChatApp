@@ -14,7 +14,7 @@ public class FriendService {
 
     public List<User> findAll(int userId) throws Exception {
         List<User> data = repository.findAll(userId);
-        System.out.println(data);
+//        System.out.println(data);
         return data;
     }
 

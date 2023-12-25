@@ -1,6 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
-import com.hcmus.ChatHashMap;
+import com.hcmus.utils.ChatHashMap;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
 import com.hcmus.socket.ChatContext;
@@ -57,6 +57,7 @@ public class ChatScreen extends JPanel implements Subscriber {
         chatBoxContainer.revalidate();
         chatBoxContainer.repaint();
     }
+
     public void reloadChatScreen() throws URISyntaxException {
         removeAll();
         ChatHashMap.getInstance().clear();

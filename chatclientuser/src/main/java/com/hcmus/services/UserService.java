@@ -3,10 +3,9 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.ApiResponse;
 import com.hcmus.models.User;
-import com.hcmus.models.UserDTO;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -76,11 +75,7 @@ public class UserService {
     public void updateUser(User user) throws JsonProcessingException {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(user));
-        Request request = new Request.Builder()
-                .url(Link.getLink("service") + "users/update")
-                .method("PUT", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/update").method("PUT", body).addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -119,7 +114,8 @@ public class UserService {
             if (apiResponse.isError()) {
                 throw new IOException("Request failed: " + response.code());
             }
-            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {});
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
             return result;
         } catch (IOException e) {
             throw new RuntimeException(e);

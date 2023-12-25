@@ -1,7 +1,6 @@
-package com.hcmus;
+package com.hcmus.utils;
 
 import com.hcmus.models.ChatContentDTO;
-import com.hcmus.models.User;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatlayout.ChatScreen;

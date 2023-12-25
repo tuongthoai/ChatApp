@@ -15,11 +15,10 @@ import java.util.Date;
 
 public class Table<T> extends JScrollPane {
     private final List<String> columnNames;
-    private List<T> data;
     private final JTable table;
-
     private final DefaultTableModel model;
     private final TableRowSorter<DefaultTableModel> sorter;
+    private List<T> data;
 
     public Table(List<T> data, List<String> columnNames) throws SQLException {
         this.data = data;
@@ -72,8 +71,7 @@ public class Table<T> extends JScrollPane {
         if (hasSpace) {
             fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
             fieldName = fieldName.replaceAll("\\s", "");
-        }
-        else {
+        } else {
             fieldName = fieldName.toLowerCase();
         }
         try {
@@ -104,10 +102,10 @@ public class Table<T> extends JScrollPane {
             for (int row = 0; row < table.getRowCount(); row++) {
                 TableCellRenderer renderer = table.getCellRenderer(row, column);
                 Component comp = table.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width +1 , width);
+                width = Math.max(comp.getPreferredSize().width + 1, width);
             }
-            if(width > 300)
-                width=300;
+            if (width > 300)
+                width = 300;
             columnModel.getColumn(column).setPreferredWidth(width);
 
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

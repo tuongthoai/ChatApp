@@ -16,7 +16,7 @@ public class SpamService {
 
     public List<SpamReport> findAll() throws Exception {
         List<SpamReport> data = repository.findAll();
-        System.out.println(data);
+//        System.out.println(data);
         return data;
     }
 

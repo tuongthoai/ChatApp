@@ -3,7 +3,7 @@ package com.hcmus.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.Link;
+import com.hcmus.utils.Link;
 import com.hcmus.models.*;
 import okhttp3.*;
 
@@ -117,7 +117,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -139,7 +139,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -160,7 +160,7 @@ public class GChatService {
         try {
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful()) {
+            if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
@@ -189,5 +189,94 @@ public class GChatService {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public int creatAGroupChat(String chatName, int adminId, List<User> members) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        CreateChatRequest requestBody = new CreateChatRequest(chatName, adminId, members);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/create").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+
+    public int removeGroupChat(int chatId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        RemoveChatRequest requestBody = new RemoveChatRequest(chatId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/remove").method("DELETE", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+
+    public boolean isGroupAdmin(int chatId, int userId) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        CheckingAdminRequest requestBody = new CheckingAdminRequest(chatId, userId);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/checkingAdmin").method("POST", body).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return ((int) apiResponse.getData()) > 0;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public boolean updateGroupMemberRole(int chatId, int userId, int _role) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        UpdateMemberRoleRequest requestBody = new UpdateMemberRoleRequest(chatId, userId, _role);
+        RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
+        Request request = new Request
+                .Builder()
+                .url(Link.getLink("service") + "gchats/updateMemberRole")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return ((int) apiResponse.getData()) > 0;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }

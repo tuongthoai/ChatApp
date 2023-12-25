@@ -9,16 +9,8 @@ import java.util.List;
 public class ContextMenu extends JPopupMenu {
     private JMenuItem unfriend;
     private JMenuItem chat;
-
-    public JMenuItem getAddfriend() {
-        return addfriend;
-    }
-
-    public void setAddfriend(JMenuItem addfriend) {
-        this.addfriend = addfriend;
-    }
-
     private JMenuItem addfriend;
+    private JMenuItem refresh;
     private JTable table;
     private List<String> options;
     private JMenuItem filterMenu;
@@ -37,6 +29,10 @@ public class ContextMenu extends JPopupMenu {
         if (options.contains("Add Friend")) {
             addfriend = new JMenuItem("Add Friend");
             add(addfriend);
+        }
+        if (options.contains("Refresh")) {
+            refresh = new JMenuItem("Refresh");
+            add(refresh);
         }
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,13 +80,23 @@ public class ContextMenu extends JPopupMenu {
         this.chat = chat;
     }
 
+    public JMenuItem getRefresh() {
+        return refresh;
+    }
+
+    public void setRefresh(JMenuItem refresh) {
+        this.refresh = refresh;
+    }
+
     public JTable getTable() {
         return table;
     }
-
-    public void setFilterMenu(JMenuItem filterMenu) {
-        this.filterMenu = filterMenu;
-        add(filterMenu);
+    public JMenuItem getAddfriend() {
+        return addfriend;
     }
+    public void setAddfriend(JMenuItem addfriend) {
+        this.addfriend = addfriend;
+    }
+
 }
 

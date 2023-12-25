@@ -86,11 +86,11 @@ public class ChatContext extends WebSocketClient {
                 if (msg.getMsgType().equals("SYS")) {
                     String ctx = msg.getMsgContent();
                     String[] opt = ctx.split("->");
-                    if(opt.length == 2) {
-                        if(opt[1].equals("MEMBER_LIST")) {
+                    if (opt.length == 2) {
+                        if (opt[1].equals("MEMBER_LIST")) {
                             EventHandlerService.getInstance().notify(ComponentIdContext.MEMBER_LIST_ID, null);
                         }
-                        if(opt[1].equals("CHAT_SCREEN")) {
+                        if (opt[1].equals("CHAT_SCREEN")) {
                             EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, null);
                         }
                     }

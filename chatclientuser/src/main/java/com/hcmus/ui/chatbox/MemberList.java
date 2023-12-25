@@ -1,7 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcmus.UserProfile;
+import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.models.User;
@@ -90,6 +90,21 @@ public class MemberList extends JPanel implements Subscriber {
     @Override
     public void update(Object obj) {
         this.members = GChatService.getInstance().getGroupChatMembers(chatId);
+        GChatService service = GChatService.getInstance();
+        try {
+            List<User> admins = service.findAllAdmins(this.chatId);
+            for (GroupChatMember member : members) {
+                for (User user : admins) {
+                    if (user.getId() == member.getUserId()) {
+                        member.setRole("ADMIN");
+                    } else {
+                        member.setRole("USER");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         updateMemberList();
     }
 
@@ -164,10 +179,12 @@ public class MemberList extends JPanel implements Subscriber {
                     // if is admin then be able to remove member
                     boolean result = true;
                     try {
-                        result = GChatService.getInstance().removeMemberFromGroup(parent.getChatId(), parent.getMembers().get(order).getUserId());
-                        // else show dialog
-//                        parent.getMembers().remove(order);
-//                        parent.updateMemberList();
+                        result = GChatService
+                                .getInstance()
+                                .removeMemberFromGroup(
+                                        parent.getChatId(),
+                                        parent.getMembers().get(order).getUserId()
+                                );
                         ClientChatMessage sysUpdateMsg = new ClientChatMessage();
                         sysUpdateMsg.setMsgType("SYS");
                         sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
@@ -189,6 +206,45 @@ public class MemberList extends JPanel implements Subscriber {
 
             // Change role button
             JButton changeRoleBtn = createButton("Change");
+            changeRoleBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // check author
+                    try {
+                        if (!GChatService.getInstance().isGroupAdmin(parent.getChatId(), UserProfile.getUserProfile().getId())) {
+                            JOptionPane.showMessageDialog(mainPanel, "You are not authorized", "Infomation", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    // if is admin then be able to remove member
+                    boolean result = true;
+                    try {
+                        result = GChatService
+                                .getInstance()
+                                .updateGroupMemberRole(
+                                        parent.getChatId(),
+                                        parent.getMembers().get(order).getUserId(),
+                                        (role.equals("ADMIN") ? 2 : 1)
+                                );
+                        ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                        sysUpdateMsg.setMsgType("SYS");
+                        sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
+                        sysUpdateMsg.setGroupChatId(parent.getChatId());
+                        ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                                mainPanel,
+                                "Network Error",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        ex.printStackTrace();
+                    }
+                }
+            });
             buttonPanel.add(changeRoleBtn);
 
             // Add the button panel to subPanel
