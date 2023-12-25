@@ -5,6 +5,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -46,7 +47,13 @@ public class Table<T> extends JScrollPane {
                         field.setAccessible(true);
                         Object value = field.get(item);
                         if (value instanceof Long) {
-                            value = UnixTimestampConverter.unix2DateTime((long) value);
+                            if (columnName.toLowerCase().trim().contains("time")) {
+                                value = UnixTimestampConverter.unix2DateTime((long) value);
+                            }
+                            else {
+                                Instant instant = Instant.ofEpochSecond((Long) value);
+                                value = LocalDate.ofInstant(instant, ZoneId.systemDefault());
+                            }
                         }
                         row.add(value);
                     } catch (IllegalAccessException e) {

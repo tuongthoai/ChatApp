@@ -41,6 +41,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             context.addSession(userId, session);
             try {
                 userService.updateUserStatus(userId, true);
+                userService.setLoginTime(userId);
             } catch (Exception err) {
                 err.printStackTrace();
             }
@@ -75,6 +76,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             context.addSession(userId, session);
             try {
                 userService.updateUserStatus(userId, false);
+                userService.setDisconnectTime(userId);
             } catch (Exception err) {
                 err.printStackTrace();
             }

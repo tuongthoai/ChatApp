@@ -117,14 +117,14 @@ public class DateFilterMenu extends FilterMenu{
                 @Override
                 public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
                     TableModel model = entry.getModel();
-                    LocalDate date = (LocalDate) model.getValueAt(entry.getIdentifier(), columnIndex);
-                    LocalDate startDate = null;
-                    LocalDate endDate = null;
+                    LocalDateTime date = (LocalDateTime) model.getValueAt(entry.getIdentifier(), columnIndex);
+                    LocalDateTime startDate = null;
+                    LocalDateTime endDate = null;
                     if (!startDateString.isEmpty()) {
-                        startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        startDate = LocalDateTime.parse(startDateString + " 00:00:00", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                     }
                     if (!endDateString.isEmpty()) {
-                        endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        endDate = LocalDateTime.parse(endDateString + " 23:59:59", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                     }
                     return date.isAfter(startDate) && date.isBefore(endDate);
                 }
