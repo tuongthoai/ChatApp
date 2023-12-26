@@ -83,7 +83,7 @@ public class UnfriendDialog extends JDialog {
             service.unfriend(userID, friendID);
             JOptionPane.showMessageDialog(this, "Unfriend successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 //            updateTable();
-            ReloadTable.reloadFriendTable(tablePanel);
+            ReloadTable.reloadFriendTable(tablePanel, "All");
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Unfriend failed", "Error", JOptionPane.ERROR_MESSAGE);

@@ -34,7 +34,31 @@ public class ListFriend extends JPanel {
 
         table = new Table<>(this.listfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
+
         contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend", "Refresh"));
+
+        String[] statusOptions = {"All", "Online", "Offline"};
+        JComboBox<String> filterStatus = new JComboBox<>(statusOptions);
+        filterStatus.setSelectedIndex(0);
+        filterStatus.setFont(new Font("Serif", Font.PLAIN, 14));
+
+        filterStatus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox)e.getSource();
+                String status = (String) cb.getSelectedItem();
+
+                ReloadTable.reloadFriendTable(table, status);
+            }
+        });
+
+        JLabel filterLabel = new JLabel("Filter by Status: ");
+        filterLabel.setFont(new Font("Serif", Font.PLAIN, 14));
+
+        JPanel filterPanel = new JPanel(new FlowLayout());
+        filterPanel.setBackground(Color.WHITE);
+        filterPanel.add(filterLabel);
+        filterPanel.add(filterStatus);
 
         JPanel header = new JPanel(new GridBagLayout());
         header.setBackground(Color.WHITE);
@@ -47,10 +71,15 @@ public class ListFriend extends JPanel {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
+        gbc.gridwidth = 2;
         header.add(title, gbc);
 
         gbc.gridy = 1;
+        gbc.gridwidth = 1;
         header.add(searchBar, gbc);
+
+        gbc.gridx = 1;
+        header.add(filterPanel, gbc);
 
         JMenuItem unfriend = contextMenu.getUnfriend();
         unfriend.addActionListener(new UnfriendAction(table));
@@ -59,7 +88,7 @@ public class ListFriend extends JPanel {
         refresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ReloadTable.reloadFriendTable(table);
+                ReloadTable.reloadFriendTable(table, "All");
             }
         });
 

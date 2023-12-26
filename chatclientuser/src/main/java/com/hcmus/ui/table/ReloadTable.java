@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReloadTable {
-    public static void reloadFriendTable(Table<UserDTO> table){
+    public static void reloadFriendTable(Table<UserDTO> table, String status){
         UserService service = UserService.getInstance();
         List<User> listfriend = new ArrayList<>();
         List<UserDTO> result = new ArrayList<>();
@@ -33,7 +33,8 @@ public class ReloadTable {
                 userDTO.setOnline("Offline");
             }
 
-            result.add(userDTO);
+            if(status.equals("All") || userDTO.getOnline().equals(status))
+                result.add(userDTO);
         }
 
         table.updateData(result);
