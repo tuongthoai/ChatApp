@@ -95,7 +95,7 @@ public class ListFriend extends JPanel {
                 int friendID = table.getSelectedData().getId();
 
                 try {
-                    checkGChatExisting(userID, friendID);
+                    int groupID = checkGChatExisting(userID, friendID);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -142,7 +142,7 @@ public class ListFriend extends JPanel {
         }
     }
 
-    private void checkGChatExisting(int userID, int friendID) throws Exception {
+    private int checkGChatExisting(int userID, int friendID) throws Exception {
         GChatService gcservice = GChatService.getInstance();
         UserService userService = UserService.getInstance();
         List<GroupChat> groupChatsOfUser = gcservice.getGChatList(userID);
@@ -157,8 +157,7 @@ public class ListFriend extends JPanel {
 
                     if ((member1.getUserId() == userID && member2.getUserId() == friendID) ||
                             (member1.getUserId() == friendID && member2.getUserId() == userID)) {
-                        System.out.println("Group chat already exists between userID and friendID");
-                        return;
+                        return groupChat.getGroupId();
                     }
                 }
             }
@@ -177,7 +176,7 @@ public class ListFriend extends JPanel {
         gcservice.addMember2Group(newGroupID, userID);
         gcservice.addMember2Group(newGroupID, friendID);
 
-        System.out.println(newGroupID);
+        return newGroupID;
     }
 
 }
