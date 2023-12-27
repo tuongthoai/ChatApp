@@ -82,8 +82,16 @@ public class ChatScreen extends JPanel implements Subscriber {
 
     @Override
     public void update(Object obj) {
+        // Cast to string and parse the meaning
+        String msg = (String) obj;
         try {
-            reloadChatScreen();
+            if (msg == null) {
+                reloadChatScreen();
+            } else {
+                reloadChatScreen();
+                String[] tmps = msg.split("->");
+                updateChatBox(ChatHashMap.getInstance().getChatBoxFromId(Integer.valueOf(tmps[1])));
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

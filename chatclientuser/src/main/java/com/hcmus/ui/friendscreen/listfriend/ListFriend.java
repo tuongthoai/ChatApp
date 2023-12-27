@@ -2,7 +2,10 @@ package com.hcmus.ui.friendscreen.listfriend;
 
 import com.hcmus.models.GroupChat;
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.services.ComponentIdContext;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
+import com.hcmus.ui.chatlayout.ChatScreen;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.UserService;
@@ -28,6 +31,7 @@ public class ListFriend extends JPanel {
     private SearchBar searchBar;
     private ContextMenu contextMenu;
     private List<UserDTO> listfriend = new ArrayList<>();
+    private ChatScreen chatScreen;
     public ListFriend(CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
         this.mainCard = mainCard;
         this.mainContentPanel = mainContentPanel;
@@ -96,6 +100,7 @@ public class ListFriend extends JPanel {
 
                 try {
                     int groupID = checkGChatExisting(userID, friendID);
+                    EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, "SHOW->" + String.valueOf(groupID)); // if msg is a String is pop up chat
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

@@ -8,15 +8,18 @@ import com.hcmus.ui.chatlist.ChatListItem;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatHashMap {
     private static ChatHashMap instance = null;
     private ChatContext context;
     private HashMap<ChatListItem, ChatBox> chatHashMap;
+    private Map<Integer, ChatListItem> id2ChatListItem;
     private ChatScreen chatScreen;
 
     private ChatHashMap() {
         chatHashMap = new HashMap<>();
+        id2ChatListItem = new HashMap<>();
     }
 
     public static ChatHashMap getInstance() {
@@ -32,6 +35,7 @@ public class ChatHashMap {
         }
         ChatBox chatBox = new ChatBox(chatName, chatId, context, history, this.chatScreen);
         chatHashMap.put(chatListItem, chatBox);
+        id2ChatListItem.put(chatId, chatListItem);
     }
 
     public void removeChat(ChatListItem chatListItem) {
@@ -61,5 +65,16 @@ public class ChatHashMap {
 
     public void setChatScreen(ChatScreen chatScreen) {
         this.chatScreen = chatScreen;
+    }
+
+    public Map<Integer, ChatListItem> getId2ChatListItem() {
+        return id2ChatListItem;
+    }
+
+    public ChatBox getChatBoxFromId(int chatId) {
+        if (id2ChatListItem.containsKey(chatId)) {
+            return chatHashMap.get(id2ChatListItem.get(chatId));
+        }
+        return null;
     }
 }

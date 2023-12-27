@@ -212,33 +212,29 @@ public class GChatService {
         return -1;
     }
 
-public int createEmptyGroup(String groupName) throws Exception {
-    MediaType mediaType = MediaType.parse("application/json");
-    RequestBody body = RequestBody.create(mediaType, groupName);
-    Request request = new Request.Builder()
-            .url(Link.getLink("service") + "gchats/createEmpty")
-            .method("POST", body)
-            .addHeader("Content-Type", "application/json")
-            .build();
+    public int createEmptyGroup(String groupName) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, groupName);
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/createEmpty").method("POST", body).addHeader("Content-Type", "application/json").build();
 
-    try (Response response = client.newCall(request).execute()) {
-        if (response.isSuccessful()) {
-            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
-            if (apiResponse.isError()) {
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            } else {
                 throw new IOException("Request failed: " + response.code());
             }
-            return (int) apiResponse.getData();
-        } else {
-            throw new IOException("Request failed: " + response.code());
+        } catch (JsonProcessingException e) {
+            // Handle JSON processing exception
+            throw new RuntimeException("Failed to process JSON", e);
+        } catch (IOException e) {
+            // Handle other IO exceptions
+            throw new RuntimeException("Failed to execute API request", e);
         }
-    } catch (JsonProcessingException e) {
-        // Handle JSON processing exception
-        throw new RuntimeException("Failed to process JSON", e);
-    } catch (IOException e) {
-        // Handle other IO exceptions
-        throw new RuntimeException("Failed to execute API request", e);
     }
-}
 
     public int removeGroupChat(int chatId) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
@@ -286,12 +282,7 @@ public int createEmptyGroup(String groupName) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
         UpdateMemberRoleRequest requestBody = new UpdateMemberRoleRequest(chatId, userId, _role);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(requestBody));
-        Request request = new Request
-                .Builder()
-                .url(Link.getLink("service") + "gchats/updateMemberRole")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/updateMemberRole").method("POST", body).addHeader("Content-Type", "application/json").build();
         try {
             Response response = client.newCall(request).execute();
 
