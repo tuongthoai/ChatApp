@@ -70,6 +70,19 @@ public class GroupChatService {
     }
 
     public void removeMember(int groupId, int userId) throws Exception {
+        int NoMem = 0;
+        try {
+            NoMem = repository.countMembers(groupId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (NoMem <= 2) {
+            remove(groupId);
+            return;
+        }
+        ;
+
         int adminId = repository.findGroupAdminById(groupId, userId);
         if (adminId == -1) {
             repository.removeMember(groupId, userId);
@@ -102,5 +115,9 @@ public class GroupChatService {
 
     public int updateMemberRole(int groupId, int userId, int role) {
         return repository.updateMemberRole(groupId, userId, role);
+    }
+
+    public int countMembers(int groupId) throws Exception {
+        return repository.countMembers(groupId);
     }
 }

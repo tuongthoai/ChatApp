@@ -298,4 +298,22 @@ public class GChatService {
         }
         return false;
     }
+
+    public int countMembers(int chatId) throws Exception {
+        Request request = new Request.Builder().url(Link.getLink("service") + "gchats/" + chatId + "/countMember").method("GET", null).addHeader("Content-Type", "application/json").build();
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+                if (apiResponse.isError()) {
+                    throw new IOException("Request failed: " + response.code());
+                }
+                return (int) apiResponse.getData();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
 }

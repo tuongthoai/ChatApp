@@ -185,4 +185,18 @@ public class GroupChatController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @GetMapping(value = "/{groupId}/countMember")
+    public @ResponseBody String countMembers(@PathVariable int groupId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            int result = service.countMembers(groupId);
+            response.setData(result);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

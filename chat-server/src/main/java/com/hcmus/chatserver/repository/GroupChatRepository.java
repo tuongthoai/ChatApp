@@ -8,6 +8,7 @@ import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.helpers.*;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -221,5 +222,19 @@ public class GroupChatRepository implements InitializingBean {
             });
         }
         return 1;
+    }
+
+    public int countMembers(int groupId) {
+        String query = "select count(*) from gchat_member gm where gm.groupchat_id = ?";
+        return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getInt(1);
+                }
+                return -1;
+            }
+        });
     }
 }

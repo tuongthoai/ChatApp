@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.models.GroupChat;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
@@ -174,6 +175,52 @@ public class MemberList extends JPanel implements Subscriber {
                         }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
+                    }
+                    // check if member of the group is <= 2
+                    final boolean[] deleteGroup = {false};
+                    int memCnt = 0;
+                    try {
+                        memCnt = GChatService.getInstance().countMembers(parent.getChatId());
+                        if (memCnt <= 2) {
+                            JDialog confirmDltDlg = new JDialog();
+                            confirmDltDlg.setSize(400, 300);
+                            confirmDltDlg.setTitle("Confirm");
+                            confirmDltDlg.setModal(true);
+                            confirmDltDlg.setLayout(new BorderLayout());
+
+                            JTextField textField = new JTextField("Remove this user will delete group. Are you wish to continue?");
+                            confirmDltDlg.add(textField, BorderLayout.CENTER);
+
+                            JPanel btnPnl = new JPanel();
+                            JButton confirmBtn = new JButton("Confirm");
+                            JButton cancelBtn = new JButton("Cancel");
+                            btnPnl.add(confirmBtn);
+                            btnPnl.add(cancelBtn);
+
+                            cancelBtn.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    confirmDltDlg.dispose();
+                                }
+                            });
+
+                            confirmBtn.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    deleteGroup[0] = true;
+                                }
+                            });
+
+                            confirmDltDlg.setVisible(true);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                                mainPanel,
+                                "Network Error",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        ex.printStackTrace();
                     }
 
                     // if is admin then be able to remove member

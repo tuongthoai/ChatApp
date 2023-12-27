@@ -59,10 +59,6 @@ public class ChatHashMap {
         chatHashMap.clear();
     }
 
-    public ChatScreen getChatScreen() {
-        return chatScreen;
-    }
-
     public void setChatScreen(ChatScreen chatScreen) {
         this.chatScreen = chatScreen;
     }
