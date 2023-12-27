@@ -1,5 +1,8 @@
 package com.hcmus.ui.friendscreen.listfriend;
 
+import com.hcmus.models.GroupChat;
+import com.hcmus.models.GroupChatMember;
+import com.hcmus.services.GChatService;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.UserService;
@@ -84,6 +87,23 @@ public class ListFriend extends JPanel {
         JMenuItem unfriend = contextMenu.getUnfriend();
         unfriend.addActionListener(new UnfriendAction(table));
 
+        JMenuItem chatButton = contextMenu.getChat();
+        chatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int userID = UserProfile.getUserProfile().getId();
+                int friendID = table.getSelectedData().getId();
+
+                try {
+                    checkGChatExisting(userID, friendID);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                mainCard.show(mainContentPanel, "CHAT");
+            }
+        });
+
         JMenuItem refresh = contextMenu.getRefresh();
         refresh.addActionListener(new ActionListener() {
             @Override
@@ -120,6 +140,44 @@ public class ListFriend extends JPanel {
 
             this.listfriend.add(userDTO);
         }
+    }
+
+    private void checkGChatExisting(int userID, int friendID) throws Exception {
+        GChatService gcservice = GChatService.getInstance();
+        UserService userService = UserService.getInstance();
+        List<GroupChat> groupChatsOfUser = gcservice.getGChatList(userID);
+
+        for(GroupChat groupChat : groupChatsOfUser){
+            if(!groupChat.isGroup()){
+                List<GroupChatMember> groupMembers = gcservice.getGroupChatMembers(groupChat.getGroupId());
+
+                if (groupMembers.size() == 2) {
+                    GroupChatMember member1 = groupMembers.get(0);
+                    GroupChatMember member2 = groupMembers.get(1);
+
+                    if ((member1.getUserId() == userID && member2.getUserId() == friendID) ||
+                            (member1.getUserId() == friendID && member2.getUserId() == userID)) {
+                        System.out.println("Group chat already exists between userID and friendID");
+                        return;
+                    }
+                }
+            }
+        }
+
+        User user = userService.getUserById(userID);
+        User friend = userService.getUserById(friendID);
+
+        String[] userName = user.getName().split("\\s+");
+        String[] friendName = friend.getName().split("\\s+");
+
+        String groupName = userName[userName.length - 1] + " - " + friendName[friendName.length - 1];
+
+        int newGroupID = gcservice.createEmptyGroup(groupName);
+
+        gcservice.addMember2Group(newGroupID, userID);
+        gcservice.addMember2Group(newGroupID, friendID);
+
+        System.out.println(newGroupID);
     }
 
 }

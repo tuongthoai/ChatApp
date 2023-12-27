@@ -56,8 +56,7 @@ public class ChatLayout extends JFrame {
         contentPanel.add(mainScreen, "CHAT");
 
         // Friend screen
-        DataTest data = new DataTest();
-        FriendHomePage friendHomePage = new FriendHomePage(data, cardLayout, contentPanel);
+        FriendHomePage friendHomePage = new FriendHomePage(cardLayout, contentPanel);
         contentPanel.add(friendHomePage, "FRIENDS");
 
         // Settings screen

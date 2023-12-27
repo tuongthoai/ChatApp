@@ -11,11 +11,9 @@ import java.sql.SQLException;
 public class FriendHomePage extends JPanel {
     private CardLayout cardLayout;
     private JPanel cardContainPanel;
-    private DataTest data;
     private CardLayout mainCard;
     private JPanel mainContentPanel;
-    public FriendHomePage(DataTest data, CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
-        this.data = data;
+    public FriendHomePage(CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
         cardLayout = new CardLayout();
         cardContainPanel = new JPanel();
 

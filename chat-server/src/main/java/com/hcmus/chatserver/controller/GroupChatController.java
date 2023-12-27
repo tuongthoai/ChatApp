@@ -130,6 +130,20 @@ public class GroupChatController {
         return mapper.writeValueAsString(response);
     }
 
+    @PostMapping(value = "/createEmpty", consumes = "application/json", produces = "application/json; charset=utf-8")
+    public @ResponseBody String createEmptyGroup(@RequestBody String groupName) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            int result = service.createEmptyGroup(groupName);
+            response.setData(result);
+        } catch (Exception ex) {
+            response.setError(true);
+            response.setErrorReason("Failed to create an empty group: " + ex.getMessage());
+            ex.printStackTrace();  // Log the exception
+        }
+        return mapper.writeValueAsString(response);
+    }
+
     @DeleteMapping(value = "/remove", consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String remove(@RequestBody RemoveChatRequest request) throws Exception {
         ApiResponse response = new ApiResponse();

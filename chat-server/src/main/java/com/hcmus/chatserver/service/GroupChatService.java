@@ -88,6 +88,10 @@ public class GroupChatService {
         return repository.create(chatName, admin, members);
     }
 
+    public int createEmptyGroup(String groupName) {
+        return repository.createEmptyGroup(groupName);
+    }
+
     public int remove(int chatId) throws Exception {
         return repository.remove(chatId);
     }

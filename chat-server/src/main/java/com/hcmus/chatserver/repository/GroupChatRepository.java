@@ -168,6 +168,12 @@ public class GroupChatRepository implements InitializingBean {
         return createGroupChatTransaction.getChatId();
     }
 
+    public int createEmptyGroup(String groupName) {
+        String query = "INSERT INTO gchat_metadata (groupname, createdtime, isgroup) VALUES (?, ?, ?) RETURNING group_id";
+
+        return jdbcTemplate.queryForObject(query, Integer.class, groupName, System.currentTimeMillis(), false);
+    }
+
     public int remove(int chatId) throws Exception {
         RemoveGroupChatTransaction removeGroupChatTransaction = new RemoveGroupChatTransaction(chatId, jdbcTemplate);
         transactionTemplate.execute(removeGroupChatTransaction);
