@@ -200,4 +200,55 @@ public class UserController {
         }
         return mapper.writeValueAsString(response);
     }
+
+    @RequestMapping(value = "/isBlockedBy/{userId1}/{userId2}", method = RequestMethod.GET)
+    public @ResponseBody String isBlockedBy(@PathVariable int userId1, @PathVariable int userId2) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            boolean isBlocked = userService.isBlockedBy(userId1, userId2);
+            response.setData(isBlocked);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't check isBlockedBy");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/block/{userId}/{blockedBy}", method = RequestMethod.GET)
+    public @ResponseBody String blockUser(@PathVariable int userId, @PathVariable int blockedBy) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.blockUser(userId, blockedBy);
+            response.setData(true);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't block user");
+        }
+        return mapper.writeValueAsString(response);
+    }
+    @RequestMapping(value = "/unblock/{userId}/{blockedBy}", method = RequestMethod.GET)
+    public @ResponseBody String unblockUser(@PathVariable int userId, @PathVariable int blockedBy) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            userService.unblockUser(userId, blockedBy);
+            response.setData(true);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't unblock user");
+        }
+        return mapper.writeValueAsString(response);
+    }
+
+    @RequestMapping(value = "/blockedUsers/{userId}", method = RequestMethod.GET)
+    public @ResponseBody String isBlocked(@PathVariable int userId) throws Exception {
+        ApiResponse response = new ApiResponse();
+        try {
+            List<User> blockedUsers = userService.getBlockedUsers(userId);
+            response.setData(blockedUsers);
+        } catch (Exception e) {
+            response.setError(true);
+            response.setErrorReason("Can't get blocked users");
+        }
+        return mapper.writeValueAsString(response);
+    }
 }

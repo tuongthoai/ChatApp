@@ -139,4 +139,65 @@ public class UserService {
         }
         return result;
     }
+
+    // check if user1 is blocked by user2 or vice versa
+    public boolean isBlockedBy(int user1, int user2) throws Exception {
+        boolean result = false;
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + "isBlockedBy/" + user1 + "/" + user2).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new Exception(apiResponse.getErrorReason());
+            }
+            result = mapper.convertValue(apiResponse.getData(), Boolean.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public void blockUser(int user1, int user2) throws Exception {
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + "block/" + user1 + "/" + user2).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.body().toString().contains("Can't block user")) {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void unblockUser(int user1, int user2) throws Exception {
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + "unblock/" + user1 + "/" + user2).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.body().toString().contains("Can't block user")) {
+                throw new IOException("Request failed: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<User> getAllBlockedUsers(int userId) throws Exception {
+        List<User> result = new ArrayList<>();
+        Request request = new Request.Builder().url(Link.getLink("service") + "users/" + "blockedUsers/" + userId).method("GET", null).addHeader("Content-Type", "application/json").build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
+            if (apiResponse.isError()) {
+                throw new Exception(apiResponse.getErrorReason());
+            }
+            result = mapper.convertValue(apiResponse.getData(), new TypeReference<List<User>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 }

@@ -43,16 +43,27 @@ public class ReloadTable {
     public static void reloadStrangerTable(Table<Friend> table){
         UserService service = UserService.getInstance();
         List<User> listNotFriend = new ArrayList<>();
+        List<User> blockList = new ArrayList<>();
         List<Friend> result = new ArrayList<>();
         try {
             listNotFriend = service.findAllStrangers(UserProfile.getUserProfile().getId());
+            blockList = UserService.getInstance().getAllBlockedUsers(UserProfile.getUserProfile().getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         for(User stranger : listNotFriend){
-//            System.out.println(stranger.getName());
-//            System.out.println(stranger.getBirthday());
+            boolean isBlocked = false;
+
+            for (User blocked : blockList) {
+                if (stranger.getId() == blocked.getId()) {
+                    isBlocked = true;
+                    break;
+                }
+            }
+            if (isBlocked) {
+                continue;
+            }
             Friend newFriend = new Friend();
 
             newFriend.setId(stranger.getId());
@@ -64,6 +75,35 @@ public class ReloadTable {
             newFriend.setBirthday(date);
 
             result.add(newFriend);
+        }
+
+        table.updateData(result);
+        table.updateTable();
+    }
+
+    public static void reloadBlockTable(Table<UserDTO> table){
+        UserService service = UserService.getInstance();
+        List<User> listBlocked = new ArrayList<>();
+        List<UserDTO> result = new ArrayList<>();
+        try {
+            listBlocked = service.getAllBlockedUsers(UserProfile.getUserProfile().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for(User blocked : listBlocked){
+            UserDTO userDTO = new UserDTO();
+
+            userDTO.setId(blocked.getId());
+            userDTO.setUsername(blocked.getUsername());
+            userDTO.setFullname(blocked.getName());
+            if(blocked.isOnline()){
+                userDTO.setOnline("Online");
+            } else {
+                userDTO.setOnline("Offline");
+            }
+
+            result.add(userDTO);
         }
 
         table.updateData(result);

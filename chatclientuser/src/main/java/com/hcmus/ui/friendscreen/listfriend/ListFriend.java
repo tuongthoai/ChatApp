@@ -1,19 +1,16 @@
 package com.hcmus.ui.friendscreen.listfriend;
 
-import com.hcmus.models.GroupChat;
-import com.hcmus.models.GroupChatMember;
+import com.hcmus.models.*;
 import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatlayout.ChatScreen;
 import com.hcmus.utils.UserProfile;
-import com.hcmus.models.User;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.table.ContextMenu;
 import com.hcmus.ui.table.ReloadTable;
 import com.hcmus.ui.table.SearchBar;
 import com.hcmus.ui.table.Table;
-import com.hcmus.models.UserDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +39,7 @@ public class ListFriend extends JPanel {
         table = new Table<>(this.listfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
 
-        contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend", "Refresh"));
+        contextMenu = new ContextMenu(table.getTable(), List.of("Chat", "Unfriend", "Block/Unblock", "Refresh"));
 
         String[] statusOptions = {"All", "Online", "Offline"};
         JComboBox<String> filterStatus = new JComboBox<>(statusOptions);
@@ -90,6 +87,9 @@ public class ListFriend extends JPanel {
 
         JMenuItem unfriend = contextMenu.getUnfriend();
         unfriend.addActionListener(new UnfriendAction(table));
+
+        JMenuItem block = contextMenu.getBlock();
+        block.addActionListener(new BlockAction<UserDTO>(table, UserDTO.class));
 
         JMenuItem chatButton = contextMenu.getChat();
         chatButton.addActionListener(new ActionListener() {

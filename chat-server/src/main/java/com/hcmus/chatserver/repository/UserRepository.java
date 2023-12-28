@@ -268,4 +268,38 @@ public class UserRepository implements InitializingBean {
             }
         });
     }
+
+    // if user1 is blocked by user2 or vice versa?
+    public boolean isBlockedBy(int user1, int user2) {
+        String query = "select * from user_block_list where (user_id = ? and userisblocked = ?) or (user_id = ? and userisblocked = ?)";
+        // return true if there is a row in user_block_id table that contains user1 and user2
+        return jdbcTemplate.query(query, new Object[]{user1, user2, user2, user1}, new int[]{Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Boolean>() {
+            @Override
+            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    return true;
+                }
+
+                return false;
+            }
+        });
+    }
+
+    public void blockUser(int user1, int user2) {
+        // if user1 and user2 are friends, delete the row in user_friend table
+        String query1 = "delete from user_friend where (user_id = ? and friend_id = ?) or (user_id = ? and friend_id = ?)";
+        jdbcTemplate.update(query1, user1, user2, user2, user1);
+
+        String query = "insert into user_block_list (user_id, userisblocked) values (?, ?)";
+        jdbcTemplate.update(query, user1, user2);
+    }
+    public void unblockUser(int user1, int user2) {
+        String query = "delete from user_block_list where user_id = ? and userisblocked = ?";
+        jdbcTemplate.update(query, user1, user2);
+    }
+
+    public List<User> getBlockedUsers(int userId) {
+        String query = "select * from user_metadata where user_id in (select userisblocked from user_block_list where user_id = ?)";
+        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
+    }
 }

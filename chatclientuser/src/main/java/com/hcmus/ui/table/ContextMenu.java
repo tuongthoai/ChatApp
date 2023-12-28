@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ContextMenu extends JPopupMenu {
     private JMenuItem unfriend;
+    private JMenuItem block;
     private JMenuItem chat;
     private JMenuItem addfriend;
     private JMenuItem refresh;
@@ -21,6 +22,10 @@ public class ContextMenu extends JPopupMenu {
         if (options.contains("Unfriend")) {
             unfriend = new JMenuItem("Unfriend");
             add(unfriend);
+        }
+        if (options.contains("Block/Unblock")) {
+            block = new JMenuItem("Block/Unblock");
+            add(block);
         }
         if (options.contains("Chat")) {
             chat = new JMenuItem("Chat");
@@ -98,5 +103,12 @@ public class ContextMenu extends JPopupMenu {
         this.addfriend = addfriend;
     }
 
+    public JMenuItem getBlock() {
+        return block;
+    }
+
+    public void setBlock(JMenuItem block) {
+        this.block = block;
+    }
 }
 

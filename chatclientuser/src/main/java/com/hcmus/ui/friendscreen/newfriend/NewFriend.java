@@ -1,5 +1,7 @@
 package com.hcmus.ui.friendscreen.newfriend;
 
+import com.hcmus.services.UserService;
+import com.hcmus.ui.friendscreen.listfriend.BlockAction;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.services.FriendService;
@@ -31,7 +33,7 @@ public class NewFriend extends JPanel {
 //
         table = new Table<>(this.listNotfriend, columnHeads);
         searchBar = new SearchBar(table.getSorter());
-        contextMenu = new ContextMenu(table.getTable(), List.of("Add Friend", "Refresh"));
+        contextMenu = new ContextMenu(table.getTable(), List.of("Add Friend", "Block/Unblock", "Refresh"));
 //
         JPanel header = new JPanel(new GridBagLayout());
         header.setBackground(Color.WHITE);
@@ -52,6 +54,9 @@ public class NewFriend extends JPanel {
         JMenuItem addfriend = contextMenu.getAddfriend();
         addfriend.addActionListener(new AddfriendAction(table));
 
+        JMenuItem block = contextMenu.getBlock();
+        block.addActionListener(new BlockAction<Friend>(table, Friend.class));
+
         JMenuItem refresh = contextMenu.getRefresh();
         refresh.addActionListener(new ActionListener() {
             @Override
@@ -68,15 +73,30 @@ public class NewFriend extends JPanel {
     public void getListNotFriend() {
         FriendService service = FriendService.getInstance();
         List<User> listNotFriend = new ArrayList<>();
+        List<User> blockList = new ArrayList<>();
         try {
             listNotFriend = service.findAllStrangers(UserProfile.getUserProfile().getId());
+            System.out.println(listNotFriend);
+            System.out.println("________________________________");
+            blockList = UserService.getInstance().getAllBlockedUsers(UserProfile.getUserProfile().getId());
+            System.out.println(blockList);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         for(User stranger : listNotFriend){
-//            System.out.println(stranger.getName());
-//            System.out.println(stranger.getBirthday());
+            boolean isBlocked = false;
+
+            for (User blocked : blockList) {
+                if (stranger.getId() == blocked.getId()) {
+                    isBlocked = true;
+                    break;
+                }
+            }
+            if (isBlocked) {
+                continue;
+            }
+
             Friend newFriend = new Friend();
 
             newFriend.setId(stranger.getId());

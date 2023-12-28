@@ -1,6 +1,8 @@
 package com.hcmus.ui.friendscreen;
 
 import com.hcmus.ui.datatest.DataTest;
+import com.hcmus.ui.friendscreen.blocklist.BlockList;
+import com.hcmus.ui.friendscreen.listfriend.BlockDialog;
 import com.hcmus.ui.friendscreen.listfriend.ListFriend;
 import com.hcmus.ui.friendscreen.newfriend.NewFriend;
 
@@ -32,9 +34,13 @@ public class FriendHomePage extends JPanel {
 
         JButton addFriendButton = createButton("Add New Friend", "ADD_FRIEND");
 
+        JButton blockListButton = createButton("Blocked Users", "BLOCK_LIST");
+
         topPanel.add(listFriendButton);
         topPanel.add(Box.createHorizontalStrut(30));
         topPanel.add(addFriendButton);
+        topPanel.add(Box.createHorizontalStrut(30));
+        topPanel.add(blockListButton);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
@@ -47,6 +53,9 @@ public class FriendHomePage extends JPanel {
 
         NewFriend newFriendCard = new NewFriend(mainCard, mainContentPanel);
         cardContainPanel.add(newFriendCard, "ADD_FRIEND");
+
+        BlockList blockListCard = new BlockList(mainCard, mainContentPanel);
+        cardContainPanel.add(blockListCard, "BLOCK_LIST");
 
         cardLayout.show(cardContainPanel, "LIST_FRIEND");
 

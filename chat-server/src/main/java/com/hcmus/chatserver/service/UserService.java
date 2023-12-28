@@ -86,4 +86,20 @@ public class UserService implements InitializingBean {
     public boolean isUserBlocked(int userId) throws Exception {
         return userRepository.isUserBlocked(userId);
     }
+
+    public boolean isBlockedBy(int userId, int blockedBy) throws Exception {
+        return userRepository.isBlockedBy(userId, blockedBy);
+    }
+
+    public void blockUser(int userId, int blockedBy) throws Exception {
+        userRepository.blockUser(userId, blockedBy);
+    }
+
+    public void unblockUser(int userId, int blockedBy) throws Exception {
+        userRepository.unblockUser(userId, blockedBy);
+    }
+
+    public List<User> getBlockedUsers(int userId) throws Exception {
+        return userRepository.getBlockedUsers(userId);
+    }
 }
