@@ -79,6 +79,9 @@ public class Table<T> extends JScrollPane {
         if (fieldName.equals("Disconnect Time")) {
             fieldName = "dc Time";
         }
+        if (fieldName.equals("Report Time")) {
+            fieldName = "Created Time";
+        }
         boolean hasSpace = fieldName.contains(" ");
         if (hasSpace) {
             fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);

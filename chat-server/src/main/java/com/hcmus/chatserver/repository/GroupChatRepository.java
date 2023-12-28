@@ -112,7 +112,7 @@ public class GroupChatRepository implements InitializingBean {
 
     public void persistChatMsg(ClientChatMessage msg) throws Exception {
         String query = "insert into gchat_content(group_id, usersent, msg, msg_offset , senttime) " + "values (?, ?, ?, (select MAX(gc.msg_offset) + 1 from gchat_content gc where gc.group_id = ?), ?)";
-        jdbcTemplate.update(query, msg.getGroupChatId(), msg.getUserSentId(), msg.getMsgContent(), msg.getGroupChatId(), System.currentTimeMillis());
+        jdbcTemplate.update(query, msg.getGroupChatId(), msg.getUserSentId(), msg.getMsgContent(), msg.getGroupChatId(), System.currentTimeMillis() / 1000);
     }
 
     public void updateGroupChatName(int groupId, String newName) throws Exception {
@@ -172,7 +172,7 @@ public class GroupChatRepository implements InitializingBean {
     public int createEmptyGroup(String groupName) {
         String query = "INSERT INTO gchat_metadata (groupname, createdtime, isgroup) VALUES (?, ?, ?) RETURNING group_id";
 
-        return jdbcTemplate.queryForObject(query, Integer.class, groupName, System.currentTimeMillis(), false);
+        return jdbcTemplate.queryForObject(query, Integer.class, groupName, System.currentTimeMillis() / 1000, false);
     }
 
     public int remove(int chatId) throws Exception {

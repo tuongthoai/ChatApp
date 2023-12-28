@@ -232,7 +232,7 @@ public class AddDialog extends JDialog {
         // add new user to database
         LocalDateTime localDate = LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), 0, 0, 0);
         long unixBirthday = UnixTimestampConverter.dateTime2Unix(localDate);
-        User newUser = new User(1, username, password, name, email, sex, address, unixBirthday, System.currentTimeMillis(), false, false);
+        User newUser = new User(1, username, password, name, email, sex, address, unixBirthday, System.currentTimeMillis() /1000, false, false);
         try {
             UserService service = new UserService();
             service.addUser(newUser);

@@ -67,7 +67,7 @@ public class CreateGroupChatTransaction extends TransactionCallbackWithoutResult
 
             // insert gchat_metadata
             String createChatMetadata = "insert into gchat_metadata(groupname, createdtime) values (?, ?);";
-            jdbcTemplate.update(createChatMetadata, chatName, System.currentTimeMillis());
+            jdbcTemplate.update(createChatMetadata, chatName, System.currentTimeMillis() / 1000);
 
             // insert gchat_admins
             // get gchatid;

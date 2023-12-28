@@ -1,5 +1,6 @@
 package com.hcmus.ui.chatlayout;
 
+import com.hcmus.ui.searchbar.SearchBarAction;
 import com.hcmus.utils.ChatHashMap;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
@@ -10,6 +11,8 @@ import com.hcmus.ui.searchbar.SearchBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URISyntaxException;
 
 public class ChatScreen extends JPanel implements Subscriber {
@@ -34,9 +37,33 @@ public class ChatScreen extends JPanel implements Subscriber {
         // List of conversations (you can use JList or other components)
         JPanel chatListPanel = new JPanel();
         chatListPanel.setLayout(new BorderLayout());
-        JPanel conversationScrollPane = new ChatList(this);
+        ChatList chatList = new ChatList(this);
+        JScrollPane conversationScrollPane = new JScrollPane(chatList);
         conversationScrollPane.setPreferredSize(new Dimension(220, 400));
-        chatListPanel.add(new SearchBar(), BorderLayout.NORTH);
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BorderLayout());
+        JTextField searchField = new JTextField(30);
+        JButton searchButton = new JButton();
+        searchButton.setText("Search");
+        searchButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String keyword = searchField.getText();
+                System.out.println(keyword);
+
+                chatList.updateChatList(keyword);
+
+//                System.out.println("1");
+            }
+        });
+        searchPanel.add(searchButton, BorderLayout.EAST);
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.setPreferredSize(new Dimension(200, 35));
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(3, 2, 5, 1));
+
+        chatListPanel.add(searchPanel, BorderLayout.NORTH);
         chatListPanel.add(conversationScrollPane, BorderLayout.CENTER);
         chatListPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 

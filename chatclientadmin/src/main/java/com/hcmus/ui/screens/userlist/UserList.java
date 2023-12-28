@@ -9,11 +9,14 @@ import com.hcmus.ui.screens.userlist.friendlist.FriendListAction;
 import com.hcmus.ui.screens.userlist.loginhistory.LoginHistoryAction;
 import com.hcmus.ui.table.*;
 import com.hcmus.entities.user.User;
+import kotlin.collections.ArrayDeque;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserList extends JPanel {
@@ -28,7 +31,7 @@ public class UserList extends JPanel {
         try {
             service = new UserService();
             List<User> data = service.getAllUsers();
-            List<String> columnNames = User.getColumnNames();
+            List<String> columnNames = Arrays.asList("ID", "Username", "Password", "Name", "Email", "Sex", "Address", "Birthday");
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List", "Login History"));
@@ -40,16 +43,13 @@ public class UserList extends JPanel {
             JTextField email = new JTextField(10);
             JTextField sex = new JTextField(10);
             username.setName("Username");
-            password.setName("Password");
             name.setName("name");
-            email.setName("email");
-            sex.setName("sex");
             FilterMenuBuilder filterMenuBuilder = new FilterMenuBuilder();
             filterMenuBuilder.setSorter(table.getSorter());
             filterMenuBuilder.setModel(table.getModel());
             filterMenuBuilder.setFilterName("Filter");
-            filterMenuBuilder.setFilterComponents(new JComponent[]{username, password, name, email, sex});
-            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username"), new JLabel("Password"), new JLabel("Name"), new JLabel("Email"), new JLabel("Sex")});
+            filterMenuBuilder.setFilterComponents(new JComponent[]{username, name});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username"),  new JLabel("Name")});
             filterMenu = filterMenuBuilder.createFilterMenu();
 
             // Add action listener for each menu item
