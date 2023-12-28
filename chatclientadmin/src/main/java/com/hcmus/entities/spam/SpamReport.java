@@ -32,7 +32,7 @@ public class SpamReport {
                 "Report Id",
                 "Sender Name",
                 "Reported Username",
-                "Created Time",
+                "Report Time",
                 "Content",
                 "Status"
         );

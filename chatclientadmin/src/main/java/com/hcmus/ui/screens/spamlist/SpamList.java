@@ -40,7 +40,7 @@ public class SpamList extends JPanel {
             contextMenu.add(filterMenuBuilder.createFilterMenu());
 
             filterMenuBuilder.setFilterName("Filter by Date");
-            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Created Time")});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Report Time")});
             DateFilterMenu dateFilterMenu = filterMenuBuilder.createDateFilterMenu();
             contextMenu.add(dateFilterMenu);
 
