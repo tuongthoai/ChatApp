@@ -33,7 +33,10 @@ public class GroupChatSpamBtnAction implements ActionListener {
 
         GChatService service = GChatService.getInstance();
         List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
-        List<String> userNames = members.stream().map(mem -> mem.getUsername()).collect(Collectors.toList());
+        List<String> userNames = members.stream()
+                .filter(mem -> mem.getUserId() != UserProfile.getUserProfile().getId())
+                .map(mem -> mem.getUsername())
+                .collect(Collectors.toList());
         JList<String> userList = new JList<>(userNames.toArray(new String[0]));
         JScrollPane scrollPane = new JScrollPane(userList);
         scrollPane.setPreferredSize(new Dimension(400, 50));
@@ -101,7 +104,7 @@ public class GroupChatSpamBtnAction implements ActionListener {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(selectedIndices == -1) {
+                if (selectedIndices == -1) {
                     JOptionPane.showMessageDialog(
                             parent, // Parent component (null for default)
                             "Please select user to be report", // Message to display
