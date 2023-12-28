@@ -42,6 +42,10 @@ public class ChatHashMap {
         if (chatHashMap != null) chatHashMap.remove(chatListItem);
     }
 
+    public void removeAll(){
+        if (chatHashMap != null) chatHashMap.clear();
+    }
+
     public ChatBox getChat(ChatListItem chatListItem) {
         if (chatHashMap != null) return chatHashMap.get(chatListItem);
         return null;
