@@ -17,6 +17,11 @@ public class AccountService {
         int user_id = -1;
         try {
             user_id = repository.validateUsrPwd(userName, passWord);
+            if (user_id != -1) {
+                if (repository.isUserBlocked(user_id)) {
+                    throw new Exception("User" + user_id + "is blocked");
+                }
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

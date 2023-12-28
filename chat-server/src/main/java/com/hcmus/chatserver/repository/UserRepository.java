@@ -253,4 +253,19 @@ public class UserRepository implements InitializingBean {
         jdbcTemplate.update(query);
         return newPassword;
     }
+
+    public boolean isUserBlocked(int userId) {
+        String query = "select isblocked from user_metadata where user_id = ?";
+        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Boolean>() {
+            @Override
+            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getBoolean(1);
+                }
+
+                return false;
+            }
+        });
+    }
 }

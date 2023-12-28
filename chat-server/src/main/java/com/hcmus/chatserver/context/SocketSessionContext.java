@@ -2,6 +2,7 @@ package com.hcmus.chatserver.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.messages.ClientChatMessage;
+import com.hcmus.chatserver.repository.UserRepository;
 import com.hcmus.chatserver.service.ChatSocketSessionContext;
 import com.hcmus.chatserver.service.GroupChatService;
 import com.hcmus.chatserver.service.UserService;
@@ -52,6 +53,13 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         ClientChatMessage msg = mapper.readValue(payload, ClientChatMessage.class);
+        // check if current user is blocked
+        if (userService.isUserBlocked(msg.getUserSentId())) {
+            TextMessage response = new TextMessage("%% <You are blocked> %%");
+            System.out.println("You are blocked");
+            session.sendMessage(response);
+            return;
+        }
         if(msg.getMsgType() == null) {
             context.send2Group(msg.getGroupChatId(), message);
             groupChatService.persistMsg(msg);

@@ -82,4 +82,8 @@ public class UserService implements InitializingBean {
     public void updateUserStatus(int userId, boolean isOnline) throws Exception {
         userRepository.updateUserOnlineStatus(userId, isOnline);
     }
+
+    public boolean isUserBlocked(int userId) throws Exception {
+        return userRepository.isUserBlocked(userId);
+    }
 }

@@ -9,6 +9,7 @@ import com.hcmus.ui.chatlist.ChatListItem;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
+import javax.swing.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +73,10 @@ public class ChatContext extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        if (message.equals("%% <You are blocked> %%")) {
+            JOptionPane.showMessageDialog(null, "You are blocked by our admin that you can't send message to anyone!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         ChatMessage msg = null;
         try {
             msg = mapper.readValue(message, ChatMessage.class);
