@@ -53,13 +53,24 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         ClientChatMessage msg = mapper.readValue(payload, ClientChatMessage.class);
-        // check if current user is blocked
+        // check if current user is blocked by admin
         if (userService.isUserBlocked(msg.getUserSentId())) {
             TextMessage response = new TextMessage("%% <You are blocked> %%");
             System.out.println("You are blocked");
             session.sendMessage(response);
             return;
         }
+        // check if the receiver is blocked by current user
+        int receiverId = -1;
+        if ((receiverId = groupChatService.getOtherMemberId(msg.getGroupChatId(), msg.getUserSentId())) != -1) {
+            if (userService.isBlockedBy(msg.getUserSentId(), receiverId)) {
+                TextMessage response = new TextMessage("%% <This private chat is disabled> %%");
+                System.out.println("This private chat is disabled");
+                session.sendMessage(response);
+                return;
+            }
+        }
+
         if(msg.getMsgType() == null) {
             context.send2Group(msg.getGroupChatId(), message);
             groupChatService.persistMsg(msg);

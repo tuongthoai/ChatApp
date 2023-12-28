@@ -120,4 +120,11 @@ public class GroupChatService {
     public int countMembers(int groupId) throws Exception {
         return repository.countMembers(groupId);
     }
+
+    // if group chat is not a group, return the other member id
+    // else return -1
+    public int getOtherMemberId(int groupId, int userId) throws Exception {
+        if (repository.isGroup(groupId)) return -1;
+        return repository.getOtherMemberId(groupId, userId);
+    }
 }

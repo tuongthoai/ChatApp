@@ -77,6 +77,10 @@ public class ChatContext extends WebSocketClient {
             JOptionPane.showMessageDialog(null, "You are blocked by our admin that you can't send message to anyone!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (message.equals("%% <This private chat is disabled> %%")) {
+            JOptionPane.showMessageDialog(null, "You may no longer send messages to this private chat!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         ChatMessage msg = null;
         try {
             msg = mapper.readValue(message, ChatMessage.class);

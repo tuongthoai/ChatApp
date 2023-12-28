@@ -237,4 +237,32 @@ public class GroupChatRepository implements InitializingBean {
             }
         });
     }
+
+    public boolean isGroup(int groupId) {
+        String query = "select isgroup from gchat_metadata where group_id = ?";
+        return jdbcTemplate.query(query, new Object[]{groupId}, new int[]{Types.INTEGER}, new ResultSetExtractor<Boolean>() {
+            @Override
+            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getBoolean(1);
+                }
+                return false;
+            }
+        });
+    }
+
+    public int getOtherMemberId(int groupId, int userId) {
+        String query = "select member_id from gchat_member where groupchat_id = ? and member_id != ?";
+        return jdbcTemplate.query(query, new Object[]{groupId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+            @Override
+            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    return rs.getInt(1);
+                }
+                return -1;
+            }
+        });
+    }
 }
