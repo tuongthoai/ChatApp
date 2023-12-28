@@ -89,10 +89,10 @@ public class ChatSocketSessionContext implements InitializingBean {
         try {
             List<User> groupChatIdsOfUser = service.findAllMembers(gChatId);
             usersId = new ArrayList<>(groupChatIdsOfUser.size());
-            for(User usr : groupChatIdsOfUser) {
+            for (User usr : groupChatIdsOfUser) {
                 usersId.add(usr.getId());
             }
-            groupChatMembers.put(gChatId, usersId);
+            if (!groupChatIdsOfUser.isEmpty()) groupChatMembers.put(gChatId, usersId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,5 +101,6 @@ public class ChatSocketSessionContext implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("Done ChatSession Context");
+        service.setContext(this);
     }
 }
