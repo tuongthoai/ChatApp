@@ -23,6 +23,10 @@ public class ChatBoxSendMsgBtnAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (parent.getChatId() == null) {
+            JOptionPane.showMessageDialog(parent, "You are not in any group chat");
+            return;
+        }
         if (!(jTextField.getText().isEmpty())) {
             String content = jTextField.getText();
             jTextField.setText(""); // Clear the text field after sending

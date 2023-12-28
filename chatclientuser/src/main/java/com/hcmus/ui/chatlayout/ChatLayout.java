@@ -24,7 +24,6 @@ public class ChatLayout extends JFrame {
 
     public ChatLayout() throws URISyntaxException, SQLException {
         setTitle("Chat UI");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -34,7 +33,8 @@ public class ChatLayout extends JFrame {
                 } catch (JsonProcessingException ex) {
                     throw new RuntimeException(ex);
                 }
-                dispose();
+                // close all frames
+                System.exit(0);
             }
         });
         setPreferredSize(new Dimension(1000, 600));
