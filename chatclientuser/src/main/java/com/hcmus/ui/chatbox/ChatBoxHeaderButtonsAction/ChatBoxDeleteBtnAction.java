@@ -44,7 +44,5 @@ public class ChatBoxDeleteBtnAction implements ActionListener {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(parent, "Networking Error. Can't remove chat");
         }
-
-        JOptionPane.showMessageDialog(parent, "Group remove successfully");
     }
 }
