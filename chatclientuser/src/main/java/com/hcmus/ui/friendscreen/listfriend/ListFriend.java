@@ -181,6 +181,9 @@ public class ListFriend extends JPanel {
         gcservice.addMember2Group(newGroupID, userID);
         gcservice.addMember2Group(newGroupID, friendID);
 
+        gcservice.updateGroupMemberRole(newGroupID, userID, 1);
+        gcservice.updateGroupMemberRole(newGroupID, friendID, 1);
+
         return newGroupID;
     }
 
