@@ -20,6 +20,10 @@ public class ChatBoxSearchAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (chatBox.getChatId() == null) {
+            JOptionPane.showMessageDialog(chatBox, "You are not in any group chat");
+            return;
+        }
         JDialog searchInfoDialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(chatBox));
         searchInfoDialog.setTitle("Message Search");
         searchInfoDialog.setLocationRelativeTo(null);

@@ -33,7 +33,8 @@ public class ChatLayout extends JFrame {
                 } catch (JsonProcessingException ex) {
                     throw new RuntimeException(ex);
                 }
-                dispose();
+                // close all frames
+                System.exit(0);
             }
         });
         setPreferredSize(new Dimension(1000, 600));

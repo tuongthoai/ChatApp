@@ -25,6 +25,10 @@ public class GroupChatSpamBtnAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (parent.getChatId() == null) {
+            JOptionPane.showMessageDialog(parent, "You are not in any group chat");
+            return;
+        }
         JDialog spamReportDlg = new JDialog((JFrame) SwingUtilities.getWindowAncestor(parent));
         spamReportDlg.setSize(600, 400);
         spamReportDlg.setTitle("Report Info Request");

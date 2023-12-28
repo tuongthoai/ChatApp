@@ -19,6 +19,10 @@ public class ChatBoxDeleteBtnAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (parent.getChatId() == null) {
+            JOptionPane.showMessageDialog(parent, "You are not in any group chat");
+            return;
+        }
         // checking if this user is admin of the group
         GChatService service = GChatService.getInstance();
         try {
