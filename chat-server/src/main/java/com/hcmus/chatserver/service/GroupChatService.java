@@ -6,6 +6,7 @@ import com.hcmus.chatserver.entities.groupchat.GroupChatMember;
 import com.hcmus.chatserver.entities.messages.ClientChatMessage;
 import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.repository.GroupChatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 public class GroupChatService {
-
+    private ChatSocketSessionContext context;
     private final GroupChatRepository repository;
 
     public GroupChatService(GroupChatRepository repository) {
@@ -67,6 +68,7 @@ public class GroupChatService {
 
     public void addMember(int groupId, int userId) throws Exception {
         repository.addMember(groupId, userId);
+        context.updateGroupChatMember(groupId);
     }
 
     public void removeMember(int groupId, int userId) throws Exception {
@@ -81,7 +83,6 @@ public class GroupChatService {
             remove(groupId);
             return;
         }
-        ;
 
         int adminId = repository.findGroupAdminById(groupId, userId);
         if (adminId == -1) {
@@ -95,6 +96,8 @@ public class GroupChatService {
             repository.addAdmin(groupId, adminId);
             repository.removeMember(groupId, userId);
         }
+
+        context.updateGroupChatMember(groupId);
     }
 
     public int create(String chatName, int admin, List<User> members) throws Exception {
@@ -106,7 +109,9 @@ public class GroupChatService {
     }
 
     public int remove(int chatId) throws Exception {
-        return repository.remove(chatId);
+        int res = repository.remove(chatId);
+        context.updateGroupChatMember(chatId);
+        return res;
     }
 
     public int isAdminOf(int chatId, int userId) {
@@ -126,5 +131,9 @@ public class GroupChatService {
     public int getOtherMemberId(int groupId, int userId) throws Exception {
         if (repository.isGroup(groupId)) return -1;
         return repository.getOtherMemberId(groupId, userId);
+    }
+
+    public void setContext(ChatSocketSessionContext context) {
+        this.context = context;
     }
 }
