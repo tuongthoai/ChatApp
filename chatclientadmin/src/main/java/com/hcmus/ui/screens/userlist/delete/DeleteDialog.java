@@ -55,20 +55,20 @@ public class DeleteDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(10, 15, 10, 15);
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 5;
-
         contentPanel.add(label, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        contentPanel.add(buttonOK, gbc);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(buttonOK);
+        buttonPanel.add(Box.createHorizontalStrut(10));
+        buttonPanel.add(buttonCancel);
 
-        gbc.gridx = 3;
-        gbc.gridwidth = 1;
-        contentPanel.add(buttonCancel, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        contentPanel.add(buttonPanel, gbc);
     }
 
     private void onOK(ActionEvent e) {

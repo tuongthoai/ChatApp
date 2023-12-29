@@ -2,20 +2,19 @@ package com.hcmus.chatserver.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.chatserver.entities.messages.ClientChatMessage;
-import com.hcmus.chatserver.repository.UserRepository;
+import com.hcmus.chatserver.entities.user.User;
 import com.hcmus.chatserver.service.ChatSocketSessionContext;
 import com.hcmus.chatserver.service.GroupChatService;
 import com.hcmus.chatserver.service.UserService;
+import com.hcmus.chatserver.utils.AdminBlockCache;
+import com.hcmus.chatserver.utils.UserBlockCache;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.Map;
 import java.util.List;
 
 @Service
@@ -43,6 +42,19 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             context.addSession(userId, session);
             try {
                 userService.updateUserStatus(userId, true);
+
+                // load user who is blocked by admin
+                List<User> blockedUsers = userService.getAdminBlockedUsers();
+                for (User user : blockedUsers) {
+                    AdminBlockCache.add(user.getId());
+                }
+
+                // load user who is blocked by current users
+                List<User> blockedByUsers = userService.getBlockedUsers(userId);
+                for (User user : blockedByUsers) {
+                    UserBlockCache.add(userId, user.getId());
+                }
+
             } catch (Exception err) {
                 err.printStackTrace();
             }
@@ -54,7 +66,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
         String payload = message.getPayload();
         ClientChatMessage msg = mapper.readValue(payload, ClientChatMessage.class);
         // check if current user is blocked by admin
-        if (userService.isUserBlocked(msg.getUserSentId())) {
+        if (AdminBlockCache.isBlocked(msg.getUserSentId())) {
             TextMessage response = new TextMessage("%% <You are blocked> %%");
             System.out.println("You are blocked");
             session.sendMessage(response);
@@ -63,7 +75,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
         // check if the receiver is blocked by current user
         int receiverId = -1;
         if ((receiverId = groupChatService.getOtherMemberId(msg.getGroupChatId(), msg.getUserSentId())) != -1) {
-            if (userService.isBlockedBy(msg.getUserSentId(), receiverId)) {
+            if (UserBlockCache.isBlocked(msg.getUserSentId(), receiverId)) {
                 TextMessage response = new TextMessage("%% <This private chat is disabled> %%");
                 System.out.println("This private chat is disabled");
                 session.sendMessage(response);

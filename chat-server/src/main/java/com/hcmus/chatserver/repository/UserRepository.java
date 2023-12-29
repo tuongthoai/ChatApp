@@ -5,6 +5,8 @@ import com.hcmus.chatserver.entities.user.UserActivity;
 import com.hcmus.chatserver.entities.user.UserDTO;
 import com.hcmus.chatserver.entities.user.UserStatisticSummary;
 import com.hcmus.chatserver.repository.helpers.*;
+import com.hcmus.chatserver.utils.AdminBlockCache;
+import com.hcmus.chatserver.utils.UserBlockCache;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -117,6 +119,12 @@ public class UserRepository implements InitializingBean {
     public void adminBlockUser(int userId) throws Exception {
         String query = "update user_metadata set isblocked = not isblocked where user_id = ?";
         jdbcTemplate.update(query, userId);
+        boolean isBlocked = isUserBlocked(userId);
+        if (isBlocked) {
+            AdminBlockCache.add(userId);
+        } else {
+            AdminBlockCache.remove(userId);
+        }
     }
 
     public List<Long> getAllCreatedTime() throws Exception {
@@ -292,14 +300,22 @@ public class UserRepository implements InitializingBean {
 
         String query = "insert into user_block_list (user_id, userisblocked) values (?, ?)";
         jdbcTemplate.update(query, user1, user2);
+        UserBlockCache.add(user1, user2);
     }
     public void unblockUser(int user1, int user2) {
         String query = "delete from user_block_list where user_id = ? and userisblocked = ?";
         jdbcTemplate.update(query, user1, user2);
+        UserBlockCache.remove(user1, user2);
     }
 
+    // get all users who are blocked by userId or block userId
     public List<User> getBlockedUsers(int userId) {
-        String query = "select * from user_metadata where user_id in (select userisblocked from user_block_list where user_id = ?)";
+        String query = "select * from user_metadata where user_id in (select userisblocked from user_block_list where user_id = ?) or user_id in (select user_id from user_block_list where userisblocked = ?)";
         return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
+    }
+
+    public List<User> getAdminBlockedUsers() {
+        String query = "select * from user_metadata where isblocked = true";
+        return jdbcTemplate.query(query, new UserRowMapper());
     }
 }

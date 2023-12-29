@@ -31,7 +31,7 @@ public class UserList extends JPanel {
         try {
             service = new UserService();
             List<User> data = service.getAllUsers();
-            List<String> columnNames = Arrays.asList("ID", "Username", "Password", "Name", "Email", "Sex", "Address", "Birthday");
+            List<String> columnNames = Arrays.asList("ID", "Username", "Password", "Name", "Email", "Sex", "Address", "Birthday", "Blocked");
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List", "Login History"));

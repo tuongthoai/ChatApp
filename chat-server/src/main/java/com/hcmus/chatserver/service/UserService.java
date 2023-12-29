@@ -102,4 +102,8 @@ public class UserService implements InitializingBean {
     public List<User> getBlockedUsers(int userId) throws Exception {
         return userRepository.getBlockedUsers(userId);
     }
+
+    public List<User> getAdminBlockedUsers() throws Exception {
+        return userRepository.getAdminBlockedUsers();
+    }
 }
