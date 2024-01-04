@@ -29,8 +29,6 @@ public class ChatSocketSessionContext implements InitializingBean {
         if (sessions.containsKey(receiver)) {
             sessions.get(receiver).sendMessage(msg);
         }
-
-        // lưu db
     }
 
     public void sendMsg2Group(List<Integer> receivers, TextMessage msg) throws IOException {
@@ -51,8 +49,6 @@ public class ChatSocketSessionContext implements InitializingBean {
                 }
             }
         }
-
-        // lưu db
     }
 
     public void removeSession(String sessionId) {
