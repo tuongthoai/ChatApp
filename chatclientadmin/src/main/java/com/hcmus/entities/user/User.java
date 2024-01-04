@@ -44,5 +44,8 @@ public class User {
         );
     }
 
+    public boolean getOnline() {
+        return online;
+    }
 
 }

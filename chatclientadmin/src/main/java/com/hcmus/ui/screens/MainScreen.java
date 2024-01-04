@@ -22,7 +22,7 @@ public class MainScreen extends JFrame {
     public MainScreen() {
         setTitle("Chat management system");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(1000, 600));
+        setPreferredSize(new Dimension(1100, 600));
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());

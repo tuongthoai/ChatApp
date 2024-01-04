@@ -31,7 +31,7 @@ public class UserList extends JPanel {
         try {
             service = new UserService();
             List<User> data = service.getAllUsers();
-            List<String> columnNames = Arrays.asList("ID", "Username", "Password", "Name", "Email", "Sex", "Address", "Birthday", "Blocked");
+            List<String> columnNames = Arrays.asList("ID", "Username", "Password", "Name", "Email", "Sex", "Address", "Birthday", "Blocked", "Online", "Created Time");
 
             table = new Table<>(data, columnNames);
             contextMenu = new ContextMenu(table.getTable(), List.of("Add", "Edit", "Delete", "Block", "Detail", "Friend List", "Login History"));
@@ -42,15 +42,18 @@ public class UserList extends JPanel {
             JTextField name = new JTextField(10);
             JTextField email = new JTextField(10);
             JTextField sex = new JTextField(10);
+            JComboBox<String> blocked = new JComboBox<>(new String[]{"All", "Blocked", "Unblocked"});
+            JComboBox<String> online = new JComboBox<>(new String[]{"All", "Online", "Offline"});
             username.setName("Username");
             name.setName("name");
             FilterMenuBuilder filterMenuBuilder = new FilterMenuBuilder();
             filterMenuBuilder.setSorter(table.getSorter());
             filterMenuBuilder.setModel(table.getModel());
             filterMenuBuilder.setFilterName("Filter");
-            filterMenuBuilder.setFilterComponents(new JComponent[]{username, name});
-            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username"),  new JLabel("Name")});
+            filterMenuBuilder.setFilterComponents(new JComponent[]{username, name, blocked, online});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username"),  new JLabel("Name"), new JLabel("Blocked"), new JLabel("Online")});
             filterMenu = filterMenuBuilder.createFilterMenu();
+//            StateFilterMenu stateFilterMenu = filterMenuBuilder.createStateFilterMenu();
 
             // Add action listener for each menu item
             JMenuItem addItem = contextMenu.getAddItem();

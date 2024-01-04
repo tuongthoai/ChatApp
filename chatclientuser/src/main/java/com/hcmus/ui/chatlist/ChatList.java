@@ -115,4 +115,10 @@ public class ChatList extends JPanel {
         revalidate();
         repaint();
     }
+    public void reloadChatList() throws URISyntaxException {
+        removeAll();
+        initListGroup("");
+        revalidate();
+        repaint();
+    }
 }

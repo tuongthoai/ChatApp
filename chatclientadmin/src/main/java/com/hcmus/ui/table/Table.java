@@ -138,11 +138,26 @@ public class Table<T> extends JScrollPane {
 
     public T getSelectedData() {
         int selectedRowIndex = table.getSelectedRow();
-
-        if (selectedRowIndex != -1) {
-            return data.get(selectedRowIndex);
+        String selectedId = table.getValueAt(selectedRowIndex, 0).toString();
+        for (T item : data) {
+            try {
+                String idField = "";
+                for (String columnName : columnNames) {
+                    if (columnName.toLowerCase().contains("id")) {
+                        idField = columnName;
+                        break;
+                    }
+                }
+                Field field = getFieldByName(item.getClass(), idField);
+                field.setAccessible(true);
+                String id = field.get(item).toString();
+                if (id.equals(selectedId)) {
+                    return item;
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
-
         return null;
     }
 

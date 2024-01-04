@@ -5,6 +5,7 @@ import com.hcmus.chatserver.entities.api.ApiResponse;
 import com.hcmus.chatserver.repository.helpers.LoginHistoryEntry;
 import com.hcmus.chatserver.repository.helpers.UserLoginTimeEntry;
 import com.hcmus.chatserver.service.LoginHistoryService;
+import com.hcmus.chatserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ public class LoginHistoryController {
     private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     LoginHistoryService loginHistoryService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/logintime", method = RequestMethod.GET, consumes = "application/json", produces = "application/json; charset=utf-8")
     public @ResponseBody String getLoginTime() throws Exception {
@@ -77,6 +80,7 @@ public class LoginHistoryController {
         ApiResponse response = new ApiResponse();
         try {
             loginHistoryService.setLoginTime(userId);
+            userService.updateUserStatus(userId, true);
             response.setData("Saved login time!");
         } catch (Exception e) {
             response.setError(true);
@@ -91,6 +95,7 @@ public class LoginHistoryController {
         ApiResponse response = new ApiResponse();
         try {
             loginHistoryService.setDisconnectTime(userId);
+            userService.updateUserStatus(userId, false);
             response.setData("Saved disconnect time!");
         } catch (Exception e) {
             response.setError(true);

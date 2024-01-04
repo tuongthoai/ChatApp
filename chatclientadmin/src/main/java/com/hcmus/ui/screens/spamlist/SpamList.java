@@ -34,7 +34,7 @@ public class SpamList extends JPanel {
             JTextField username = new JTextField(10);
             username.setName("Reported Username");
             filterMenuBuilder.setFilterComponents(new JComponent[]{username});
-            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Username")});
+            filterMenuBuilder.setFilterLabels(new JLabel[]{new JLabel("Reported Username")});
 
             contextMenu = new ContextMenu(table.getTable(), List.of("Block"));
             contextMenu.add(filterMenuBuilder.createFilterMenu());

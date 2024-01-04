@@ -23,12 +23,15 @@ public class DeleteDialog extends JDialog {
     public DeleteDialog(Table<User> table) {
         this.table = table;
         this.selectedUser = table.getSelectedData();
+        if (selectedUser.getOnline() == true) {
+            JOptionPane.showMessageDialog(this, "Cannot delete online user", "Error", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException("Cannot delete online user");
+        }
 
         contentPanel = new JPanel();
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPanel.setPreferredSize(new Dimension(500, 300));
         contentPanel.setLayout(new GridBagLayout());
-
         initializeButtons();
         setupLayout();
         setPreferredSize(new Dimension(350, 150));

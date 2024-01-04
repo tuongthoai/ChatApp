@@ -41,7 +41,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             System.out.printf("user %d has logged in\n", userId);
             context.addSession(userId, session);
             try {
-                userService.updateUserStatus(userId, true);
+//                userService.updateUserStatus(userId, true);
 
                 // load user who is blocked by admin
                 List<User> blockedUsers = userService.getAdminBlockedUsers();
@@ -105,7 +105,7 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             System.out.printf("user %d has terminated\n", userId);
             context.addSession(userId, session);
             try {
-                userService.updateUserStatus(userId, false);
+//                userService.updateUserStatus(userId, false);
             } catch (Exception err) {
                 err.printStackTrace();
             }

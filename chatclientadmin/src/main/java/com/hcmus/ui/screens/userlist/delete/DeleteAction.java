@@ -16,7 +16,9 @@ public class DeleteAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DeleteDialog deleteDialog = new DeleteDialog(tablePanel);
-        deleteDialog.setVisible(true);
+        try {
+            DeleteDialog deleteDialog = new DeleteDialog(tablePanel);
+            deleteDialog.setVisible(true);
+        } catch (Exception ex) {}
     }
 }

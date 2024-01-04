@@ -311,7 +311,7 @@ public class UserRepository implements InitializingBean {
     // get all users who are blocked by userId or block userId
     public List<User> getBlockedUsers(int userId) {
         String query = "select * from user_metadata where user_id in (select userisblocked from user_block_list where user_id = ?) or user_id in (select user_id from user_block_list where userisblocked = ?)";
-        return jdbcTemplate.query(query, new Object[]{userId}, new int[]{Types.INTEGER}, new UserRowMapper());
+        return jdbcTemplate.query(query, new Object[]{userId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new UserRowMapper());
     }
 
     public List<User> getAdminBlockedUsers() {

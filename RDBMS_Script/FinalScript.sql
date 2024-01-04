@@ -100,15 +100,15 @@ insert into ROLES(role_id, role_name) values
 (2, 'ROLE_USER');
 
 INSERT INTO USER_METADATA (USER_ROLE, USERNAME, USER_PASSWORD, FULLNAME, USER_ADDRESS, BIRTHDAY, SEX, EMAIL, CREATEDTIME) VALUES
-(2,'usn1', '1234', N'Nguyễn Xuân Huy', N'Đà Nẵng', 943266359, N'Nam', 'usn1@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-25 20:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn2', '1234', N'Lê Ngọc Nhi', N'An Giang', 911730359, N'Nữ', 'usn2@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-07-09 09:45:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn3', '1234', N'Nguyễn Thị Thanh Thảo', N'Sóc Trăng', 814357559, N'Nữ', 'usn3@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-01-24 12:36:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn4', '1234', N'Nghiêm Xuân Huy', N'Cần Thơ', 876911159, N'Nam', 'usn4@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-05 22:20:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn5', '1234', N'Lương Xuân Trường', N'Tuyên Quang', 861099959, N'Nam', 'usn5@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-01-22 08:27:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn6', '1234', N'Nguyễn Văn Bình', N'Quảng Nam', 703333559, N'Nam', 'usn6@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-04-28 15:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn7', '1234', N'Phạm Băng Băng', N'Bến Tre', 356178359, N'Nữ', 'usn7@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-05 20:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn8', '1234', N'Chu Thị Trà', N'Hải Phòng', 387714359, N'Nữ', 'usn8@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-03-15 06:10:00', 'YYYY-MM-DD HH24:MI:SS'))),
-(2,'usn9', '1234', N'Đinh Bá Tiến', N'Nasa', 577103159, N'Nam', 'usn9@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-04-29 12:35:00', 'YYYY-MM-DD HH24:MI:SS')));
+(2,'usn1', '1234', N'Nguyễn Xuân Huy', N'Đà Nẵng', 943266359, 'Male', 'usn1@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-25 20:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn2', '1234', N'Lê Ngọc Nhi', N'An Giang', 911730359, 'Female', 'usn2@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-07-09 09:45:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn3', '1234', N'Nguyễn Thị Thanh Thảo', N'Sóc Trăng', 814357559, 'Female', 'usn3@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-01-24 12:36:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn4', '1234', N'Nghiêm Xuân Huy', N'Cần Thơ', 876911159, 'Male', 'usn4@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-05 22:20:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn5', '1234', N'Lương Xuân Trường', N'Tuyên Quang', 861099959, 'Male', 'usn5@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-01-22 08:27:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn6', '1234', N'Nguyễn Văn Bình', N'Quảng Nam', 703333559, 'Male', 'usn6@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-04-28 15:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn7', '1234', N'Phạm Băng Băng', N'Bến Tre', 356178359, 'Female', 'usn7@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-12-05 20:30:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn8', '1234', N'Chu Thị Trà', N'Hải Phòng', 387714359, 'Female', 'usn8@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2022-03-15 06:10:00', 'YYYY-MM-DD HH24:MI:SS'))),
+(2,'usn9', '1234', N'Đinh Bá Tiến', N'Nasa', 577103159, 'Male', 'usn9@gmail.com', EXTRACT(EPOCH FROM TO_TIMESTAMP('2023-04-29 12:35:00', 'YYYY-MM-DD HH24:MI:SS')));
 
 INSERT INTO USER_METADATA (USER_ROLE, USER_ID, USERNAME, USER_PASSWORD) VALUES (1, 0,'admin','admin');
 

@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CreateConvoAction implements ActionListener {
-    private JPanel parent;
+    private ChatList parent;
     public CreateConvoAction(ChatList chatList) {
         this.parent = chatList;
     }

@@ -78,6 +78,17 @@ public class FilterMenu extends JMenu {
 
         for (JComponent component : this.components) {
             if (!(component instanceof JTextField)) {
+                if (component instanceof JComboBox) {
+                    JComboBox comboBox = (JComboBox) component;
+                    String columnName = labels[components.indexOf(component)].getText();
+                    int columnIndex = getColumnIndex(columnName);
+                    String value = (String) comboBox.getSelectedItem();
+                    if (!value.equals("All")) {
+                        if (value.equals("Online") || value.equals("Blocked")) value = "true";
+                        else value = "false";
+                        filters.add(new VietnameseRowFilter(columnIndex, value));
+                    }
+                }
                 continue;
             }
             JTextField textField = (JTextField) component;

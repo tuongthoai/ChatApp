@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CreateNewConversationDlg extends JDialog implements ActionListener{
-    private JPanel parent;
+    private ChatList parent;
     private List<User> friends;
     private JPanel metaDataDlg;
     private JScrollPane listFriendDlg;
@@ -27,7 +27,7 @@ public class CreateNewConversationDlg extends JDialog implements ActionListener{
     private List<User> selectedUser = new ArrayList<>();
     private JTextField groupNameText;
 
-    public CreateNewConversationDlg(JPanel parent, List<User> friends) {
+    public CreateNewConversationDlg(ChatList parent, List<User> friends) {
         this.parent = parent;
         this.friends = friends;
         setTitle("CREATE NEW DIALOG");
@@ -129,6 +129,7 @@ public class CreateNewConversationDlg extends JDialog implements ActionListener{
                 ChatContext chatContext = ChatContext.getInstance();
                 chatContext.send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                 JOptionPane.showMessageDialog(this, "Create successfully", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
+                parent.reloadChatList();
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Network Error", "Error message", JOptionPane.ERROR_MESSAGE);
