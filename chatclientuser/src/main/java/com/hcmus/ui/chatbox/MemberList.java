@@ -238,16 +238,17 @@ public class MemberList extends JPanel implements Subscriber {
                     try {
                         result = GChatService.getInstance().removeMemberFromGroup(parent.getChatId(), parent.getMembers().get(order).getUserId());
                         ClientChatMessage sysUpdateMsg = new ClientChatMessage();
-                        sysUpdateMsg.setMsgType("SYS");
-                        sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
-                        sysUpdateMsg.setGroupChatId(parent.getChatId());
-                        ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
-                        if(memCnt <= 2 && deleteGroup[0]) {
+                        if (memCnt <= 2 && deleteGroup[0]) {
                             sysUpdateMsg.setMsgType("SYS");
                             sysUpdateMsg.setMsgContent("UPDATE->CHAT_SCREEN");
                             sysUpdateMsg.setGroupChatId(parent.getChatId());
                             ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                             EventHandlerService.getInstance().notify(ComponentIdContext.CLOSE_GROUP_INFO_DIALOG, null);
+                        } else {
+                            sysUpdateMsg.setMsgType("SYS");
+                            sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
+                            sysUpdateMsg.setGroupChatId(parent.getChatId());
+                            ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                         }
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(mainPanel, "Network Error", "Error", JOptionPane.ERROR_MESSAGE);

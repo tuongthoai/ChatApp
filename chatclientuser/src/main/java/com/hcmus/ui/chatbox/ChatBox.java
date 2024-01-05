@@ -25,7 +25,7 @@ public class ChatBox extends JPanel implements Subscriber {
 
     public ChatBox() {
         chatName = "";
-        chatMessages = new ArrayList<>();
+        this.chatMessages = new ArrayList<>();
         initComponent();
     }
 
@@ -162,14 +162,16 @@ public class ChatBox extends JPanel implements Subscriber {
     }
 
     public void displayChatMessage() {
-        chatContent.setText(""); // Clear the existing messages before displaying
-        for (ChatMessage message : chatMessages) {
+        this.chatContent.setText(""); // Clear the existing messages before displaying
+        for (ChatMessage message : this.chatMessages) {
             if (message.getUserSentId() == UserProfile.getUserProfile().getId()) {
-                chatContent.append("< Me >: " + message.getMsgContent() + "\n");
+                System.out.println("< Me >: " + message.getMsgContent() + "\n");
+                this.chatContent.append("< Me >: " + message.getMsgContent() + "\n");
             } else {
-                chatContent.append("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
+                System.out.println("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
+                this.chatContent.append("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
             }
-            chatContent.setCaretPosition(chatContent.getDocument().getLength());
+            this.chatContent.setCaretPosition(chatContent.getDocument().getLength());
         }
     }
 
@@ -267,7 +269,6 @@ public class ChatBox extends JPanel implements Subscriber {
 
     public void reloadAllChatBox() {
         removeAll();
-
     }
 
     public ChatScreen getChatScreen() {

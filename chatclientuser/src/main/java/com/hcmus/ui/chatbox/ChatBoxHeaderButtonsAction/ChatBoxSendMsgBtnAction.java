@@ -39,6 +39,7 @@ public class ChatBoxSendMsgBtnAction implements ActionListener {
 
             try {
                 parent.getContext().send(mapper.writeValueAsString(msg));
+
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException(ex);
             }
