@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -195,32 +196,34 @@ public class GroupChatRepository implements InitializingBean {
     }
 
     public int updateMemberRole(int groupId, int userId, int role) {
-        if (role == 2) {
-            // admins
-            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-                @Override
-                protected void doInTransactionWithoutResult(TransactionStatus status) {
-                    try {
+        // admins
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    String checkAdminQuery = "select * from gchat_admins where group_id = ? and admin_id = ?";
+                    int row = jdbcTemplate.query(checkAdminQuery, new Object[]{groupId, userId}, new int[]{Types.INTEGER, Types.INTEGER}, new ResultSetExtractor<Integer>() {
+                        @Override
+                        public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+                            if(rs.isBeforeFirst()) {
+                                rs.next();
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    });
+                    if (row > 0) {
                         jdbcTemplate.update("delete from gchat_admins where group_id = ? and admin_id = ?", groupId, userId);
-                    } catch (Exception e) {
-                        status.setRollbackOnly();
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-        } else {
-            transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-                @Override
-                protected void doInTransactionWithoutResult(TransactionStatus status) {
-                    try {
+                    } else {
                         jdbcTemplate.update("insert into gchat_admins(group_id, admin_id) values (?, ?)", groupId, userId);
-                    } catch (Exception e) {
-                        status.setRollbackOnly();
-                        throw new RuntimeException(e);
                     }
+                    System.out.println(row);
+                } catch (Exception e) {
+                    status.setRollbackOnly();
+                    throw new RuntimeException(e);
                 }
-            });
-        }
+            }
+        });
         return 1;
     }
 

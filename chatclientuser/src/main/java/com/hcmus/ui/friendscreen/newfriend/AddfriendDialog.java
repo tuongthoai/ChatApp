@@ -1,5 +1,7 @@
 package com.hcmus.ui.friendscreen.newfriend;
 
+import com.hcmus.services.ComponentIdContext;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.Friend;
 import com.hcmus.models.User;
@@ -86,6 +88,7 @@ public class AddfriendDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Add Friend successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 //            updateTable();
             ReloadTable.reloadStrangerTable(tablePanel);
+            EventHandlerService.getInstance().notify(ComponentIdContext.RELOAD_LIST_FRIEND, null);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Add Friend failed", "Error", JOptionPane.ERROR_MESSAGE);

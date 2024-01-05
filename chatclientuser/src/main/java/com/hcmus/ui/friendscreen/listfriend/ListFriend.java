@@ -1,10 +1,12 @@
 package com.hcmus.ui.friendscreen.listfriend;
 
 import com.hcmus.models.*;
+import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatlayout.ChatScreen;
+import com.hcmus.utils.ListFriendUtilsFunc;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.services.UserService;
 import com.hcmus.ui.table.ContextMenu;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListFriend extends JPanel {
+public class ListFriend extends JPanel implements Subscriber {
     private CardLayout mainCard;
     private JPanel mainContentPanel;
     private Table<UserDTO> table;
@@ -32,7 +34,8 @@ public class ListFriend extends JPanel {
     public ListFriend(CardLayout mainCard, JPanel mainContentPanel) throws SQLException {
         this.mainCard = mainCard;
         this.mainContentPanel = mainContentPanel;
-
+        ListFriendUtilsFunc.getInstance().setMainCard(mainCard);
+        ListFriendUtilsFunc.getInstance().setMainContentPanel(mainContentPanel);
         getListFriend();
         List<String> columnHeads = Arrays.asList("ID", "Username", "Fullname", "Online");
 
@@ -105,7 +108,7 @@ public class ListFriend extends JPanel {
                     throw new RuntimeException(ex);
                 }
 
-                mainCard.show(mainContentPanel, "CHAT");
+                ListFriendUtilsFunc.getInstance().showContentPanel();
             }
         });
 
@@ -187,4 +190,116 @@ public class ListFriend extends JPanel {
         return newGroupID;
     }
 
+    public void addPanelComponent() {
+        getListFriend();
+        List<String> columnHeads = Arrays.asList("ID", "Username", "Fullname", "Online");
+
+        try {
+            this.table = new Table<>(this.listfriend, columnHeads);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        searchBar = new SearchBar(this.table.getSorter());
+
+        contextMenu = new ContextMenu(this.table.getTable(), List.of("Chat", "Unfriend", "Block/Unblock", "Refresh"));
+
+        String[] statusOptions = {"All", "Online", "Offline"};
+        JComboBox<String> filterStatus = new JComboBox<>(statusOptions);
+        filterStatus.setSelectedIndex(0);
+        filterStatus.setFont(new Font("Serif", Font.PLAIN, 14));
+
+        filterStatus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox)e.getSource();
+                String status = (String) cb.getSelectedItem();
+
+                ReloadTable.reloadFriendTable(table, status);
+            }
+        });
+
+        JLabel filterLabel = new JLabel("Filter by Status: ");
+        filterLabel.setFont(new Font("Serif", Font.PLAIN, 14));
+
+        JPanel filterPanel = new JPanel(new FlowLayout());
+        filterPanel.setBackground(Color.WHITE);
+        filterPanel.add(filterLabel);
+        filterPanel.add(filterStatus);
+
+        JPanel header = new JPanel(new GridBagLayout());
+        header.setBackground(Color.WHITE);
+
+        JLabel title = new JLabel("LIST FRIENDS");
+        title.setFont(new Font("Serif", Font.BOLD, 28));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.gridwidth = 2;
+        header.add(title, gbc);
+
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        header.add(searchBar, gbc);
+
+        gbc.gridx = 1;
+        header.add(filterPanel, gbc);
+
+        JMenuItem unfriend = contextMenu.getUnfriend();
+        unfriend.addActionListener(new UnfriendAction(this.table));
+
+        JMenuItem block = contextMenu.getBlock();
+        block.addActionListener(new BlockAction<UserDTO>(this.table, UserDTO.class));
+
+        JMenuItem chatButton = contextMenu.getChat();
+        chatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int userID = UserProfile.getUserProfile().getId();
+                int friendID = table.getSelectedData().getId();
+
+                try {
+                    int groupID = checkGChatExisting(userID, friendID);
+                    EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, "SHOW->" + String.valueOf(groupID)); // if msg is a String is pop up chat
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                ListFriendUtilsFunc.getInstance().showContentPanel();
+            }
+        });
+
+        JMenuItem refresh = contextMenu.getRefresh();
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReloadTable.reloadFriendTable(table, "All");
+            }
+        });
+
+        setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
+        add(header, BorderLayout.NORTH);
+        add(this.table, BorderLayout.CENTER);
+    }
+
+    public void reload() {
+        removeAll();
+        addPanelComponent();
+        ReloadTable.reloadFriendTable(table, "All");
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public int getObserverId() {
+        return ComponentIdContext.RELOAD_LIST_FRIEND;
+    }
+
+    @Override
+    public void update(Object obj) {
+        reload();
+    }
 }

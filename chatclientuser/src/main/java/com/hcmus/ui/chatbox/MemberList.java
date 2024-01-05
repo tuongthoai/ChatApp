@@ -16,7 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MemberList extends JPanel implements Subscriber {
     private JScrollPane mainPanel;
@@ -90,17 +92,17 @@ public class MemberList extends JPanel implements Subscriber {
 
     @Override
     public void update(Object obj) {
-        this.members = GChatService.getInstance().getGroupChatMembers(chatId);
         GChatService service = GChatService.getInstance();
+        this.members = service.getGroupChatMembers(chatId);
         try {
             List<User> admins = service.findAllAdmins(this.chatId);
+            Set<Integer> ids = new HashSet<>();
+            for(User user: admins) {
+                ids.add(user.getId());
+            }
             for (GroupChatMember member : members) {
-                for (User user : admins) {
-                    if (user.getId() == member.getUserId()) {
-                        member.setRole("ADMIN");
-                    } else {
-                        member.setRole("USER");
-                    }
+                if(ids.contains(member.getUserId())) {
+                    member.setRole("ROLE_ADMIN");
                 }
             }
         } catch (Exception e) {
