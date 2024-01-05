@@ -2,13 +2,17 @@ package com.hcmus.ui.chatbox;
 
 import com.hcmus.models.GroupChatMember;
 import com.hcmus.models.User;
+import com.hcmus.observer.Subscriber;
+import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 
 import javax.swing.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class GroupInfoDialog extends JDialog {
+public class GroupInfoDialog extends JDialog implements Subscriber {
     private ChatBox parent;
 
     public GroupInfoDialog() {
@@ -22,13 +26,15 @@ public class GroupInfoDialog extends JDialog {
             List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
             try {
                 List<User> admins = service.findAllAdmins(parent.getChatId());
+                Set<Integer> admins_id = new HashSet<>();
+                for (User usr : admins) {
+                    admins_id.add(usr.getId());
+                }
                 for (GroupChatMember member : members) {
-                    for (User user : admins) {
-                        if (user.getId() == member.getUserId()) {
-                            member.setRole("ADMIN");
-                        } else {
-                            member.setRole("USER");
-                        }
+                    if (admins_id.contains(member.getUserId())) {
+                        member.setRole("ROLE_ADMIN");
+                    } else {
+                        member.setRole("ROLE_USER");
                     }
                 }
             } catch (Exception e) {
@@ -52,5 +58,15 @@ public class GroupInfoDialog extends JDialog {
             add(memberLabel);
             add(memberList);
         }
+    }
+
+    @Override
+    public int getObserverId() {
+        return ComponentIdContext.CLOSE_GROUP_INFO_DIALOG;
+    }
+
+    @Override
+    public void update(Object obj) {
+        this.dispose();
     }
 }

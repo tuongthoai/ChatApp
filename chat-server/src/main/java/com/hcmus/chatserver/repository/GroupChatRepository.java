@@ -154,7 +154,7 @@ public class GroupChatRepository implements InitializingBean {
                     rs.next();
                     return rs.getInt(2);
                 }
-                return null;
+                return -1;
             }
         });
     }

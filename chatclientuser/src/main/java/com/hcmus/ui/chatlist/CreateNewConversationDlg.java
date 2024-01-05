@@ -131,8 +131,10 @@ public class CreateNewConversationDlg extends JDialog implements ActionListener{
                 JOptionPane.showMessageDialog(this, "Create successfully", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
                 parent.reloadChatList();
             }
+            this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Network Error", "Error message", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
         }
     }
 }
