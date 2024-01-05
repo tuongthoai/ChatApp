@@ -70,6 +70,7 @@ public class UserController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason("Can't update user");
+            e.printStackTrace();
         }
         return mapper.writeValueAsString(response);
     }
