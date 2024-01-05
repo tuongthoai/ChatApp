@@ -24,8 +24,8 @@ public class SpamRepository implements InitializingBean {
 
     public void insertReport(int userSentId, int userIdReported, String content) throws Exception {
         String query = "insert into spam_report (usersent, userisreported, \"content\", status, createdtime) " +
-                "values (?, ?, ?, 'PENDING', ?)";
-        jdbcTemplate.update(query, userSentId, userIdReported, content, System.currentTimeMillis() /1000);
+                "values (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(query, userSentId, userIdReported, content, "PENDING", System.currentTimeMillis());
     }
 
     @Override

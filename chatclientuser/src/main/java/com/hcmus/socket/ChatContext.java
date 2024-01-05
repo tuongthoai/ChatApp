@@ -29,6 +29,11 @@ public class ChatContext extends WebSocketClient {
         if (INSTANCE == null) {
             INSTANCE = new ChatContext(webSocketUri, headers);
         }
+
+        if (INSTANCE.isClosed()) {
+            INSTANCE.reconnect();
+        }
+
         return INSTANCE;
     }
 

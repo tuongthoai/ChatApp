@@ -1,6 +1,9 @@
 package com.hcmus.ui.chatbox.RenameAction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcmus.models.ClientChatMessage;
 import com.hcmus.services.GChatService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatbox.RenameField;
 
@@ -23,6 +26,11 @@ public class RenameFieldBtnActionImpl implements ActionListener {
         try {
             try {
                 GChatService.getInstance().renameGroupChat(parent.getChatId(), newName);
+                ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                sysUpdateMsg.setMsgType("SYS");
+                sysUpdateMsg.setMsgContent("UPDATE->CHAT_LIST");
+                sysUpdateMsg.setGroupChatId(parent.getChatId());
+                ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -1,10 +1,12 @@
 package com.hcmus.ui.friendscreen.listfriend;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.*;
 import com.hcmus.observer.Subscriber;
 import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
+import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.chatlayout.ChatScreen;
 import com.hcmus.utils.ListFriendUtilsFunc;
 import com.hcmus.utils.UserProfile;
@@ -262,7 +264,12 @@ public class ListFriend extends JPanel implements Subscriber {
 
                 try {
                     int groupID = checkGChatExisting(userID, friendID);
-                    EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, "SHOW->" + String.valueOf(groupID)); // if msg is a String is pop up chat
+//                    EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, "SHOW->" + String.valueOf(groupID)); // if msg is a String is pop up chat
+                    ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                    sysUpdateMsg.setMsgType("SYS");
+                    sysUpdateMsg.setMsgContent("UPDATE->CHAT_LIST");
+                    sysUpdateMsg.setGroupChatId(groupID);
+                    ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

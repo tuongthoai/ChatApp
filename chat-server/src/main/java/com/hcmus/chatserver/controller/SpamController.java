@@ -42,6 +42,7 @@ public class SpamController {
         } catch (Exception e) {
             response.setError(true);
             response.setErrorReason(e.getMessage());
+            e.printStackTrace();
         }
         return mapper.writeValueAsString(response);
     }
