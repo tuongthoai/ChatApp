@@ -1,5 +1,8 @@
 package com.hcmus.ui.chatlist;
 
+import com.hcmus.observer.Subscriber;
+import com.hcmus.services.ComponentIdContext;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.utils.ChatHashMap;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.GroupChat;
@@ -13,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ChatList extends JPanel {
+public class ChatList extends JPanel implements Subscriber {
     private JScrollPane mainPanel;
     private JButton addButton;
     private ChatScreen chatScreen;
@@ -23,8 +26,8 @@ public class ChatList extends JPanel {
     public ChatList(ChatScreen chatScreen) throws URISyntaxException {
         this.chatScreen = chatScreen;
         setLayout(new GridBagLayout());
-
         initListGroup("");
+        EventHandlerService.getInstance().addObserver(this);
     }
 
     private void getGChatData(String keyword) {
@@ -120,5 +123,19 @@ public class ChatList extends JPanel {
         initListGroup("");
         revalidate();
         repaint();
+    }
+
+    @Override
+    public int getObserverId() {
+        return ComponentIdContext.CHAT_LIST_ID;
+    }
+
+    @Override
+    public void update(Object obj) {
+        try {
+            reloadChatList();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

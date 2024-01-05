@@ -102,6 +102,9 @@ public class ChatContext extends WebSocketClient {
                         if (opt[1].equals("CHAT_SCREEN")) {
                             EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_SCREEN_ID, null);
                         }
+                        if (opt[1].equals("CHAT_LIST")) {
+                            EventHandlerService.getInstance().notify(ComponentIdContext.CHAT_LIST_ID, null);
+                        }
                     }
                 }
             }

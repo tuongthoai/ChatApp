@@ -88,8 +88,9 @@ public class SocketSessionContext extends TextWebSocketHandler implements Initia
             groupChatService.persistMsg(msg);
         } else {
             if (msg.getMsgType().equals("SYS")) {
-                context.send2Group(msg.getGroupChatId(), message);
+
                 context.updateGroupChatMember(msg.getGroupChatId());
+                context.send2Group(msg.getGroupChatId(), message);
             }
         }
     }

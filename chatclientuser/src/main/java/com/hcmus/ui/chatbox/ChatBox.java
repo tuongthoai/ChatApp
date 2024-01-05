@@ -165,10 +165,10 @@ public class ChatBox extends JPanel implements Subscriber {
         this.chatContent.setText(""); // Clear the existing messages before displaying
         for (ChatMessage message : this.chatMessages) {
             if (message.getUserSentId() == UserProfile.getUserProfile().getId()) {
-                System.out.println("< Me >: " + message.getMsgContent() + "\n");
+//                System.out.println("< Me >: " + message.getMsgContent() + "\n");
                 this.chatContent.append("< Me >: " + message.getMsgContent() + "\n");
             } else {
-                System.out.println("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
+//                System.out.println("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
                 this.chatContent.append("< " + message.getUsername() + " >: " + message.getMsgContent() + "\n");
             }
             this.chatContent.setCaretPosition(chatContent.getDocument().getLength());
