@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -67,7 +69,7 @@ public class SettingsScreen extends JPanel {
                 nameLabel.setText("Name: " + getUser().getName());
                 sexLabel.setText("Sex: " + getUser().getSex());
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                birthdayLabel.setText("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+                birthdayLabel.setText("Birthday: " + formatter.format(new Date(getUser().getBirthday())));
                 addressLabel.setText("Address: " + getUser().getAddress());
                 emailLabel.setText("Email: " + getUser().getEmail());
                 long friendCnt = 0;
@@ -93,7 +95,7 @@ public class SettingsScreen extends JPanel {
                     err.printStackTrace(System.err);
                 }
                 formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                lastLogin.setText("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+                lastLogin.setText("Last login: " + formatter.format(new Date(lastLoginTimeStamp)));
 
             }
         });
@@ -246,7 +248,7 @@ public class SettingsScreen extends JPanel {
 
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+        lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp)));
         lastLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lastLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
         fifthRow.add(lastLogin, BorderLayout.WEST);
@@ -415,7 +417,9 @@ public class SettingsScreen extends JPanel {
             if (birthdayPicker.getModel().getValue() != null) {
                 // convert to epoch time
                 Date date = (Date) birthdayPicker.getModel().getValue();
-                user.setBirthday(date.toInstant().getEpochSecond() * 1000);
+                Instant instant = date.toInstant();
+
+                user.setBirthday(instant.toEpochMilli());
             }
             if (!addressField.getText().isEmpty()) {
                 user.setAddress(addressField.getText());
