@@ -36,3 +36,29 @@ The result build file is at the libs folder inside build folder.
 ![img.png](pictures/img_3.png)
 
 **All the other module of client and admin are similar to server excepts it doesn't need to be configured.**
+
+## 4. Running Jar Files at Submission 
+First we need create an account for the app to connect to the database. Please config like this to be able the run the available Jar file or you have to rebuild the jar file
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/chat_app
+spring.datasource.username=postgres
+spring.datasource.password=123
+```
+The there is a tutorial to config the database by running our script in the chat app project.
+
+After the database at local machine had been fully set up. We can follow the below steps.
+
+### Step 01: Starting the server
+Open the folder Group03-JarFiles, open the folder JarServer and open the terminal at that folder. Then, run the command
+```shell
+    java -jar ./chat-server-0.0.1-SNAPSHOT.jar
+```
+
+Then we move to step 2.
+
+### Step 02: Starting the client
+Open the Group03-JarFiles, and open the folder JarClient. We have 2 jar files, for the user named "chatclientuser-0.0.1-SNAPSHOT.jar"
+and for "chatclientadmin-0.0.1-SNAPSHOT.jar". Double-click on one of the jar files and wait for the app to load. 
+Finally, you can use the app follow the instructions in the video. 
+
+NOTE: **If you open the app, and it says something wrong happened, it might be the client can't connect to the server.**
