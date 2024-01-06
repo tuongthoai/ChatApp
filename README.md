@@ -1,4 +1,4 @@
-# HCMUS CSC13102 – Java Programming Project
+# HCMUS CSC13102 – Java Programming Project - 21KTPM4 - Group03
 # Chat Application
 ## 1. Members
 - 21127071 - Nguyễn Công Khanh
@@ -62,3 +62,15 @@ and for "chatclientadmin-0.0.1-SNAPSHOT.jar". Double-click on one of the jar fil
 Finally, you can use the app follow the instructions in the video. 
 
 NOTE: **If you open the app, and it says something wrong happened, it might be the client can't connect to the server.**
+
+## 5. Further configuration or rebuild jar file
+You are able to pull the repository to the local machine and open the project in Intellij by right-click at the build.gradle
+file and click open as project in Intellij. 
+
+#### IMPORTANT: Because there is some differences between IDEs, even the Intellij Ultimate and Intellij Community, problems might occur when changing IDE.
+#### Here we use Intellij Ultimate.
+
+When the project is open up and fully loaded the library and utilities, you can start running each module as a single project as usual.
+You might want to change the application.properties file at resources folder in the chat-server to meet your desire.
+
+The project is built using gradle build tools so you don't need to install gradle to be able to run it or rebuild it.
