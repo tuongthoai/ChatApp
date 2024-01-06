@@ -1,5 +1,6 @@
 package com.hcmus.ui.friendscreen;
 
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.ui.datatest.DataTest;
 import com.hcmus.ui.friendscreen.blocklist.BlockList;
 import com.hcmus.ui.friendscreen.listfriend.BlockDialog;
@@ -49,6 +50,7 @@ public class FriendHomePage extends JPanel {
         cardContainPanel.setBackground(Color.WHITE);
 
         ListFriend listFriendCard = new ListFriend(mainCard, mainContentPanel);
+        EventHandlerService.getInstance().addObserver(listFriendCard);
         cardContainPanel.add(listFriendCard, "LIST_FRIEND");
 
         NewFriend newFriendCard = new NewFriend(mainCard, mainContentPanel);

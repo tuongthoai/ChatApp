@@ -1,7 +1,9 @@
 package com.hcmus.ui.chatlayout;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hcmus.observer.Subscriber;
 import com.hcmus.services.AuthService;
+import com.hcmus.services.ComponentIdContext;
 import com.hcmus.services.EventHandlerService;
 import com.hcmus.socket.ChatContext;
 import com.hcmus.ui.datatest.DataTest;
@@ -16,11 +18,11 @@ import java.awt.event.WindowEvent;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
-public class ChatLayout extends JFrame {
-    private final JPanel mainPanel;
-    private final JPanel contentPanel;
-    private final CardLayout cardLayout;
-    private final ChatContext chatContext;
+public class ChatLayout extends JFrame implements Subscriber {
+    private JPanel mainPanel;
+    private JPanel contentPanel;
+    private CardLayout cardLayout;
+    private ChatContext chatContext;
 
     public ChatLayout() throws URISyntaxException, SQLException {
         setTitle("Chat UI");
@@ -72,6 +74,61 @@ public class ChatLayout extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
+    }
+
+    public void reload() {
+        try {
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void init() throws Exception {
+        removeAll();
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        contentPanel = new JPanel();
+        cardLayout = new CardLayout();
+        contentPanel.setLayout(cardLayout);
+
+        this.chatContext = ChatContext.getInstance();
+
+        // Sidebar
+        Sidebar sidebar = new Sidebar(contentPanel, cardLayout);
+        mainPanel.add(sidebar, BorderLayout.WEST);
+
+        // Main screen
+        ChatScreen mainScreen = new ChatScreen(this.chatContext);
+        EventHandlerService.getInstance().addObserver(mainScreen);
+        contentPanel.add(mainScreen, "CHAT");
+
+        // Friend screen
+        FriendHomePage friendHomePage = new FriendHomePage(cardLayout, contentPanel);
+        contentPanel.add(friendHomePage, "FRIENDS");
+
+        // Settings screen
+        SettingsScreen settingsScreen = new SettingsScreen();
+        contentPanel.add(settingsScreen, "SETTINGS");
+
+        cardLayout.show(contentPanel, "CHAT");
+
+        // Add main panel to the frame
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        add(mainPanel);
+
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+    @Override
+    public int getObserverId() {
+        return ComponentIdContext.CHAT_LAYOUT_RELOAD;
+    }
+
+    @Override
+    public void update(Object obj) {
+        reload();
     }
 }
 

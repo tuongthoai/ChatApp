@@ -35,18 +35,22 @@ public class SpamReportService {
         SpamReportRequest reportRequest = new SpamReportRequest(userId, reportedUserId, content);
         RequestBody body = RequestBody.create(mediaType, mapper.writeValueAsString(reportRequest));
         Request request = new Request.Builder().url(Link.getLink("service") + "spam/create").method("POST", body).addHeader("Content-Type", "application/json").build();
+        Response response = null;
         try {
-            Response response = client.newCall(request).execute();
+            response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);
                 if (apiResponse.isError()) {
                     throw new IOException("Request failed: " + response.code());
                 }
+
                 return (Boolean) apiResponse.getData();
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        } finally {
+            if (response != null) response.close();
         }
 
         return false;

@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -37,16 +39,17 @@ public class SettingsScreen extends JPanel {
     private JLabel friendsNumber;
     private JLabel groupsNumber;
     private JLabel lastLogin;
+    private JPanel centerPanel;
 
     public SettingsScreen() {
         setLayout(new BorderLayout());
 
         JPanel northPanel = initNorthPanel();
-        JPanel centerPanel = initCenterPanel();
+        this.centerPanel = initCenterPanel(null);
         JPanel southPanel = initSouthPanel();
 
         add(northPanel, BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.CENTER);
+        add(this.centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
         JMenuItem refresh = new JMenuItem("Refresh");
@@ -66,7 +69,7 @@ public class SettingsScreen extends JPanel {
                 nameLabel.setText("Name: " + getUser().getName());
                 sexLabel.setText("Sex: " + getUser().getSex());
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                birthdayLabel.setText("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+                birthdayLabel.setText("Birthday: " + formatter.format(new Date(getUser().getBirthday())));
                 addressLabel.setText("Address: " + getUser().getAddress());
                 emailLabel.setText("Email: " + getUser().getEmail());
                 long friendCnt = 0;
@@ -92,7 +95,7 @@ public class SettingsScreen extends JPanel {
                     err.printStackTrace(System.err);
                 }
                 formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                lastLogin.setText("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+                lastLogin.setText("Last login: " + formatter.format(new Date(lastLoginTimeStamp)));
 
             }
         });
@@ -149,8 +152,11 @@ public class SettingsScreen extends JPanel {
         return northPanel;
     }
 
-    private JPanel initCenterPanel() {
+    private JPanel initCenterPanel(JPanel panel) {
         JPanel centerPanel = new JPanel();
+        if (panel != null) {
+            centerPanel = panel;
+        }
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel("Information");
@@ -180,7 +186,7 @@ public class SettingsScreen extends JPanel {
         JPanel secondRow = new JPanel();
         secondRow.setLayout(new BorderLayout(20, 0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        birthdayLabel = new JLabel("Birthday: " + formatter.format(new Date(getUser().getBirthday() * 1000)));
+        birthdayLabel = new JLabel("Birthday: " + formatter.format(new Date(getUser().getBirthday())));
         birthdayLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
         birthdayLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         secondRow.add(birthdayLabel, BorderLayout.WEST);
@@ -242,7 +248,7 @@ public class SettingsScreen extends JPanel {
 
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp * 1000)));
+        lastLogin = new JLabel("Last login: " + formatter.format(new Date(lastLoginTimeStamp)));
         lastLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lastLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
         fifthRow.add(lastLogin, BorderLayout.WEST);
@@ -250,6 +256,13 @@ public class SettingsScreen extends JPanel {
 
         centerPanel.add(infoPanel);
         return centerPanel;
+    }
+
+    private void reloadCenterPanel() {
+        this.centerPanel.removeAll();
+        initCenterPanel(this.centerPanel);
+        revalidate();
+        repaint();
     }
 
     private JPanel initSouthPanel() {
@@ -351,7 +364,7 @@ public class SettingsScreen extends JPanel {
         // set date
         DateModel<?> dateModel = birthdayPicker.getModel();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(getUser().getBirthday() * 1000);
+        calendar.setTimeInMillis(getUser().getBirthday());
         dateModel.setDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         JTextField addressField = new JTextField(20);
         addressField.setText(getUser().getAddress() == null ? "" : getUser().getAddress());
@@ -404,7 +417,9 @@ public class SettingsScreen extends JPanel {
             if (birthdayPicker.getModel().getValue() != null) {
                 // convert to epoch time
                 Date date = (Date) birthdayPicker.getModel().getValue();
-                user.setBirthday(date.toInstant().getEpochSecond());
+                Instant instant = date.toInstant();
+
+                user.setBirthday(instant.toEpochMilli());
             }
             if (!addressField.getText().isEmpty()) {
                 user.setAddress(addressField.getText());
@@ -412,8 +427,13 @@ public class SettingsScreen extends JPanel {
 
             try {
                 userService.updateUser(user);
+                User usr = null;
+                usr = UserService.getInstance().getUserById(UserProfile.getUserProfile().getId());
+                UserProfile.setUserProfile(usr);
+                this.user = usr;
                 JOptionPane.showMessageDialog(null, "Your profile has been updated!");
                 dialog.dispose();
+                reloadCenterPanel();
             } catch (Exception err) {
                 err.printStackTrace(System.err);
             }

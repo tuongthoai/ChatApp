@@ -2,6 +2,7 @@ package com.hcmus.ui.chatbox;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcmus.models.GroupChat;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.ClientChatMessage;
 import com.hcmus.models.GroupChatMember;
@@ -16,7 +17,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.ByteOrder;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MemberList extends JPanel implements Subscriber {
     private JScrollPane mainPanel;
@@ -90,17 +94,17 @@ public class MemberList extends JPanel implements Subscriber {
 
     @Override
     public void update(Object obj) {
-        this.members = GChatService.getInstance().getGroupChatMembers(chatId);
         GChatService service = GChatService.getInstance();
+        this.members = service.getGroupChatMembers(chatId);
         try {
             List<User> admins = service.findAllAdmins(this.chatId);
+            Set<Integer> ids = new HashSet<>();
+            for (User user : admins) {
+                ids.add(user.getId());
+            }
             for (GroupChatMember member : members) {
-                for (User user : admins) {
-                    if (user.getId() == member.getUserId()) {
-                        member.setRole("ADMIN");
-                    } else {
-                        member.setRole("USER");
-                    }
+                if (ids.contains(member.getUserId())) {
+                    member.setRole("ROLE_ADMIN");
                 }
             }
         } catch (Exception e) {
@@ -177,7 +181,7 @@ public class MemberList extends JPanel implements Subscriber {
                         throw new RuntimeException(ex);
                     }
                     // check if member of the group is <= 2
-                    final boolean[] deleteGroup = {false};
+                    final boolean[] deleteGroup = {true};
                     int memCnt = 0;
                     try {
                         memCnt = GChatService.getInstance().countMembers(parent.getChatId());
@@ -185,21 +189,28 @@ public class MemberList extends JPanel implements Subscriber {
                             JDialog confirmDltDlg = new JDialog();
                             confirmDltDlg.setSize(400, 300);
                             confirmDltDlg.setTitle("Confirm");
+                            confirmDltDlg.setLocationRelativeTo(null);
                             confirmDltDlg.setModal(true);
                             confirmDltDlg.setLayout(new BorderLayout());
 
                             JTextField textField = new JTextField("Remove this user will delete group. Are you wish to continue?");
+                            textField.setPreferredSize(new Dimension(380, 100));
                             confirmDltDlg.add(textField, BorderLayout.CENTER);
 
                             JPanel btnPnl = new JPanel();
                             JButton confirmBtn = new JButton("Confirm");
+                            confirmBtn.setSize(new Dimension(100, 80));
                             JButton cancelBtn = new JButton("Cancel");
+                            cancelBtn.setSize(new Dimension(100, 80));
                             btnPnl.add(confirmBtn);
                             btnPnl.add(cancelBtn);
+
+                            confirmDltDlg.add(btnPnl, BorderLayout.SOUTH);
 
                             cancelBtn.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    deleteGroup[0] = false;
                                     confirmDltDlg.dispose();
                                 }
                             });
@@ -207,47 +218,44 @@ public class MemberList extends JPanel implements Subscriber {
                             confirmBtn.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    deleteGroup[0] = true;
+                                    confirmDltDlg.dispose();
                                 }
                             });
 
                             confirmDltDlg.setVisible(true);
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(
-                                mainPanel,
-                                "Network Error",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
+                        JOptionPane.showMessageDialog(mainPanel, "Network Error", "Error", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();
                     }
 
                     // if is admin then be able to remove member
-                    boolean result = true;
-                    try {
-                        result = GChatService
-                                .getInstance()
-                                .removeMemberFromGroup(
-                                        parent.getChatId(),
-                                        parent.getMembers().get(order).getUserId()
-                                );
-                        ClientChatMessage sysUpdateMsg = new ClientChatMessage();
-                        sysUpdateMsg.setMsgType("SYS");
-                        sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
-                        sysUpdateMsg.setGroupChatId(parent.getChatId());
-                        ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(
-                                mainPanel,
-                                "Network Error",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                        ex.printStackTrace();
+                    if (memCnt <= 2 && !deleteGroup[0]) {
+                        return;
                     }
 
+                    boolean result = true;
+                    try {
+                        result = GChatService.getInstance().removeMemberFromGroup(parent.getChatId(), parent.getMembers().get(order).getUserId());
+                        ClientChatMessage sysUpdateMsg = new ClientChatMessage();
+                        if (memCnt <= 2 && deleteGroup[0]) {
+                            sysUpdateMsg.setMsgType("SYS");
+                            sysUpdateMsg.setMsgContent("UPDATE->CHAT_SCREEN");
+                            sysUpdateMsg.setGroupChatId(parent.getChatId());
+                            ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
+                            EventHandlerService.getInstance().notify(ComponentIdContext.CLOSE_GROUP_INFO_DIALOG, null);
+                        } else {
+                            sysUpdateMsg.setMsgType("SYS");
+                            sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
+                            sysUpdateMsg.setGroupChatId(parent.getChatId());
+                            ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(mainPanel, "Network Error", "Error", JOptionPane.ERROR_MESSAGE);
+                        ex.printStackTrace();
+                    }
                 }
+
             });
             buttonPanel.add(removeBtn);
 
@@ -269,25 +277,14 @@ public class MemberList extends JPanel implements Subscriber {
                     // if is admin then be able to remove member
                     boolean result = true;
                     try {
-                        result = GChatService
-                                .getInstance()
-                                .updateGroupMemberRole(
-                                        parent.getChatId(),
-                                        parent.getMembers().get(order).getUserId(),
-                                        (role.equals("ADMIN") ? 2 : 1)
-                                );
+                        result = GChatService.getInstance().updateGroupMemberRole(parent.getChatId(), parent.getMembers().get(order).getUserId(), (role.equals("ADMIN") ? 2 : 1));
                         ClientChatMessage sysUpdateMsg = new ClientChatMessage();
                         sysUpdateMsg.setMsgType("SYS");
                         sysUpdateMsg.setMsgContent("UPDATE->MEMBER_LIST");
                         sysUpdateMsg.setGroupChatId(parent.getChatId());
                         ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(
-                                mainPanel,
-                                "Network Error",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
+                        JOptionPane.showMessageDialog(mainPanel, "Network Error", "Error", JOptionPane.ERROR_MESSAGE);
                         ex.printStackTrace();
                     }
                 }
@@ -309,6 +306,7 @@ public class MemberList extends JPanel implements Subscriber {
             gbc.insets = new Insets(5, 0, 0, 20);
             add(subPanel, gbc);
             setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         }
 
         private JLabel createLabel(String text) {

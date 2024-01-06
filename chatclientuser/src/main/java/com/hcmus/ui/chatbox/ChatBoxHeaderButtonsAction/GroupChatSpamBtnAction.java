@@ -38,7 +38,6 @@ public class GroupChatSpamBtnAction implements ActionListener {
         GChatService service = GChatService.getInstance();
         List<GroupChatMember> members = service.getGroupChatMembers(parent.getChatId());
         List<String> userNames = members.stream()
-                .filter(mem -> mem.getUserId() != UserProfile.getUserProfile().getId())
                 .map(mem -> mem.getUsername())
                 .collect(Collectors.toList());
         JList<String> userList = new JList<>(userNames.toArray(new String[0]));
@@ -92,6 +91,14 @@ public class GroupChatSpamBtnAction implements ActionListener {
                     // Get the selected index
                     int selectedIndex = userList.getSelectedIndex();
                     selectedIndices = selectedIndex;
+                    if(members.get(selectedIndex).getUserId() == UserProfile.getUserProfile().getId()) {
+                        JOptionPane.showMessageDialog(
+                                parent, // Parent component (null for default)
+                                "Cannot report ourselves", // Message to display
+                                "Error", // Dialog title
+                                JOptionPane.ERROR_MESSAGE // Message type (error icon)
+                        );
+                    }
                     System.out.println(selectedIndices);
                 }
             }

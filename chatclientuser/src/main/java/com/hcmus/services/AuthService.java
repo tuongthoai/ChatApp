@@ -9,6 +9,7 @@ import com.hcmus.models.RegisterRequest;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class AuthService {
     private static AuthService instance;
@@ -21,7 +22,7 @@ public class AuthService {
     private final ObjectMapper mapper;
 
     private AuthService() {
-        client = new OkHttpClient().newBuilder().build();
+        client = new OkHttpClient().newBuilder().readTimeout(30, TimeUnit.SECONDS).build();
         mapper = new ObjectMapper();
     }
 
@@ -90,7 +91,11 @@ public class AuthService {
 
     public void forgotPassword(String email) throws JsonProcessingException {
         MediaType mediaType = MediaType.parse("application/json");
-        Request request = new Request.Builder().url(Link.getLink("service") + "account/forgot").method("POST", RequestBody.create(mediaType, email)).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder()
+                .url(Link.getLink("service") + "account/forgot")
+                .method("POST", RequestBody.create(mediaType, email))
+                .addHeader("Content-Type", "application/json")
+                .build();
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ApiResponse apiResponse = mapper.readValue(response.body().string(), ApiResponse.class);

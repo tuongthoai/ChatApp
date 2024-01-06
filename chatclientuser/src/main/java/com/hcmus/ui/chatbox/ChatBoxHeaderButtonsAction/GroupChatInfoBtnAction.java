@@ -1,6 +1,7 @@
 package com.hcmus.ui.chatbox.ChatBoxHeaderButtonsAction;
 
 import com.hcmus.models.GroupChatMember;
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.services.GChatService;
 import com.hcmus.ui.chatbox.ChatBox;
 import com.hcmus.ui.chatbox.GroupInfoDialog;
@@ -28,6 +29,7 @@ public class GroupChatInfoBtnAction implements ActionListener {
             return;
         }
         GroupInfoDialog memListDialog = new GroupInfoDialog(parent);
+        EventHandlerService.getInstance().addObserver(memListDialog);
         memListDialog.setVisible(true);
     }
 }

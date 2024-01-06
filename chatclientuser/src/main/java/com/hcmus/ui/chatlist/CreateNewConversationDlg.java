@@ -123,16 +123,15 @@ public class CreateNewConversationDlg extends JDialog implements ActionListener{
             if(result > 0) {
                 ClientChatMessage sysUpdateMsg = new ClientChatMessage();
                 sysUpdateMsg.setMsgType("SYS");
-                sysUpdateMsg.setMsgContent("UPDATE->CHAT_SCREEN");
+                sysUpdateMsg.setMsgContent("UPDATE->CHAT_LIST");
                 sysUpdateMsg.setGroupChatId(result);
                 ChatContext.getInstance().send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
-                ChatContext chatContext = ChatContext.getInstance();
-                chatContext.send((new ObjectMapper()).writeValueAsString(sysUpdateMsg));
                 JOptionPane.showMessageDialog(this, "Create successfully", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
-                parent.reloadChatList();
             }
+            this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Network Error", "Error message", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
         }
     }
 }

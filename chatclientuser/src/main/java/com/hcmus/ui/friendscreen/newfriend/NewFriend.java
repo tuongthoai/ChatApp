@@ -13,7 +13,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.List;
 
@@ -104,7 +106,7 @@ public class NewFriend extends JPanel {
             newFriend.setFullname(stranger.getName());
             newFriend.setSex(stranger.getSex());
 
-            LocalDate date = UnixTimestampConverter.unix2DateTime((long) stranger.getBirthday());
+            LocalDate date = Instant.ofEpochMilli(stranger.getBirthday()).atZone(ZoneId.systemDefault()).toLocalDate();
             newFriend.setBirthday(date);
 
             this.listNotfriend.add(newFriend);

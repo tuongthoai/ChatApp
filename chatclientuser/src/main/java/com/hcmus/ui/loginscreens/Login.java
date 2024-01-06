@@ -1,5 +1,6 @@
 package com.hcmus.ui.loginscreens;
 
+import com.hcmus.services.EventHandlerService;
 import com.hcmus.utils.UserProfile;
 import com.hcmus.models.User;
 import com.hcmus.services.AuthService;
@@ -172,11 +173,18 @@ public class Login extends JFrame {
 
                 // if login success, do:
                 try {
-                    chatLayout = new ChatLayout();
-                    chatLayout.setVisible(true);
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            chatLayout = new ChatLayout();
+                            EventHandlerService.getInstance().addObserver(chatLayout);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        chatLayout.setVisible(true);
+                    });
                     // close current frame
                     dispose();
-                } catch (URISyntaxException | SQLException ex) {
+                } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
             }
